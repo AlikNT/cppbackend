@@ -27,7 +27,7 @@ public:
         }
 
         const std::string target = std::string(req.target());
-        if (target == "/api/v1/maps") {
+        if (target == "/api/v1/maps" || target == "/api/v1/maps/") {
             HandleGetMaps(std::move(req), std::forward<Send>(send));
         } else if (target.find("/api/v1/maps/") == 0) {
             HandleGetMapById(std::move(req), std::forward<Send>(send));
