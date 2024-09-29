@@ -23,18 +23,18 @@ public:
         // Обработать запрос request и отправить ответ, используя send
         // Определение метода и пути
         if (req.method() != http::verb::get) {
-            return send_bad_request("Unsupported HTTP method", send);
+            return SendBadRequest("Unsupported HTTP method", send);
         }
 
         const std::string target = std::string(req.target());
         if (target == "/api/v1/maps") {
-            handle_get_maps(std::move(req), std::forward<Send>(send));
+            HandleGetMaps(std::move(req), std::forward<Send>(send));
         } else if (target.find("/api/v1/maps/") == 0) {
-            handle_get_map_by_id(std::move(req), std::forward<Send>(send));
+            HandleGetMapById(std::move(req), std::forward<Send>(send));
         } else if (target.find("/api/") == 0) {
-            return send_bad_request("Bad request", send);
+            return SendBadRequest("Bad request", send);
         } else {
-            return send_bad_request("Unknown API endpoint", send);
+            return SendBadRequest("Unknown API endpoint", send);
         }
     }
 
@@ -46,7 +46,7 @@ private:
 
     // Обработка запроса на получение списка карт
     template <typename Send>
-    void handle_get_maps(HttpRequest&& req, Send&& send) {
+    void HandleGetMaps(HttpRequest&& req, Send&& send) {
         json::array maps_json;
 
         for (const auto& map : game_.GetMaps()) {
@@ -56,19 +56,19 @@ private:
                                 });
         }
 
-        send_json_response(req, maps_json, std::forward<Send>(send));
+        SendJsonResponse(req, maps_json, std::forward<Send>(send));
     }
 
     // Обработка запроса на получение карты по ID
     template <typename Send>
-    void handle_get_map_by_id(HttpRequest&& req, Send&& send) {
+    void HandleGetMapById(HttpRequest&& req, Send&& send) {
         const std::string target = std::string(req.target());
         const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
         auto map_id = model::Map::Id{map_id_str};
 
         const auto* map = game_.FindMap(map_id);
         if (!map) {
-            return send_not_found("Map not found", "mapNotFound", send);
+            return SendNotFound("Map not found", "mapNotFound", send);
         }
 
         json::object map_json;
@@ -118,12 +118,12 @@ private:
         }
         map_json["offices"] = offices_json;
 
-        send_json_response(req, map_json, std::forward<Send>(send));
+        SendJsonResponse(req, map_json, std::forward<Send>(send));
     }
 
     // Отправка JSON-ответа
     template <typename Send, typename JsonBody>
-    void send_json_response(const HttpRequest& req, const JsonBody& body, Send&& send) {
+    void SendJsonResponse(const HttpRequest& req, const JsonBody& body, Send&& send) {
         HttpResponse res{http::status::ok, req.version()};
         res.set(http::field::content_type, "application/json");
         res.keep_alive(req.keep_alive());
@@ -134,27 +134,27 @@ private:
 
     // Обработка ошибок 404 (не найдено)
     template <typename Send>
-    void send_not_found(const std::string& message, const std::string& code, Send&& send) {
+    void SendNotFound(const std::string& message, const std::string& code, Send&& send) {
         json::object error_json{
                 {"code", code},
                 {"message", message}
         };
-        send_error_response(http::status::not_found, error_json, std::forward<Send>(send));
+        SendErrorResponse(http::status::not_found, error_json, std::forward<Send>(send));
     }
 
     // Обработка ошибок 400 (плохой запрос)
     template <typename Send>
-    void send_bad_request(const std::string& message, Send&& send) {
+    void SendBadRequest(const std::string& message, Send&& send) {
         json::object error_json{
                 {"code", "badRequest"},
                 {"message", message}
         };
-        send_error_response(http::status::bad_request, error_json, std::forward<Send>(send));
+        SendErrorResponse(http::status::bad_request, error_json, std::forward<Send>(send));
     }
 
     // Отправка ответа с ошибкой
     template <typename Send>
-    void send_error_response(http::status status, const json::object& error_json, Send&& send) {
+    void SendErrorResponse(http::status status, const json::object& error_json, Send&& send) {
         HttpResponse res{status, 11};
         res.set(http::field::content_type, "application/json");
         res.body() = json::serialize(error_json);
