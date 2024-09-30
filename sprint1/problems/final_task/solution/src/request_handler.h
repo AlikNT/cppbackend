@@ -1,10 +1,12 @@
 #pragma once
 #include "http_server.h"
 #include "model.h"
+#include "json_loader.h"
 
 #include <boost/json.hpp>
 
 namespace http_handler {
+
 namespace beast = boost::beast;
 namespace http = beast::http;
 namespace json = boost::json;
@@ -29,9 +31,9 @@ public:
         const std::string target = std::string(req.target());
         if (target == "/api/v1/maps" || target == "/api/v1/maps/") {
             HandleGetMaps(std::move(req), std::forward<Send>(send));
-        } else if (target.find("/api/v1/maps/") == 0) {
+        } else if (target.starts_with("/api/v1/maps/")) {
             HandleGetMapById(std::move(req), std::forward<Send>(send));
-        } else if (target.find("/api/") == 0) {
+        } else if (target.starts_with("/api/")) {
             return SendBadRequest("Bad request", send);
         } else {
             return SendBadRequest("Unknown API endpoint", send);
@@ -47,12 +49,13 @@ private:
     // Обработка запроса на получение списка карт
     template <typename Send>
     void HandleGetMaps(HttpRequest&& req, Send&& send) {
+        using namespace std::literals;
         json::array maps_json;
 
         for (const auto& map : game_.GetMaps()) {
             maps_json.push_back({
-                                        {"id", *map.GetId()},
-                                        {"name", map.GetName()}
+                                        {OFFICE_ID, *map.GetId()},
+                                        {"name"s, map.GetName()}
                                 });
         }
 
@@ -66,26 +69,26 @@ private:
         const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
         auto map_id = model::Map::Id{map_id_str};
 
-        const auto* map = game_.FindMap(map_id);
+        const auto map = game_.FindMap(map_id);
         if (!map) {
             return SendNotFound("Map not found", "mapNotFound", send);
         }
 
         json::object map_json;
-        map_json["id"] = *map->GetId();
+        map_json[OFFICE_ID] = *(map->GetId());
         map_json["name"] = map->GetName();
 
         // Добавление дорог
         json::array roads_json;
         for (const auto& road : map->GetRoads()) {
             json::object road_json;
-            road_json["x0"] = road.GetStart().x;
-            road_json["y0"] = road.GetStart().y;
+            road_json[ROAD_BEGIN_X0] = road.GetStart().x;
+            road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
 
             if (road.IsHorizontal()) {
-                road_json["x1"] = road.GetEnd().x;
+                road_json[ROAD_END_X1] = road.GetEnd().x;
             } else {
-                road_json["y1"] = road.GetEnd().y;
+                road_json[ROAD_END_Y1] = road.GetEnd().y;
             }
 
             roads_json.push_back(road_json);
@@ -97,10 +100,10 @@ private:
         for (const auto& building : map->GetBuildings()) {
             const auto& bounds = building.GetBounds();
             buildings_json.push_back({
-                                             {"x", bounds.position.x},
-                                             {"y", bounds.position.y},
-                                             {"w", bounds.size.width},
-                                             {"h", bounds.size.height}
+                                             {X, bounds.position.x},
+                                             {Y, bounds.position.y},
+                                             {BUILDING_WIDTH, bounds.size.width},
+                                             {BUILDING_HEIGHT, bounds.size.height}
                                      });
         }
         map_json["buildings"] = buildings_json;
@@ -109,11 +112,11 @@ private:
         json::array offices_json;
         for (const auto& office : map->GetOffices()) {
             offices_json.push_back({
-                                           {"id", *office.GetId()},
-                                           {"x", office.GetPosition().x},
-                                           {"y", office.GetPosition().y},
-                                           {"offsetX", office.GetOffset().dx},
-                                           {"offsetY", office.GetOffset().dy}
+                                           {OFFICE_ID, *office.GetId()},
+                                           {X, office.GetPosition().x},
+                                           {Y, office.GetPosition().y},
+                                           {OFFICE_OFFSET_X, office.GetOffset().dx},
+                                           {OFFICE_OFFSET_Y, office.GetOffset().dy}
                                    });
         }
         map_json["offices"] = offices_json;
