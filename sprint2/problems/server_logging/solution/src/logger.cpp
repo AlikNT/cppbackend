@@ -26,7 +26,8 @@ void InitLogging() {
     // Добавляем консольный логгер с кастомным форматтером
     logging::add_console_log(
             std::clog,
-            keywords::format = &MyFormatter
+            keywords::format = &MyFormatter,
+            keywords::auto_flush = true
     );
 
     // Добавляем стандартные атрибуты, такие как время записи
@@ -62,9 +63,10 @@ void LogServerStart(int port, const std::string &address) {
                             << "server started";
 }
 
-void LogServerExit(int code) {
+void LogServerExit(int code, const std::string &exception) {
     boost::json::value data = {
-            {"code", code}
+            {"code", code},
+            {"exception", exception}
     };
     BOOST_LOG_TRIVIAL(info) << boost::log::add_value(additional_data, data)
                             << "server exited";

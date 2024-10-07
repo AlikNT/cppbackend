@@ -1,5 +1,6 @@
 #pragma once
 #include "sdk.h"
+#include "logger.h"
 // boost.beast будет использовать std::string_view вместо boost::string_view
 #define BOOST_BEAST_USE_STD_STRING_VIEW
 
@@ -69,6 +70,7 @@ private:
             return Close();
         }
         if (ec) {
+            logger::LogServerError(ec.value(), ec.message(), "read"s);
             return ReportError(ec, "read"sv);
         }
         HandleRequest(std::move(request_));
@@ -76,6 +78,7 @@ private:
     void OnWrite(bool close, beast::error_code ec, [[maybe_unused]] std::size_t bytes_written) {
         using namespace std::literals;
         if (ec) {
+            logger::LogServerError(ec.value(), ec.message(), "write"s);
             return ReportError(ec, "write"sv);
         }
 
@@ -185,6 +188,7 @@ private:
         using namespace std::literals;
 
         if (ec) {
+            logger::LogServerError(ec.value(), ec.message(), "accept"s);
             return ReportError(ec, "accept"sv);
         }
 

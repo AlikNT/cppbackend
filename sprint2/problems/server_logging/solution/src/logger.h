@@ -34,7 +34,7 @@ void LogResponse(int response_time, int code, const std::string &content_type);
 
 void LogServerStart(int port, const std::string &address);
 
-void LogServerExit(int code);
+void LogServerExit(int code, const std::string &exception);
 
 void LogServerError(int error_code, const std::string &error_message, const std::string &where);
 
