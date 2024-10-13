@@ -1,6 +1,6 @@
 #include "logger.h"
 
-namespace logger {
+namespace server_logging {
 
 void MyFormatter(const logging::record_view &rec, logging::formatting_ostream &strm) {
     // Извлекаем атрибуты
@@ -34,26 +34,6 @@ void InitLogging() {
     logging::add_common_attributes();
 }
 
-void LogRequest(std::string_view ip, std::string_view uri, std::string_view method) {
-    boost::json::value data = {
-            {"ip",     ip},
-            {"URI",    uri},
-            {"method", method}
-    };
-    BOOST_LOG_TRIVIAL(info) << logging::add_value(additional_data, data)
-                            << "request received";
-}
-
-void LogResponse(int response_time, int code, const std::string &content_type) {
-    boost::json::value data = {
-            {"response_time", response_time},
-            {"code",          code},
-            {"content_type",  content_type}
-    };
-    BOOST_LOG_TRIVIAL(info) << boost::log::add_value(additional_data, data)
-                            << "response sent";
-}
-
 void LogServerStart(int port, const std::string &address) {
     boost::json::value data = {
             {"port",    port},
@@ -82,4 +62,4 @@ void LogServerError(int error_code, const std::string &error_message, const std:
                              << "error";
 }
 
-} // namespace logger
+} // namespace server_logging
