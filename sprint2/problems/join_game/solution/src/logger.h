@@ -31,9 +31,8 @@ namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
 struct LogData {
-    int status_code;
+    unsigned int status_code;
     std::string content_type;
-    int response_time_ms;
 };
 
 template<class RequestHandler>
@@ -46,7 +45,7 @@ class LoggingRequestHandler {
         };
         BOOST_LOG_TRIVIAL(info) << logging::add_value(additional_data, data) << "request received";
     }
-    static void LogResponse(int response_time_ms, int status_code, const std::string& content_type) {
+    static void LogResponse(unsigned int response_time_ms, unsigned int status_code, const std::string& content_type) {
         boost::json::value data = {
                 {"response_time", response_time_ms},
                 {"code",          status_code},
@@ -66,17 +65,26 @@ public:
         std::string_view method = beast::http::to_string(req.method());
         LogRequest(endpoint.address().to_string(), uri, method);
 
+        // Замер времени начала обработки запроса
+        start_time_ = std::chrono::steady_clock::now();
+
         // Выполняем обработку запроса через основной обработчик
         (*decorated_)(std::move(req), std::forward<Send>(send));
+
+        // Замер времени окончания обработки запроса
+        end_time_ = std::chrono::steady_clock::now();
+        response_time_ = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_ - start_time_).count();
 
         // Получаем информацию для логирования после обработки
         LogData log_data = (*decorated_).GetLogInfo();
 
-        LogResponse(log_data.response_time_ms, log_data.status_code, log_data.content_type);
+        LogResponse(response_time_, log_data.status_code, log_data.content_type);
     }
 
 private:
     std::shared_ptr<RequestHandler> decorated_;
+    unsigned int response_time_{0};         // Время обработки ответа (мс)
+    std::chrono::steady_clock::time_point start_time_, end_time_; // Время начала и конца обработки
 };
 
 // Форматтер, который выводит логи в JSON-формате

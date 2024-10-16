@@ -10,6 +10,7 @@
 
 using namespace std::literals;
 namespace net = boost::asio;
+namespace fs = std::filesystem;
 
 namespace {
 
@@ -57,7 +58,7 @@ int main(int argc, const char* argv[]) {
 
         // Создаем обработчик запросов в куче, управляемый shared_ptr
         std::shared_ptr<http_handler::RequestHandler> handler;
-        handler = std::make_shared<http_handler::RequestHandler>(game, argv[2], api_strand);
+        handler = std::make_shared<http_handler::RequestHandler>(game, fs::path{argv[2]}, api_strand);
         server_logging::LoggingRequestHandler logging_handler{handler};
 
         // Запустить обработчик HTTP-запросов, делегируя их обработчику запросов
