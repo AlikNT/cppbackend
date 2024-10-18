@@ -170,14 +170,17 @@ StringResponse RequestHandler::ReportServerError(unsigned int version, bool keep
     return res;
 }
 
+template<typename... Headers>
 StringResponse ApiRequestHandler::GetErrorResponse(const HttpRequest &req, http::status status, const std::string &code,
-                                                   const std::string &message) const {
+                                                   const std::string &message, const Headers&... headers) const {
     json::object error_json{
             {"code", code},
             {"message", message}
     };
     StringResponse res{status, req.version()};
     res.set(http::field::content_type, "application/json");
+//    res.set(http::field::cache_control, "no-cache");
+    (res.set(headers.first, headers.second), ...);
     res.body() = json::serialize(error_json);
     res.prepare_payload();
 
@@ -190,6 +193,10 @@ StringResponse ApiRequestHandler::GetApiResponse(const HttpRequest &req) const {
         return GetMaps(req);
     } else if (target.starts_with("/api/v1/maps/")) {
         return GetMapById(req);
+    } else if (target == "/api/v1/game/join" || target == "/api/v1/game/join/") {
+        return HandleJoinGame(req);
+    } else if (target == "/api/v1/game/players" || target == "/api/v1/game/players/") {
+        return GetPlayers(req);
     } else if (target.starts_with("/api/")) {
         return GetErrorResponse(req, http::status::bad_request, "badRequest", "Bad request");
     }
@@ -202,9 +209,9 @@ StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
 
     for (const auto& map : game_.GetMaps()) {
         maps_json.push_back({
-                                    {OFFICE_ID, *map.GetId()},
-                                    {"name"s, map.GetName()}
-                            });
+            {OFFICE_ID, *map.GetId()},
+            {"name"s, map.GetName()}
+        });
     }
 
     return GetJsonResponse(req, maps_json);
@@ -273,10 +280,111 @@ StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
 ApiRequestHandler::ApiRequestHandler(model::Game &game)
         : game_(game) {}
 
+StringResponse ApiRequestHandler::HandleJoinGame(const HttpRequest &req) const {
+    // Проверяем заголовок Content-Type
+    if (req["Content-Type"] != "application/json") {
+        return GetErrorResponse(req, http::status::bad_request, "invalidContentType", "Content-Type must be application/json",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Проверяем метод POST
+    if (req.method() != http::verb::post) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Method must be POST",
+                                std::make_pair(http::field::allow, "POST"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Парсим JSON-тело запроса
+    json::value body;
+    try {
+        body = json::parse(req.body());
+    } catch (const std::exception&) {
+        return GetErrorResponse(req, http::status::bad_request, "invalidJson", "Invalid JSON format",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Извлекаем поля userName и mapId
+    std::string userName;
+    std::string mapId_str;
+    try {
+        userName = json::value_to<std::string>(body.at("userName"));
+        mapId_str = json::value_to<std::string>(body.at("mapId"));
+    } catch (const std::exception&) {
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "userName and mapId are required",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Проверяем поле userName на пустое значение
+    if (userName.empty()) {
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "userName must not be empty",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    model::Map::Id mapId(mapId_str);
+    // Проверяем, существует ли карта с указанным mapId
+    const model::Map* map = game_.FindMap(mapId);
+    if (!map) {
+        return GetErrorResponse(req, http::status::not_found, "mapNotFound", "The specified map ID does not exist",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Добавляем игрока и получаем токен
+    auto token = game_.AddPlayer(userName, mapId);
+
+    // Формируем ответ
+    boost::json::object json_body;
+    json_body["authToken"] = *token;
+    json_body["playerId"] = game_.FindPlayerByToken(token)->GetDog()->GetId();
+
+    return GetJsonResponse(req, json_body);
+}
+
+StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
+    // Проверяем наличие и валидность заголовка Authorization
+    if (req.find(http::field::authorization) == req.end() || !req[http::field::authorization].starts_with("Bearer ")) {
+        return GetErrorResponse(req, http::status::unauthorized, "invalidToken", "Authorization header is missing",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Проверяем метод GET или HEAD
+    if (req.method() != http::verb::get && req.method() != http::verb::head) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                std::make_pair(http::field::allow, "GET, HEAD"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Извлекаем токен из заголовка Authorization
+    std::string_view auth_header = req[http::field::authorization];
+    std::string token_str = std::string(auth_header.substr(7));
+    model::Token token(token_str);
+
+    // Ищем игрока по токену
+    auto player = game_.FindPlayerByToken(token);
+    if (!player) {
+        return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Получаем список игроков в сессии
+    model::GameSession* session = player->GetSession();
+    auto players = session->GetPlayers();
+
+    // Формируем JSON-ответ
+    json::object players_json;
+    for (const auto& p : players) {
+        json::object player_json;
+        player_json["name"] = p.GetName();
+        players_json[std::to_string(p.GetId())] = player_json;
+    }
+
+    return GetJsonResponse(req, players_json);
+}
+
 template<typename JsonBody>
 StringResponse ApiRequestHandler::GetJsonResponse(const HttpRequest &req, const JsonBody &body) const {
     StringResponse res{http::status::ok, req.version()};
     res.set(http::field::content_type, "application/json");
+    res.set(http::field::cache_control, "no-cache");
     res.keep_alive(req.keep_alive());
     res.body() = json::serialize(body);
     res.prepare_payload();

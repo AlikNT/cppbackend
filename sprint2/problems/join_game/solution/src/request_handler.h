@@ -1,4 +1,5 @@
 #pragma once
+
 #include "http_server.h"
 #include "model.h"
 #include "json_loader.h"
@@ -29,13 +30,17 @@ class ApiRequestHandler {
 public:
     explicit ApiRequestHandler(model::Game& game);
 
-    [[nodiscard]] StringResponse GetErrorResponse(const HttpRequest& req, http::status status, const std::string& code,  const std::string& message) const;
+
 
     // Обработка запросов к API
     [[nodiscard]] StringResponse GetApiResponse(const HttpRequest& req) const;
 
 private:
     model::Game& game_;
+
+    template<typename... Headers>
+    [[nodiscard]] StringResponse GetErrorResponse(const HttpRequest &req, http::status status, const std::string &code,
+                                                  const std::string &message, const Headers&... headers) const;
 
     template<typename JsonBody>
     [[nodiscard]] StringResponse GetJsonResponse(const HttpRequest& req, const JsonBody &body) const;
@@ -45,6 +50,10 @@ private:
 
     // Обработка запроса на получение карты по ID
     [[nodiscard]] StringResponse GetMapById (const HttpRequest& req) const;
+
+    [[nodiscard]] StringResponse HandleJoinGame(const HttpRequest& req) const;
+
+    [[nodiscard]] StringResponse GetPlayers(const HttpRequest& req) const;
 };
 
 class FileRequestHandler {
