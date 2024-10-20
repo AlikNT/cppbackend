@@ -16,6 +16,18 @@ PlayerDogId Dog::GetId() const {
     return dog_id_;
 }
 
+DogPosition Dog::GetPosition() const {
+    return dog_position_;
+}
+
+DogSpeed Dog::GetDogSpeed() const {
+    return dog_speed_;
+}
+
+Direction Dog::GetDirection() const {
+    return dog_direction_;
+}
+
 }
 
 namespace model {

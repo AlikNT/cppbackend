@@ -54,6 +54,8 @@ private:
     [[nodiscard]] StringResponse HandleJoinGame(const HttpRequest& req) const;
 
     [[nodiscard]] StringResponse GetPlayers(const HttpRequest& req) const;
+
+    [[nodiscard]] StringResponse GetGameState(const HttpRequest& req) const;
 };
 
 class FileRequestHandler {

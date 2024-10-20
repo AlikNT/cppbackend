@@ -1,4 +1,4 @@
-#include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 #include "request_handler.h"
 
@@ -197,6 +197,8 @@ StringResponse ApiRequestHandler::GetApiResponse(const HttpRequest &req) const {
         return HandleJoinGame(req);
     } else if (target == "/api/v1/game/players" || target == "/api/v1/game/players/") {
         return GetPlayers(req);
+    } else if (target == "/api/v1/game/state" || target == "/api/v1/game/state/") {
+        return GetGameState(req);
     } else if (target.starts_with("/api/")) {
         return GetErrorResponse(req, http::status::bad_request, "badRequest", "Bad request");
     }
@@ -375,6 +377,59 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
     }
 
     return GetJsonResponse(req, players_json);
+}
+
+StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
+    // Проверка заголовка Authorization
+    if (req.find(http::field::authorization) == req.end() || !req[http::field::authorization].starts_with("Bearer ")) {
+        return GetErrorResponse(req, http::status::unauthorized, "invalidToken", "Authorization is missing",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Проверка метода запроса
+    if (req.method() != http::verb::get && req.method() != http::verb::head) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                std::make_pair(http::field::allow, "GET, HEAD"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    // Извлечение токена из заголовка Authorization
+    std::string_view auth_header = req[http::field::authorization];
+    std::string token_str = std::string(auth_header.substr(7));
+    app::Token token(token_str);
+
+    if (!app::IsValidToken(token)) {
+        return GetErrorResponse(req, http::status::unauthorized, "invalidToken", "Invalid token",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    auto players = app_.ListPlayers(token);
+
+    if (!players) {
+        return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+    // Создание JSON-ответа
+    boost::json::object json_body;
+    boost::json::object players_json;
+
+    const std::unordered_map<app::Direction, std::string> dir {
+            {app::Direction::NORTH, "U"},
+            {app::Direction::SOUTH, "D"},
+            {app::Direction::WEST, "L"},
+            {app::Direction::EAST, "R"}
+    };
+    for (const auto& p : *players) {
+        boost::json::object player_json;
+        player_json["pos"] = {p.GetPosition().x, p.GetPosition().y};
+        player_json["speed"] = {p.GetDogSpeed().sx, p.GetDogSpeed().sy};
+        player_json["dir"] = dir.at(p.GetDirection());
+        players_json[std::to_string(p.GetId())] = player_json;
+    }
+
+    json_body["players"] = players_json;
+
+    return GetJsonResponse(req, json_body);
 }
 
 template<typename JsonBody>

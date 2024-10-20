@@ -15,6 +15,24 @@ namespace app {
 
 using PlayerDogId = uint32_t;
 
+struct DogPosition {
+    double x = 0;
+    double y = 0;
+};
+
+struct DogSpeed {
+    double sx{0.0};
+    double sy{0.0};
+};
+
+enum class Direction {
+    NORTH,
+    SOUTH,
+    WEST,
+    EAST
+};
+
+
 class Dog {
 public:
     Dog(std::string dog_name, PlayerDogId dog_id);
@@ -23,9 +41,18 @@ public:
 
     [[nodiscard]] PlayerDogId GetId() const;
 
+    [[nodiscard]] DogPosition GetPosition() const;
+
+    [[nodiscard]] DogSpeed GetDogSpeed() const;
+
+    [[nodiscard]] Direction GetDirection() const;
+
 private:
     PlayerDogId dog_id_;
     std::string dog_name_;
+    DogPosition dog_position_;
+    DogSpeed dog_speed_;
+    Direction dog_direction_ = Direction::NORTH;
 };
 
 }
