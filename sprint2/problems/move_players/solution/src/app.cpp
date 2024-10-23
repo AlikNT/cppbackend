@@ -20,6 +20,10 @@ const model::GameSession *Player::GetSession() {
     return session_;
 }
 
+app::DogSpeed Player::GetDogSpeed() const {
+   return dog_->GetDogSpeed();
+}
+
 const Player &Players::Add(Dog *dog, const model::GameSession *session) {
     players_.emplace_back(dog, session);
     auto& player= players_.back();
@@ -106,12 +110,22 @@ std::shared_ptr<Player> Application::FindPlayerByToken(const Token &token) {
     return player_tokens_.FindPlayerByToken(token);
 }
 
-Application::PlayersList Application::ListPlayers(const Token& token) {
+PlayersList Application::ListPlayers(const Token& token) {
     ListPlayersUseCase list_players(player_tokens_);
     return list_players.ListPlayers(token);
 }
 
-ListPlayersUseCase::PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
+std::optional<GameStateResult> Application::GameState(const Token &token) {
+    GameStateUseCase game_state(player_tokens_);
+    return game_state.GameState(token);
+}
+
+MovePlayersResult Application::MovePlayers(const Token &token, std::string_view move) {
+    MovePlayersUseCase move_players(player_tokens_);
+    return move_players.MovePlayers(token, move);
+}
+
+PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
     // Ищем игрока по токену
     auto player = player_tokens_.FindPlayerByToken(token);
     if (!player) {
@@ -127,5 +141,56 @@ ListPlayersUseCase::PlayersList ListPlayersUseCase::ListPlayers(const Token &tok
 
 ListPlayersUseCase::ListPlayersUseCase(PlayerTokens &player_tokens)
     : player_tokens_(player_tokens) {}
+
+bool IsValidToken(const Token &token) {
+    constexpr int TOKEN_SIZE = 32;
+    const std::string& token_str = *token;
+    return token_str.size() == TOKEN_SIZE && std::all_of(token_str.begin(), token_str.end(), ::isxdigit);
+}
+
+GameStateUseCase::GameStateUseCase(PlayerTokens &player_tokens)
+    : player_tokens_(player_tokens) {}
+
+std::optional<GameStateResult> GameStateUseCase::GameState(const Token &token) {
+    // Ищем игрока по токену
+    auto player = player_tokens_.FindPlayerByToken(token);
+    if (!player) {
+        return std::nullopt;
+    }
+
+    // Получаем список игроков в сессии
+    auto session = player->GetSession();
+    auto players = session->GetPlayers();
+    auto dog_speed = player->GetDogSpeed();
+
+    return GameStateResult{players, dog_speed};
+}
+
+MovePlayersUseCase::MovePlayersUseCase(PlayerTokens &player_tokens)
+    : player_tokens_(player_tokens) {}
+
+MovePlayersResult MovePlayersUseCase::MovePlayers(const Token &token, std::string_view move) {
+    // Ищем игрока по токену
+    auto player = player_tokens_.FindPlayerByToken(token);
+    if (!player) {
+        return MovePlayersResult::UNKNOWN_TOKEN;
+    }
+    // Update the player's speed based on the move value
+    double speed = player->GetSession()->GetMap()->GetDogSpeed();
+    if (move == "L") {
+        player->GetDog()->SetDogSpeed({-speed, 0});
+    } else if (move == "R") {
+        player->GetDog()->SetDogSpeed({speed, 0});
+    } else if (move == "U") {
+        player->GetDog()->SetDogSpeed({0, -speed});
+    } else if (move == "D") {
+        player->GetDog()->SetDogSpeed({0, speed});
+    } else if (move.empty()) {
+        player->GetDog()->SetDogSpeed({0, 0});
+    } else {
+        return MovePlayersResult::UNKNOWN_MOVE;
+    }
+    return MovePlayersResult::OK;
+}
 
 } // namespace app

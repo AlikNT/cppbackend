@@ -11,9 +11,29 @@
 #include "tagged.h"
 //#include "app.h"
 
+
 namespace app {
 
+struct DogSpeed {
+    double sx = 0.0;
+    double sy = 0.0;
+};
+
 using PlayerDogId = uint32_t;
+
+struct DogPosition {
+    double x = 0.0;
+    double y = 0.0;
+};
+
+
+enum class Direction {
+    NORTH,
+    SOUTH,
+    WEST,
+    EAST
+};
+
 
 class Dog {
 public:
@@ -23,14 +43,26 @@ public:
 
     [[nodiscard]] PlayerDogId GetId() const;
 
+    [[nodiscard]] DogPosition GetPosition() const;
+
+    [[nodiscard]] Direction GetDirection() const;
+
+    [[nodiscard]] DogSpeed GetDogSpeed() const;
+
+    void SetDogSpeed(DogSpeed speed);
+
 private:
     PlayerDogId dog_id_;
     std::string dog_name_;
+    DogPosition dog_position_;
+    DogSpeed dog_speed_;
+    Direction dog_direction_ = Direction::NORTH;
 };
 
 }
 
 namespace model {
+
 
 using Dimension = int;
 using Coord = Dimension;
@@ -117,7 +149,7 @@ public:
     using Buildings = std::vector<Building>;
     using Offices = std::vector<Office>;
 
-    Map(Id id, std::string name) noexcept;
+    Map(Id id, std::string name, double dog_speed) noexcept;
 
     const Id& GetId() const noexcept;
 
@@ -135,6 +167,10 @@ public:
 
     void AddOffice(Office office);
 
+    void SetDogSpeed(double speed);
+
+    double GetDogSpeed() const;
+
 private:
     using OfficeIdToIndex = std::unordered_map<Office::Id, size_t, util::TaggedHasher<Office::Id>>;
 
@@ -142,9 +178,9 @@ private:
     std::string name_;
     Roads roads_;
     Buildings buildings_;
-
     OfficeIdToIndex warehouse_id_to_index_;
     Offices offices_;
+    double dog_speed_;
 };
 
 class GameSession {
@@ -153,7 +189,7 @@ public:
     explicit GameSession(const Map* map);
 
     // Добавление собаки/игрока в сессию
-    app::Dog * AddDog(const std::string& player_name);
+    app::Dog* AddDog(const std::string& player_name);
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayerCount() const noexcept;
@@ -178,9 +214,11 @@ public:
 
     const Map* FindMap(const Map::Id& id) const noexcept;
 
-    GameSession * AddSession(const Map::Id& map_id);
+    GameSession* AddSession(const Map::Id& map_id);
 
     GameSession* FindSession(const Map::Id& map_id);
+
+    void SetDefaultDogSpeed(double speed);
 
 private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
@@ -192,6 +230,7 @@ private:
     MapIdToIndex map_id_to_index_;
     Sessions sessions_;
     MapIdToSessionIndex map_id_to_session_index_;
+    double default_dog_speed_ = 1.0;
 };
 
 }  // namespace model

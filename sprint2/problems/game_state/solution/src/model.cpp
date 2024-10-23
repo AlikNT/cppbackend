@@ -20,12 +20,13 @@ DogPosition Dog::GetPosition() const {
     return dog_position_;
 }
 
-DogSpeed Dog::GetDogSpeed() const {
-    return dog_speed_;
-}
 
 Direction Dog::GetDirection() const {
     return dog_direction_;
+}
+
+DogSpeed Dog::GetDogSpeed() const {
+    return dog_speed_;
 }
 
 }
@@ -189,10 +190,10 @@ Offset Office::GetOffset() const noexcept {
 
 GameSession::GameSession(const Map *map) : map_(map) {}
 
-const app::Dog &GameSession::AddDog(const std::string &player_name) {
+app::Dog * GameSession::AddDog(const std::string &player_name) {
     dogs_.emplace_back(player_name, dogs_.size());
-    auto& dog = dogs_.back();
-    dog_id_to_index_[dog.GetId()] = dogs_.size() - 1;
+    app::Dog* dog = &dogs_.back();
+    dog_id_to_index_[dog->GetId()] = dogs_.size() - 1;
     return dog;
 }
 
@@ -207,4 +208,5 @@ const Map *GameSession::GetMap() const noexcept {
 const std::vector<app::Dog> & GameSession::GetPlayers() const {
     return dogs_;
 }
+
 }  // namespace model

@@ -61,6 +61,8 @@ private:
     [[nodiscard]] StringResponse GetPlayers(const HttpRequest& req) const;
 
     [[nodiscard]] StringResponse GetGameState(const HttpRequest& req) const;
+
+    [[nodiscard]] StringResponse HandleMovePlayers(const HttpRequest& req) const;
 };
 
 class FileRequestHandler {

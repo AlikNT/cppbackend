@@ -16,6 +16,23 @@ PlayerDogId Dog::GetId() const {
     return dog_id_;
 }
 
+DogPosition Dog::GetPosition() const {
+    return dog_position_;
+}
+
+
+Direction Dog::GetDirection() const {
+    return dog_direction_;
+}
+
+DogSpeed Dog::GetDogSpeed() const {
+   return dog_speed_;
+}
+
+void Dog::SetDogSpeed(DogSpeed speed) {
+    dog_speed_ = speed;
+}
+
 }
 
 namespace model {
@@ -37,9 +54,10 @@ void Map::AddOffice(Office office) {
     }
 }
 
-Map::Map(Map::Id id, std::string name) noexcept
+Map::Map(Map::Id id, std::string name, double dog_speed) noexcept
         : id_(std::move(id))
-        , name_(std::move(name)) {
+        , name_(std::move(name))
+        , dog_speed_(dog_speed) {
 }
 
 const Map::Id &Map::GetId() const noexcept {
@@ -68,6 +86,14 @@ void Map::AddRoad(const Road &road) {
 
 void Map::AddBuilding(const Building &building) {
     buildings_.emplace_back(building);
+}
+
+void Map::SetDogSpeed(double speed) {
+    dog_speed_ = speed;
+}
+
+double Map::GetDogSpeed() const {
+    return dog_speed_;
 }
 
 void Game::AddMap(Map map) {
@@ -121,6 +147,10 @@ GameSession *Game::FindSession(const Map::Id &map_id) {
         return &sessions_.at(it->second);
     }
     return nullptr;
+}
+
+void Game::SetDefaultDogSpeed(double speed) {
+    default_dog_speed_ = speed;
 }
 
 Road::Road(Road::HorizontalTag, Point start, Coord end_x) noexcept
@@ -179,7 +209,7 @@ GameSession::GameSession(const Map *map) : map_(map) {}
 
 app::Dog * GameSession::AddDog(const std::string &player_name) {
     dogs_.emplace_back(player_name, dogs_.size());
-    app::Dog* dog = &dogs_.back();
+    app::Dog * dog = &dogs_.back();
     dog_id_to_index_[dog->GetId()] = dogs_.size() - 1;
     return dog;
 }
@@ -195,4 +225,5 @@ const Map *GameSession::GetMap() const noexcept {
 const std::vector<app::Dog> & GameSession::GetPlayers() const {
     return dogs_;
 }
+
 }  // namespace model

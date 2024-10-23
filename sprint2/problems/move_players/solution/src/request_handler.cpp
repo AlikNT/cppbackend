@@ -199,6 +199,8 @@ StringResponse ApiRequestHandler::GetApiResponse(const HttpRequest &req) const {
         return GetPlayers(req);
     } else if (target == "/api/v1/game/state" || target == "/api/v1/game/state/") {
         return GetGameState(req);
+    } else if (target == "/api/v1/game/player/action" || target == "/api/v1/game/player/action/") {
+        return HandleMovePlayers(req);
     } else if (target.starts_with("/api/")) {
         return GetErrorResponse(req, http::status::bad_request, "badRequest", "Bad request");
     }
@@ -387,8 +389,8 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
                                     std::make_pair(http::field::cache_control, "no-cache"));
         }
         // Создание JSON-ответа
-        boost::json::object json_body;
-        boost::json::object players_json;
+        json::object json_body;
+        json::object players_json;
 
         const std::unordered_map<app::Direction, std::string> dir {
                 {app::Direction::NORTH, "U"},
@@ -397,9 +399,10 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
                 {app::Direction::EAST, "R"}
         };
         for (const auto& p : game_state->players_list) {
-            boost::json::object player_json;
+            json::object player_json;
             player_json["pos"] = {p.GetPosition().x, p.GetPosition().y};
-            player_json["speed"] = {p.GetDogSpeed().sx, p.GetDogSpeed().sy};
+            player_json["speed"] = {game_state->dog_speed.sx, game_state->dog_speed.sy};
+//            player_json["speed"] = {0.0, 0.0};
             player_json["dir"] = dir.at(p.GetDirection());
             players_json[std::to_string(p.GetId())] = player_json;
         }
@@ -425,6 +428,51 @@ std::optional<app::Token> ApiRequestHandler::TryExtractToken(const HttpRequest &
         return std::nullopt;
     }
     return token;
+}
+
+StringResponse ApiRequestHandler::HandleMovePlayers(const HttpRequest &req) const {
+    return ExecuteAuthorized(req, [req, this](const app::Token& token) {
+
+        // Проверка метода POST
+        if (req.method() != http::verb::post) {
+            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                    std::make_pair(http::field::allow, "POST"),
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+        // Проверка заголовка Content-Type
+        if (req["Content-Type"] != "application/json") {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid content type",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+        // Парсим JSON
+        json::value body;
+        try {
+            body = boost::json::parse(req.body());
+        } catch (const std::exception&) {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid JSON",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+        // Пытаемся получить значение move
+        std::string move;
+        try {
+            move = json::value_to<std::string>(body.at("move"));
+        } catch (const std::exception&) {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Move key has not been found",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+
+        // Обрабатываем move и получаем результат
+        auto move_players_result = app_.MovePlayers(token, move);
+        if (move_players_result == app::MovePlayersResult::UNKNOWN_TOKEN) {
+            return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+        if (move_players_result == app::MovePlayersResult::UNKNOWN_MOVE) {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid move value",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
+        return GetJsonResponse(req, boost::json::object{});
+    });
 }
 
 template<typename Fn>

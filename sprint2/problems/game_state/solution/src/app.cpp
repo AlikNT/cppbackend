@@ -20,6 +20,10 @@ const model::GameSession *Player::GetSession() {
     return session_;
 }
 
+app::DogSpeed Player::GetDogSpeed() const {
+   return dog_->GetDogSpeed();
+}
+
 const Player &Players::Add(Dog *dog, const model::GameSession *session) {
     players_.emplace_back(dog, session);
     auto& player= players_.back();
@@ -83,13 +87,13 @@ JoinGameResult JoinGameUseCase::JoinGame(const model::Map::Id &map_id, const std
     }
 
     // Создание собаки и добавление в сессию
-    Dog dog = session->AddDog(name);
+    auto dog = session->AddDog(name);
 
     // Добавление игрока
-    const Player& player = players_.Add(&dog, session);
+    const Player& player = players_.Add(dog, session);
 
     // Генерация токена для игрока и его добавление в систему токенов
-    return {player_tokens_.AddPlayer(std::make_shared<Player>(player)), dog.GetId()};
+    return {player_tokens_.AddPlayer(std::make_shared<Player>(player)), dog->GetId()};
 }
 
 Application::Application(model::Game &model_game)
@@ -106,12 +110,30 @@ std::shared_ptr<Player> Application::FindPlayerByToken(const Token &token) {
     return player_tokens_.FindPlayerByToken(token);
 }
 
-Application::PlayersList Application::ListPlayers(const Token& token) {
+PlayersList Application::ListPlayers(const Token& token) {
     ListPlayersUseCase list_players(player_tokens_);
     return list_players.ListPlayers(token);
 }
 
-ListPlayersUseCase::PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
+std::optional<GameStateResult> Application::GameState(const Token &token) {
+    GameStateUseCase game_state(player_tokens_);
+    return game_state.GameState(token);
+/*
+    // Ищем игрока по токену
+    auto player = player_tokens_.FindPlayerByToken(token);
+    if (!player) {
+        return std::nullopt;
+    }
+
+    // Получаем список игроков в сессии
+    const model::GameSession* session = player->GetSession();
+    const std::vector<Dog>& players = session->GetPlayers();
+
+    return GameStateResult{players, player->GetDogSpeed()};
+*/
+}
+
+PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
     // Ищем игрока по токену
     auto player = player_tokens_.FindPlayerByToken(token);
     if (!player) {
@@ -134,4 +156,21 @@ bool IsValidToken(const Token &token) {
     return token_str.size() == TOKEN_SIZE && std::all_of(token_str.begin(), token_str.end(), ::isxdigit);
 }
 
+GameStateUseCase::GameStateUseCase(PlayerTokens &player_tokens)
+    : player_tokens_(player_tokens) {
+}
+
+std::optional<GameStateResult> GameStateUseCase::GameState(const Token &token) {
+    // Ищем игрока по токену
+    auto player = player_tokens_.FindPlayerByToken(token);
+    if (!player) {
+        return std::nullopt;
+    }
+
+    // Получаем список игроков в сессии
+    const model::GameSession* session = player->GetSession();
+    const std::vector<Dog>& players = session->GetPlayers();
+
+    return GameStateResult{players, player->GetDogSpeed()};
+}
 } // namespace app

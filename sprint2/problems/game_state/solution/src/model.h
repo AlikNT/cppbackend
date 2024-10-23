@@ -11,18 +11,19 @@
 #include "tagged.h"
 //#include "app.h"
 
+
 namespace app {
+
+struct DogSpeed {
+    double sx = 0.0;
+    double sy = 0.0;
+};
 
 using PlayerDogId = uint32_t;
 
 struct DogPosition {
-    double x = 0;
-    double y = 0;
-};
-
-struct DogSpeed {
-    double sx{0.0};
-    double sy{0.0};
+    double x = 0.0;
+    double y = 0.0;
 };
 
 enum class Direction {
@@ -43,9 +44,9 @@ public:
 
     [[nodiscard]] DogPosition GetPosition() const;
 
-    [[nodiscard]] DogSpeed GetDogSpeed() const;
-
     [[nodiscard]] Direction GetDirection() const;
+
+    [[nodiscard]] DogSpeed GetDogSpeed() const;
 
 private:
     PlayerDogId dog_id_;
@@ -55,9 +56,10 @@ private:
     Direction dog_direction_ = Direction::NORTH;
 };
 
-}
+} // namespace app
 
 namespace model {
+
 
 using Dimension = int;
 using Coord = Dimension;
@@ -180,7 +182,7 @@ public:
     explicit GameSession(const Map* map);
 
     // Добавление собаки/игрока в сессию
-    const app::Dog& AddDog(const std::string& player_name);
+    app::Dog * AddDog(const std::string& player_name);
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayerCount() const noexcept;
@@ -205,7 +207,7 @@ public:
 
     const Map* FindMap(const Map::Id& id) const noexcept;
 
-    GameSession * AddSession(const Map::Id& map_id);
+    GameSession* AddSession(const Map::Id& map_id);
 
     GameSession* FindSession(const Map::Id& map_id);
 

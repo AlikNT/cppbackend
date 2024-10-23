@@ -98,6 +98,12 @@ struct GameStateResult {
    app::DogSpeed dog_speed;
 };
 
+enum class MovePlayersResult {
+    OK,
+    UNKNOWN_TOKEN,
+    UNKNOWN_MOVE
+};
+
 class JoinGameUseCase {
 public:
     JoinGameUseCase(model::Game& game, PlayerTokens& player_tokens, Players& players);
@@ -128,6 +134,15 @@ private:
     PlayerTokens& player_tokens_;
 };
 
+class MovePlayersUseCase {
+public:
+    explicit MovePlayersUseCase(PlayerTokens& player_tokens);
+
+    MovePlayersResult MovePlayers(const Token &token, std::string_view move);
+private:
+    PlayerTokens& player_tokens_;
+};
+
 class Application {
 public:
 
@@ -139,6 +154,7 @@ public:
 
     std::optional<GameStateResult> GameState(const Token& token);
 
+    MovePlayersResult MovePlayers(const Token& token, std::string_view move);
 private:
     model::Game& game_model_;
     Players players_;
