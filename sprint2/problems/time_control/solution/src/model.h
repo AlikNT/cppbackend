@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <random>
 #include <sstream>
@@ -55,6 +56,8 @@ public:
 
     [[nodiscard]] DogPosition GetDogPosition() const;
 
+    void SetDogDirection(Direction direction);
+
 private:
     PlayerDogId dog_id_;
     std::string dog_name_;
@@ -63,7 +66,7 @@ private:
     Direction dog_direction_ = Direction::NORTH;
 };
 
-}
+} // namespace app
 
 namespace model {
 
@@ -146,29 +149,6 @@ private:
     Offset offset_;
 };
 
-class Grid {
-public:
-    // Добавление дороги с разбивкой по ячейкам
-    void AddRoad(const Road& road);
-
-    // Получение всех дорог в ячейке, где находится собака
-    [[nodiscard]] std::vector<const Road*> GetRoadsInCell(const app::DogPosition& pos) const;
-
-private:
-    // Хеш-функция для unordered_map с ключом pair<int, int>
-    struct pair_hash {
-        template <class T1, class T2>
-        std::size_t operator()(const std::pair<T1, T2>& p) const {
-            return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
-        }
-    };
-    std::unordered_map<std::pair<int, int>, std::vector<const Road*>, pair_hash> cells_;  // Сетка ячеек
-
-    // Преобразование позиции в индекс ячейки
-    std::pair<int, int> GetCellIndex(const app::DogPosition& pos) const;
-};
-
-
 class Map {
 public:
     using Id = util::Tagged<std::string, Map>;
@@ -190,7 +170,7 @@ public:
 
     void AddRoad(const Road& road);
 
-    std::vector<const Road*> GetRoadsNearPosition(const app::DogPosition& pos) const;
+    std::vector<size_t> GetRoadsByPosition(const app::DogPosition& pos) const;
 
     void AddBuilding(const Building& building);
 
@@ -204,11 +184,22 @@ private:
     Id id_;
     std::string name_;
     Roads roads_;
-    Grid grid_;  // Сетка для хранения дорог
     Buildings buildings_;
     OfficeIdToIndex warehouse_id_to_index_;
     Offices offices_;
     double dog_speed_;
+
+    // Хеш-функция для unordered_map с ключом pair<int, int>
+    struct pair_hash {
+        template <class T1, class T2>
+        std::size_t operator()(const std::pair<T1, T2>& p) const {
+            return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
+        }
+    };
+    std::unordered_map<std::pair<int, int>, std::vector<size_t>, pair_hash> cells_;  // Сетка ячеек
+
+    // Преобразование позиции в индекс ячейки
+    std::pair<int, int> GetCellIndex(const app::DogPosition& pos) const;
 };
 
 class GameSession {
@@ -217,7 +208,7 @@ public:
     explicit GameSession(const Map* map);
 
     // Добавление собаки/игрока в сессию
-    app::Dog* AddDog(const std::string& player_name);
+    std::shared_ptr<app::Dog> AddDog(const std::string& player_name);
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayerCount() const noexcept;
@@ -225,13 +216,12 @@ public:
     // Возвращает карту, с которой связана сессия
     [[nodiscard]] const Map* GetMap() const noexcept;
 
-    std::vector<app::Dog> & GetPlayers();
+    std::vector<std::shared_ptr<app::Dog>> & GetDogs();
 private:
-    std::vector<app::Dog> dogs_;
+    std::vector<std::shared_ptr<app::Dog>> dogs_;
     const Map* map_;
     std::unordered_map<uint32_t, size_t> dog_id_to_index_;
 };
-
 
 class Game {
 public:
@@ -243,9 +233,9 @@ public:
 
     const Map* FindMap(const Map::Id& id) const noexcept;
 
-    GameSession* AddSession(const Map::Id& map_id);
+    std::shared_ptr<GameSession> AddSession(const Map::Id& map_id);
 
-    GameSession* FindSession(const Map::Id& map_id);
+    std::shared_ptr<GameSession> FindSession(const Map::Id& map_id);
 
     void Update(int time_delta);
 
@@ -253,7 +243,7 @@ private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
     using MapIdToIndex = std::unordered_map<Map::Id, size_t, MapIdHasher>;
     using MapIdToSessionIndex = std::unordered_map<Map::Id, size_t, MapIdHasher>;
-    using Sessions = std::vector<GameSession>;
+    using Sessions = std::vector<std::shared_ptr<GameSession>>;
 
     Maps maps_;
     MapIdToIndex map_id_to_index_;

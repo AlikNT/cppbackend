@@ -1,14 +1,16 @@
 #include "app.h"
 
+#include <utility>
+
 namespace app {
 
 
 
-Player::Player(Dog *dog, model::GameSession *session)
-        : dog_(dog)
-        , session_(session) {}
+Player::Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> session)
+        : dog_(std::move(dog))
+        , session_(std::move(session)) {}
 
-Dog *Player::GetDog() {
+std::shared_ptr<Dog> Player::GetDog() {
     return dog_;
 }
 
@@ -16,7 +18,7 @@ PlayerDogId Player::GetPlayerId() {
     return dog_->GetId();
 }
 
-model::GameSession * Player::GetSession() {
+std::shared_ptr<model::GameSession> Player::GetSession() {
     return session_;
 }
 
@@ -24,18 +26,18 @@ app::DogSpeed Player::GetDogSpeed() const {
    return dog_->GetDogSpeed();
 }
 
-const Player &Players::Add(Dog *dog, model::GameSession *session) {
-    players_.emplace_back(dog, session);
+std::shared_ptr<Player> Players::Add(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session) {
+    players_.emplace_back(std::make_shared<Player>(dog, session));
     auto& player= players_.back();
 
     // Добавляем в карту быстрый доступ по комбинации dog_id и map_id
     if (session && session->GetMap()) {
-        dog_map_to_player_[{dog->GetId(), session->GetMap()->GetId()}] = &player;
+        dog_map_to_player_[{dog->GetId(), session->GetMap()->GetId()}] = player;
     }
     return player;
 }
 
-Player *Players::FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id &map_id) {
+std::shared_ptr<Player> Players::FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id &map_id) {
     auto it = dog_map_to_player_.find({dog_id, map_id});
     if (it != dog_map_to_player_.end()) {
         return it->second;
@@ -81,19 +83,19 @@ JoinGameResult JoinGameUseCase::JoinGame(const model::Map::Id &map_id, const std
     const model::Map* map = game_model_.FindMap(map_id);
     assert(map);
 
-    model::GameSession* session = game_model_.FindSession(map_id);
+    auto session = game_model_.FindSession(map_id);
     if (!session) {
         session = game_model_.AddSession(map_id);
     }
 
     // Создание собаки и добавление в сессию
-    Dog* dog = session->AddDog(name);
+    auto dog = session->AddDog(name);
 
     // Добавление игрока
-    const Player& player = players_.Add(dog, session);
+    auto player = players_.Add(dog, session);
 
     // Генерация токена для игрока и его добавление в систему токенов
-    return {player_tokens_.AddPlayer(std::make_shared<Player>(player)), dog->GetId()};
+    return {player_tokens_.AddPlayer(player), dog->GetId()};
 }
 
 Application::Application(model::Game &model_game)
@@ -139,7 +141,7 @@ PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
 
     // Получаем список игроков в сессии
     auto session = player->GetSession();
-    auto players = session->GetPlayers();
+    auto players = session->GetDogs();
 
     return players;
 }
@@ -165,10 +167,9 @@ std::optional<GameStateResult> GameStateUseCase::GameState(const Token &token) {
 
     // Получаем список игроков в сессии
     auto session = player->GetSession();
-    auto players = session->GetPlayers();
-    auto dog_speed = player->GetDogSpeed();
+    auto dogs = session->GetDogs();
 
-    return GameStateResult{players, dog_speed};
+    return dogs;
 }
 
 MovePlayersUseCase::MovePlayersUseCase(PlayerTokens &player_tokens)
@@ -184,12 +185,16 @@ MovePlayersResult MovePlayersUseCase::MovePlayers(const Token &token, std::strin
     double speed = player->GetSession()->GetMap()->GetDogSpeed();
     if (move == "L") {
         player->GetDog()->SetDogSpeed({-speed, 0});
+        player->GetDog()->SetDogDirection(app::Direction::WEST);
     } else if (move == "R") {
         player->GetDog()->SetDogSpeed({speed, 0});
+        player->GetDog()->SetDogDirection(app::Direction::EAST);
     } else if (move == "U") {
         player->GetDog()->SetDogSpeed({0, -speed});
+        player->GetDog()->SetDogDirection(app::Direction::NORTH);
     } else if (move == "D") {
         player->GetDog()->SetDogSpeed({0, speed});
+        player->GetDog()->SetDogDirection(app::Direction::SOUTH);
     } else if (move.empty()) {
         player->GetDog()->SetDogSpeed({0, 0});
     } else {

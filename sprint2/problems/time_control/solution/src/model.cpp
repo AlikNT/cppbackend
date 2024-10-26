@@ -41,6 +41,10 @@ void Dog::SetDogPosition(DogPosition dog_position) {
     dog_position_ = dog_position;
 }
 
+void Dog::SetDogDirection(Direction direction) {
+    dog_direction_ = direction;
+}
+
 }
 
 namespace model {
@@ -90,7 +94,20 @@ const Map::Offices &Map::GetOffices() const noexcept {
 
 void Map::AddRoad(const Road &road) {
     roads_.emplace_back(road);
-    grid_.AddRoad(roads_.back());
+    size_t index = roads_.size() - 1;
+    int x1 = road.GetStart().x;
+    int x2 = road.GetEnd().x;
+    int y1 = road.GetStart().y;
+    int y2 = road.GetEnd().y;
+    if (road.IsHorizontal()) {
+        for (int x = std::min(x1, x2); x <= std::max(x1, x2); ++x) {
+            cells_[{x, road.GetStart().y}].push_back(index);
+        }
+    } else {
+        for (int y = std::min(y1, y2); y <= std::max(y1, y2); ++y) {
+            cells_[{road.GetStart().x, y}].push_back(index);
+        }
+    }
 }
 
 void Map::AddBuilding(const Building &building) {
@@ -101,8 +118,35 @@ double Map::GetDogSpeed() const {
     return dog_speed_;
 }
 
-std::vector<const Road *> Map::GetRoadsNearPosition(const app::DogPosition &pos) const {
-    return grid_.GetRoadsInCell(pos);
+std::vector<size_t> Map::GetRoadsByPosition(const app::DogPosition &pos) const {
+    auto [cell_x, cell_y] = GetCellIndex(pos);
+
+    auto it = cells_.find({cell_x, cell_y});
+    if (it != cells_.end()) {
+        return it->second;
+    }
+    return {};
+}
+
+int CustomRound(double num) {
+    num = std::abs(num);
+    int integerPart = static_cast<int>(num); // Берем целую часть числа
+    double fractionalPart = std::abs(num - integerPart); // Вычисляем дробную часть числа
+
+    // Округляем в зависимости от значения дробной части
+    if (fractionalPart <= 0.4) {
+        return integerPart;
+    } else {
+        return integerPart + 1;
+    }
+}
+
+std::pair<int, int> Map::GetCellIndex(const app::DogPosition &pos) const {
+//    int cell_x = static_cast<int>(std::floor(std::abs(pos.x)));
+//    int cell_y = static_cast<int>(std::floor(std::abs(pos.y)));
+    int cell_x = CustomRound(pos.x);
+    int cell_y = CustomRound(pos.y);
+    return {cell_x, cell_y};
 }
 
 void Game::AddMap(Map map) {
@@ -130,7 +174,7 @@ const Map *Game::FindMap(const Map::Id &id) const noexcept {
     return nullptr;
 }
 
-GameSession * Game::AddSession(const Map::Id &map_id) {
+std::shared_ptr<GameSession> Game::AddSession(const Map::Id &map_id) {
     const Map* map = FindMap(map_id);
     if (!map) {
         throw std::runtime_error("Map with the given ID does not exist");
@@ -142,70 +186,90 @@ GameSession * Game::AddSession(const Map::Id &map_id) {
     }
 
     // Добавляем сессию в вектор
-    sessions_.emplace_back(map);
+    sessions_.emplace_back(std::make_shared<GameSession>(map));
 
     // Связываем идентификатор карты с индексом новой сессии
     map_id_to_session_index_[map_id] = sessions_.size() - 1;
 
-    return &sessions_.back();
+    return sessions_.back();
 }
 
-GameSession *Game::FindSession(const Map::Id &map_id) {
+std::shared_ptr<GameSession> Game::FindSession(const Map::Id &map_id) {
     auto it = map_id_to_session_index_.find(map_id);
     if (it != map_id_to_session_index_.end()) {
-        return &sessions_.at(it->second);
+        return sessions_.at(it->second);
     }
     return nullptr;
 }
 
-bool IsDogOnRoad(const app::Dog& dog, const Road& road) {
-    app::DogPosition pos = dog.GetDogPosition();
+struct Constrains {
+    int x_min;
+    int x_max;
+    int y_min;
+    int y_max;
+};
 
-    if (road.IsHorizontal()) {
-        // Для горизонтальной дороги: проверяем, находится ли собака в пределах ширины дороги (по оси Y)
-        double upper_edge = road.GetStart().y + 0.4;
-        double lower_edge = road.GetStart().y - 0.4;
+bool CorrectDogPosition(const Constrains &constrains, app::DogPosition &new_p, const app::Direction &dog_dir) {
+    using Direction = app::Direction;
+    constexpr double HALF_ROAD_WIDTH = 0.4;
+    bool res = false;
 
-        // Проверяем, находится ли X собаки между началом и концом дороги
-        return pos.x >= road.GetStart().x && pos.x <= road.GetEnd().x && pos.y >= lower_edge && pos.y <= upper_edge;
-    } else if (road.IsVertical()) {
-        // Для вертикальной дороги: проверяем, находится ли собака в пределах ширины дороги (по оси X)
-        double left_edge = road.GetStart().x - 0.4;
-        double right_edge = road.GetStart().x + 0.4;
-
-        // Проверяем, находится ли Y собаки между началом и концом дороги
-        return pos.y >= road.GetStart().y && pos.y <= road.GetEnd().y && pos.x >= left_edge && pos.x <= right_edge;
+    switch (dog_dir) {
+        case Direction::NORTH:
+            if (new_p.y < constrains.y_min - HALF_ROAD_WIDTH) {
+                new_p.y = constrains.y_min - HALF_ROAD_WIDTH;
+                res = true;
+            }
+            break;
+        case Direction::SOUTH:
+            if (new_p.y > constrains.y_max + HALF_ROAD_WIDTH) {
+                new_p.y = constrains.y_max + HALF_ROAD_WIDTH;
+                res = true;
+            }
+            break;
+        case Direction::WEST:
+            if (new_p.x < constrains.x_min - HALF_ROAD_WIDTH) {
+                new_p.x = constrains.x_min - HALF_ROAD_WIDTH;
+                res = true;
+            }
+            break;
+        case Direction::EAST:
+            if (new_p.x > constrains.x_max + HALF_ROAD_WIDTH) {
+                new_p.x = constrains.x_max + HALF_ROAD_WIDTH;
+                res = true;
+            }
+            break;
     }
-    return false;
+    return res;
 }
+
 void Game::Update(int time_delta) {
+    constexpr double MS_IN_SECOND = 1000.0;
     for (auto& session : sessions_) {
-        for (auto& dog : session.GetPlayers()) {
-            app::DogPosition pos = dog.GetDogPosition();
-            app::DogSpeed speed = dog.GetDogSpeed();
+        for (auto& dog : session->GetDogs()) {
+            app::DogPosition pos = dog->GetDogPosition();
+            app::DogSpeed speed = dog->GetDogSpeed();
 
             // Предварительно рассчитываем новую позицию
             app::DogPosition new_pos = pos;
-            new_pos.x += speed.sx * time_delta;
-            new_pos.y += speed.sy * time_delta;
+            new_pos.x += speed.sx * time_delta / MS_IN_SECOND;
+            new_pos.y += speed.sy * time_delta / MS_IN_SECOND;
 
-            // Получаем список дорог рядом с текущей позицией
-            std::vector<const Road*> roads_nearby = session.GetMap()->GetRoadsNearPosition(pos);
-
-            bool on_road = false;
-            for (const Road* road : roads_nearby) {
-                if (IsDogOnRoad(dog, *road)) {
-                    // Если новая позиция не выходит за границы дороги, обновляем её
-                    dog.SetDogPosition(new_pos);
-                    on_road = true;
-                    break;
-                }
+            // Получаем список дорог на текущей позиции
+            std::vector<size_t> on_roads_indexes = session->GetMap()->GetRoadsByPosition(pos);
+            Constrains constrains{0, 0, 0, 0};
+            bool test = false;
+            for (size_t road_index: on_roads_indexes) {
+                const Road& road = session->GetMap()->GetRoads()[road_index];
+                constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
+                constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
+                constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
+                constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
             }
-
-            if (!on_road) {
-                // Если собака не на дороге, её скорость обнуляется полностью
-                dog.SetDogSpeed({0.0, 0.0});
+            if (CorrectDogPosition(constrains, new_pos, dog->GetDirection())) {
+                dog->SetDogSpeed({0.0, 0.0});
             }
+            dog->SetDogPosition(new_pos);
         }
     }
 }
@@ -264,9 +328,9 @@ Offset Office::GetOffset() const noexcept {
 
 GameSession::GameSession(const Map *map) : map_(map) {}
 
-app::Dog * GameSession::AddDog(const std::string &player_name) {
-    dogs_.emplace_back(player_name, dogs_.size());
-    app::Dog * dog = &dogs_.back();
+std::shared_ptr<app::Dog> GameSession::AddDog(const std::string &player_name) {
+    dogs_.push_back(std::make_shared<app::Dog>(player_name, dogs_.size()));
+    auto dog = dogs_.back();
     dog_id_to_index_[dog->GetId()] = dogs_.size() - 1;
 
     // Устанавливаем начальную позицию на первой дороге карты
@@ -286,36 +350,8 @@ const Map *GameSession::GetMap() const noexcept {
     return map_;
 }
 
-std::vector<app::Dog> & GameSession::GetPlayers() {
+std::vector<std::shared_ptr<app::Dog>> & GameSession::GetDogs() {
     return dogs_;
-}
-
-void Grid::AddRoad(const Road& road) {
-    auto [start_x, start_y] = GetCellIndex({static_cast<double>(road.GetStart().x), static_cast<double>(road.GetStart().y)});
-    auto [end_x, end_y] = GetCellIndex({static_cast<double>(road.GetEnd().x), static_cast<double>(road.GetEnd().y)});
-
-    // Проходим по всем ячейкам между началом и концом дороги
-    for (int x = std::min(start_x, end_x); x <= std::max(start_x, end_x); ++x) {
-        for (int y = std::min(start_y, end_y); y <= std::max(start_y, end_y); ++y) {
-            cells_[{x, y}].push_back(&road);
-        }
-    }
-}
-
-std::pair<int, int> Grid::GetCellIndex(const app::DogPosition& pos) const {
-    int cell_x = static_cast<int>(std::floor(pos.x));  // Размер ячейки равен 1, округляем вниз
-    int cell_y = static_cast<int>(std::floor(pos.y));  // Размер ячейки равен 1, округляем вниз
-    return {cell_x, cell_y};
-}
-
-std::vector<const Road*> Grid::GetRoadsInCell(const app::DogPosition& pos) const {
-    auto [cell_x, cell_y] = GetCellIndex(pos);
-
-    auto it = cells_.find({cell_x, cell_y});
-    if (it != cells_.end()) {
-        return it->second;
-    }
-    return {};
 }
 
 }  // namespace model

@@ -8,35 +8,35 @@
 
 namespace app {
 
-using PlayersList = std::optional<std::vector<app::Dog>>;
+using PlayersList = std::optional<std::vector<std::shared_ptr<app::Dog>>>;
 
 using PlayerDogId = uint32_t;
 
 class Player {
 public:
-    Player(Dog* dog, model::GameSession *session);
+    Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> session);
 
-    Dog* GetDog();
+    std::shared_ptr<Dog> GetDog();
 
     PlayerDogId GetPlayerId();
 
-    model::GameSession * GetSession();
+    std::shared_ptr<model::GameSession> GetSession();
 
     [[nodiscard]] app::DogSpeed GetDogSpeed() const;
 
 private:
-    model::GameSession* session_;
-    Dog* dog_;
+    std::shared_ptr<model::GameSession> session_;
+    std::shared_ptr<Dog> dog_;
 };
 
 class Players {
 public:
-    const Player& Add(Dog* dog, model::GameSession *session);
+    std::shared_ptr<Player> Add(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session);
 
-    Player* FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id& map_id);
+    std::shared_ptr<Player> FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id& map_id);
 
 private:
-    std::vector<Player> players_;
+    std::vector<std::shared_ptr<Player>> players_;
 
     // Используем std::pair<dog_id, map_id> как ключ для быстрого поиска игрока
     using DogMapKey = std::pair<uint32_t, model::Map::Id>;
@@ -50,7 +50,7 @@ private:
     };
 
     // Сопоставление комбинации dog_id и map_id с указателем на игрока
-    std::unordered_map<DogMapKey, Player*, DogMapKeyHasher> dog_map_to_player_;
+    std::unordered_map<DogMapKey, std::shared_ptr<Player>, DogMapKeyHasher> dog_map_to_player_;
 };
 
 namespace detail {
@@ -93,10 +93,7 @@ struct JoinGameResult {
    PlayerDogId player_id{0};
 };
 
-struct GameStateResult {
-   std::vector<Dog> players_list;
-   app::DogSpeed dog_speed;
-};
+using GameStateResult = std::vector<std::shared_ptr<Dog>>;
 
 enum class MovePlayersResult {
     OK,
@@ -174,6 +171,5 @@ private:
 
     std::shared_ptr<Player> FindPlayerByToken(const Token& token);
 };
-
 
 } // namespace app

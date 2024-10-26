@@ -367,8 +367,8 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
         json::object players_json;
         for (const auto& p : *players) {
             json::object player_json;
-            player_json["name"] = p.GetName();
-            players_json[std::to_string(p.GetId())] = player_json;
+            player_json["name"] = p->GetName();
+            players_json[std::to_string(p->GetId())] = player_json;
         }
 
         return GetJsonResponse(req, players_json);
@@ -385,8 +385,8 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
                                     std::make_pair(http::field::cache_control, "no-cache"));
         }
         // Проверяем наличие игроков по предъявленному токену
-        auto game_state = app_.GameState(token);
-        if (!game_state) {
+        auto dogs_list = app_.GameState(token);
+        if (!dogs_list) {
             return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
                                     std::make_pair(http::field::cache_control, "no-cache"));
         }
@@ -400,13 +400,13 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
                 {app::Direction::WEST, "L"},
                 {app::Direction::EAST, "R"}
         };
-        for (const auto& p : game_state->players_list) {
+        for (const auto& dog : *dogs_list) {
             json::object player_json;
-            player_json["pos"] = {p.GetPosition().x, p.GetPosition().y};
-            player_json["speed"] = {game_state->dog_speed.sx, game_state->dog_speed.sy};
-//            player_json["speed"] = {0.0, 0.0};
-            player_json["dir"] = dir.at(p.GetDirection());
-            players_json[std::to_string(p.GetId())] = player_json;
+            player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
+//            player_json["speed"] = {game_state->dog_speed.sx, game_state->dog_speed.sy};
+            player_json["speed"] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
+            player_json["dir"] = dir.at(dog->GetDirection());
+            players_json[std::to_string(dog->GetId())] = player_json;
         }
 
         json_body["players"] = players_json;
@@ -502,6 +502,11 @@ StringResponse ApiRequestHandler::HandleTimeControl(const HttpRequest &req) cons
     // Пытаемся получить значение timeDelta
     int time_delta;
     try {
+        if (!body.at("timeDelta").is_int64()) {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument",
+                                    "'timeDelta' must be an integer",
+                                    std::make_pair(http::field::cache_control, "no-cache"));
+        }
         time_delta = json::value_to<int>(body.at("timeDelta"));
     } catch (const std::exception&) {
         return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Failed to parse tick request JSON",
