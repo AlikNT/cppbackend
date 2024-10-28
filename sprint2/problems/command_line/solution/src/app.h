@@ -28,8 +28,8 @@ public:
     [[nodiscard]] app::DogSpeed GetDogSpeed() const;
 
 private:
-    std::shared_ptr<model::GameSession> session_;
     std::shared_ptr<Dog> dog_;
+    std::shared_ptr<model::GameSession> session_;
 };
 
 class Players {

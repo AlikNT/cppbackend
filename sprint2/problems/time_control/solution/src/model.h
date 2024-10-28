@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <memory>
 #include <cassert>
+#include <chrono>
 
 #include "tagged.h"
 //#include "app.h"
@@ -237,7 +238,7 @@ public:
 
     std::shared_ptr<GameSession> FindSession(const Map::Id& map_id);
 
-    void Update(int time_delta);
+    void Update(std::chrono::milliseconds time_delta_ms);
 
 private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
