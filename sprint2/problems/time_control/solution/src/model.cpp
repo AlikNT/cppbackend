@@ -129,12 +129,14 @@ std::vector<size_t> Map::GetRoadsByPosition(const app::DogPosition &pos) const {
 }
 
 int CustomRound(double num) {
+    constexpr double HALF_ROAD_WIDTH = 0.4;
+
     num = std::abs(num);
     int integerPart = static_cast<int>(num); // Берем целую часть числа
     double fractionalPart = std::abs(num - integerPart); // Вычисляем дробную часть числа
 
     // Округляем в зависимости от значения дробной части
-    if (fractionalPart <= 0.4) {
+    if (fractionalPart <= HALF_ROAD_WIDTH) {
         return integerPart;
     } else {
         return integerPart + 1;
@@ -142,8 +144,6 @@ int CustomRound(double num) {
 }
 
 std::pair<int, int> Map::GetCellIndex(const app::DogPosition &pos) const {
-//    int cell_x = static_cast<int>(std::floor(std::abs(pos.x)));
-//    int cell_y = static_cast<int>(std::floor(std::abs(pos.y)));
     int cell_x = CustomRound(pos.x);
     int cell_y = CustomRound(pos.y);
     return {cell_x, cell_y};
@@ -243,8 +243,9 @@ bool CorrectDogPosition(const Constrains &constrains, app::DogPosition &new_p, c
     return res;
 }
 
-void Game::Update(int time_delta) {
-    constexpr double MS_IN_SECOND = 1000.0;
+void Game::Update(std::chrono::milliseconds time_delta_ms) {
+    constexpr double MS_IN_S = 1000;
+    auto time_delta = time_delta_ms.count();
     for (auto& session : sessions_) {
         for (auto& dog : session->GetDogs()) {
             app::DogPosition pos = dog->GetDogPosition();
@@ -252,19 +253,26 @@ void Game::Update(int time_delta) {
 
             // Предварительно рассчитываем новую позицию
             app::DogPosition new_pos = pos;
-            new_pos.x += speed.sx * time_delta / MS_IN_SECOND;
-            new_pos.y += speed.sy * time_delta / MS_IN_SECOND;
+            new_pos.x += speed.sx * static_cast<double>(time_delta) / MS_IN_S;
+            new_pos.y += speed.sy * static_cast<double>(time_delta) / MS_IN_S;
 
             // Получаем список дорог на текущей позиции
             std::vector<size_t> on_roads_indexes = session->GetMap()->GetRoadsByPosition(pos);
             Constrains constrains{0, 0, 0, 0};
-            bool test = false;
-            for (size_t road_index: on_roads_indexes) {
-                const Road& road = session->GetMap()->GetRoads()[road_index];
-                constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
-                constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
-                constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
-                constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
+            for (auto it = on_roads_indexes.begin(); it != on_roads_indexes.end(); ++it) {
+                const Road& road = session->GetMap()->GetRoads()[*it];
+                // Инициализируем ограничения по первой дороге
+                if (it == on_roads_indexes.begin()) {
+                    constrains.x_min = std::min(road.GetStart().x, road.GetEnd().x);
+                    constrains.x_max = std::max(road.GetStart().x, road.GetEnd().x);
+                    constrains.y_min = std::min(road.GetStart().y, road.GetEnd().y);
+                    constrains.y_max = std::max(road.GetStart().y, road.GetEnd().y);
+                } else {
+                    constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
+                    constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
+                    constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
+                    constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
+                }
             }
             if (CorrectDogPosition(constrains, new_pos, dog->GetDirection())) {
                 dog->SetDogSpeed({0.0, 0.0});

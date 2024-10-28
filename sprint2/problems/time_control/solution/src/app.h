@@ -140,14 +140,14 @@ private:
     PlayerTokens& player_tokens_;
 };
 
-class TimeControlUseCase {
+class TickUseCase {
 public:
-    explicit TimeControlUseCase(model::Game &game_model, int time_delta);
+    explicit TickUseCase(model::Game &game_model, std::chrono::milliseconds time_delta);
 
     void Update();
 private:
     model::Game& game_model_;
-    int time_delta_;
+    std::chrono::milliseconds time_delta_;
 };
 
 class Application {
@@ -163,7 +163,7 @@ public:
 
     MovePlayersResult MovePlayers(const Token& token, std::string_view move);
 
-    void TimeControl(int time_delta);
+    void Tick(std::chrono::milliseconds time_delta);
 private:
     model::Game& game_model_;
     Players players_;

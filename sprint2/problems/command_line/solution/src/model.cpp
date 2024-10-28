@@ -1,13 +1,12 @@
 #include "model.h"
 
 #include <stdexcept>
-#include <chrono>
 
 namespace app {
 
 Dog::Dog(std::string dog_name, PlayerDogId dog_id)
-        : dog_name_(std::move(dog_name))
-        , dog_id_(dog_id) {}
+        : dog_id_(dog_id)
+        , dog_name_(std::move(dog_name)) {}
 
 const std::string &Dog::GetName() const noexcept {
     return dog_name_;
@@ -144,7 +143,7 @@ int CustomRound(double num) {
     }
 }
 
-std::pair<int, int> Map::GetCellIndex(const app::DogPosition &pos) const {
+std::pair<int, int> Map::GetCellIndex(const app::DogPosition &pos) {
     int cell_x = CustomRound(pos.x);
     int cell_y = CustomRound(pos.y);
     return {cell_x, cell_y};
@@ -245,7 +244,8 @@ bool CorrectDogPosition(const Constrains &constrains, app::DogPosition &new_p, c
 }
 
 void Game::Update(std::chrono::milliseconds time_delta_ms) {
-    auto time_delta_s = std::chrono::duration_cast<std::chrono::seconds>(time_delta_ms).count();
+    constexpr double MS_IN_S = 1000;
+    auto time_delta = time_delta_ms.count();
     for (auto& session : sessions_) {
         for (auto& dog : session->GetDogs()) {
             app::DogPosition pos = dog->GetDogPosition();
@@ -253,19 +253,26 @@ void Game::Update(std::chrono::milliseconds time_delta_ms) {
 
             // Предварительно рассчитываем новую позицию
             app::DogPosition new_pos = pos;
-            new_pos.x += speed.sx * static_cast<double>(time_delta_s);
-            new_pos.y += speed.sy * static_cast<double>(time_delta_s);
+            new_pos.x += speed.sx * static_cast<double>(time_delta) / MS_IN_S;
+            new_pos.y += speed.sy * static_cast<double>(time_delta) / MS_IN_S;
 
             // Получаем список дорог на текущей позиции
             std::vector<size_t> on_roads_indexes = session->GetMap()->GetRoadsByPosition(pos);
             Constrains constrains{0, 0, 0, 0};
-            bool test = false;
-            for (size_t road_index: on_roads_indexes) {
-                const Road& road = session->GetMap()->GetRoads()[road_index];
-                constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
-                constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
-                constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
-                constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
+            for (auto it = on_roads_indexes.begin(); it != on_roads_indexes.end(); ++it) {
+                const Road& road = session->GetMap()->GetRoads()[*it];
+                // Инициализируем ограничения по первой дороге
+                if (it == on_roads_indexes.begin()) {
+                    constrains.x_min = std::min(road.GetStart().x, road.GetEnd().x);
+                    constrains.x_max = std::max(road.GetStart().x, road.GetEnd().x);
+                    constrains.y_min = std::min(road.GetStart().y, road.GetEnd().y);
+                    constrains.y_max = std::max(road.GetStart().y, road.GetEnd().y);
+                } else {
+                    constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
+                    constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
+                    constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
+                    constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
+                }
             }
             if (CorrectDogPosition(constrains, new_pos, dog->GetDirection())) {
                 dog->SetDogSpeed({0.0, 0.0});

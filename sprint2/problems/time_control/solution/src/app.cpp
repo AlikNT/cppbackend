@@ -127,9 +127,9 @@ MovePlayersResult Application::MovePlayers(const Token &token, std::string_view 
     return move_players.MovePlayers(token, move);
 }
 
-void Application::TimeControl(int time_delta) {
-    TimeControlUseCase time_control(game_model_, time_delta);
-    time_control.Update();
+void Application::Tick(std::chrono::milliseconds time_delta) {
+    TickUseCase tick(game_model_, time_delta);
+    tick.Update();
 }
 
 PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {
@@ -203,11 +203,11 @@ MovePlayersResult MovePlayersUseCase::MovePlayers(const Token &token, std::strin
     return MovePlayersResult::OK;
 }
 
-TimeControlUseCase::TimeControlUseCase(model::Game &game_model, int time_delta)
+TickUseCase::TickUseCase(model::Game &game_model, std::chrono::milliseconds time_delta)
     : game_model_(game_model)
     , time_delta_(time_delta) {}
 
-void TimeControlUseCase::Update() {
+void TickUseCase::Update() {
     game_model_.Update(time_delta_);
 }
 

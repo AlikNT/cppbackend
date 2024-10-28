@@ -28,7 +28,7 @@ app::DogSpeed Player::GetDogSpeed() const {
 
 std::shared_ptr<Player> Players::Add(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session) {
     players_.emplace_back(std::make_shared<Player>(dog, session));
-    auto& player= players_.back();
+    auto& player = players_.back();
 
     // Добавляем в карту быстрый доступ по комбинации dog_id и map_id
     if (session && session->GetMap()) {

@@ -512,8 +512,8 @@ StringResponse ApiRequestHandler::HandleTimeControl(const HttpRequest &req) cons
         return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Failed to parse tick request JSON",
                                 std::make_pair(http::field::cache_control, "no-cache"));
     }
-
-    app_.TimeControl(time_delta);
+    std::chrono::milliseconds time_delta_ms(time_delta);
+    app_.Tick(time_delta_ms);
 
     return GetJsonResponse(req, boost::json::object{});
 }
