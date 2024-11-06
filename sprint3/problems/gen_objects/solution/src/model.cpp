@@ -118,8 +118,12 @@ double Map::GetDogSpeed() const {
     return dog_speed_;
 }
 
-void Map::SetExtraData(extra_data::ExtraDataStorage extra_data) {
+void Map::AddExtraData(extra_data::ExtraDataStorage extra_data) {
     extra_data_ = std::move(extra_data);
+}
+
+const extra_data::ExtraDataStorage & Map::GetExtraData() const {
+    return extra_data_;
 }
 
 std::vector<size_t> Map::GetRoadsByPosition(const app::DogPosition &pos) const {

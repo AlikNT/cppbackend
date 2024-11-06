@@ -231,7 +231,7 @@ StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
 StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
     const std::string target = std::string(req.target());
     const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
-    auto map_id = model::Map::Id{map_id_str};
+    const auto map_id = model::Map::Id{map_id_str};
 
     const auto map = game_.FindMap(map_id);
     if (!map) {
@@ -284,6 +284,10 @@ StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
                                });
     }
     map_json["offices"] = offices_json;
+
+    // Добавление трофеев
+    const json::array loot_types_json = map->GetExtraData().GetLootTypes();
+    map_json["loot_types"] = loot_types_json;
 
     return GetJsonResponse(req, map_json);
 }
@@ -409,7 +413,6 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
         for (const auto& dog : *dogs_list) {
             json::object player_json;
             player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
-//            player_json["speed"] = {game_state->dog_speed.sx, game_state->dog_speed.sy};
             player_json["speed"] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
             player_json["dir"] = dir.at(dog->GetDirection());
             players_json[std::to_string(dog->GetId())] = player_json;

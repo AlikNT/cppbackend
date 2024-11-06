@@ -16,6 +16,7 @@ const std::string ROAD_BEGIN_X0 = "x0";
 const std::string ROAD_BEGIN_Y0 = "y0";
 const std::string ROAD_END_X1 = "x1";
 const std::string ROAD_END_Y1 = "y1";
+const std::string LOOT_TYPES = "lootTypes";
 
 namespace json_loader {
 

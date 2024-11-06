@@ -110,7 +110,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
                 auto loot_types = map_obj.at("lootTypes").as_array();
                 extra_data.AddLootTypesJson(std::move(loot_types));
             }
-            map.SetExtraData(std::move(extra_data));
+            map.AddExtraData(std::move(extra_data));
 
             // Парсим и добавляем дороги, здания и офисы
             map = ParseRoads(map_obj, std::move(map));

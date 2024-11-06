@@ -168,8 +168,6 @@ private:
 
 class Map {
 public:
-
-
     using Id = util::Tagged<std::string, Map>;
     using Roads = std::vector<Road>;
     using Buildings = std::vector<Building>;
@@ -197,7 +195,9 @@ public:
 
     double GetDogSpeed() const;
 
-    void SetExtraData(extra_data::ExtraDataStorage extra_data);
+    void AddExtraData(extra_data::ExtraDataStorage extra_data);
+
+    [[nodiscard]] const extra_data::ExtraDataStorage & GetExtraData() const;
 
 private:
     using OfficeIdToIndex = std::unordered_map<Office::Id, size_t, util::TaggedHasher<Office::Id>>;

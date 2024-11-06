@@ -8,7 +8,10 @@ namespace extra_data {
 
 class ExtraDataStorage {
 public:
-   void AddLootTypesJson(json::array loot_types);
+    [[nodiscard]] const json::array & GetLootTypes() const;
+
+    void AddLootTypesJson(json::array loot_types);
+
 private:
     json::array loot_types_;
 };

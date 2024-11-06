@@ -158,6 +158,8 @@ public:
 
     explicit Application(model::Game& model_game);
 
+
+
     JoinGameResult JoinGame(const model::Map::Id& map_id, const std::string& user_name);
 
     PlayersList ListPlayers(const Token& token);
