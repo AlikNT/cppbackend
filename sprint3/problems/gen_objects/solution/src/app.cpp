@@ -103,6 +103,11 @@ Application::Application(model::Game &model_game)
           players_(),
           player_tokens_() {}
 
+json::object Application::GetMapsById(const model::Map::Id &map_id) const {
+    GetMapByIdUseCase get_map_by_id(game_model_);
+    return get_map_by_id.GetMapById(map_id);
+}
+
 JoinGameResult Application::JoinGame(const model::Map::Id &map_id, const std::string &user_name) {
     JoinGameUseCase join_game(game_model_, player_tokens_, players_);
     return join_game.JoinGame(map_id, user_name);

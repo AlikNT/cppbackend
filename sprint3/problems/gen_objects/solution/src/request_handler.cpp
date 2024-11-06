@@ -233,61 +233,10 @@ StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
     const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
     const auto map_id = model::Map::Id{map_id_str};
 
-    const auto map = game_.FindMap(map_id);
-    if (!map) {
+    json::object map_json = app_.GetMapsById(map_id);
+    if (map_json.empty()) {
         return GetErrorResponse(req, http::status::not_found, "mapNotFound", "Map not found");
     }
-
-    json::object map_json;
-    map_json[OFFICE_ID] = *(map->GetId());
-    map_json["name"] = map->GetName();
-
-    // Добавление дорог
-    json::array roads_json;
-    for (const auto& road : map->GetRoads()) {
-        json::object road_json;
-        road_json[ROAD_BEGIN_X0] = road.GetStart().x;
-        road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
-
-        if (road.IsHorizontal()) {
-            road_json[ROAD_END_X1] = road.GetEnd().x;
-        } else {
-            road_json[ROAD_END_Y1] = road.GetEnd().y;
-        }
-
-        roads_json.push_back(road_json);
-    }
-    map_json["roads"] = roads_json;
-
-    // Добавление зданий
-    json::array buildings_json;
-    for (const auto& building : map->GetBuildings()) {
-        const auto& bounds = building.GetBounds();
-        buildings_json.push_back({
-                                         {X, bounds.position.x},
-                                         {Y, bounds.position.y},
-                                         {BUILDING_WIDTH, bounds.size.width},
-                                         {BUILDING_HEIGHT, bounds.size.height}
-                                 });
-    }
-    map_json["buildings"] = buildings_json;
-
-    // Добавление офисов
-    json::array offices_json;
-    for (const auto& office : map->GetOffices()) {
-        offices_json.push_back({
-                                       {OFFICE_ID, *office.GetId()},
-                                       {X, office.GetPosition().x},
-                                       {Y, office.GetPosition().y},
-                                       {OFFICE_OFFSET_X, office.GetOffset().dx},
-                                       {OFFICE_OFFSET_Y, office.GetOffset().dy}
-                               });
-    }
-    map_json["offices"] = offices_json;
-
-    // Добавление трофеев
-    const json::array loot_types_json = map->GetExtraData().GetLootTypes();
-    map_json["loot_types"] = loot_types_json;
 
     return GetJsonResponse(req, map_json);
 }

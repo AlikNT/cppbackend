@@ -12,6 +12,7 @@ const std::string BUILDING_HEIGHT = "h";
 const std::string OFFICE_OFFSET_X = "offsetX";
 const std::string OFFICE_OFFSET_Y = "offsetY";
 const std::string OFFICE_ID = "id";
+const std::string MAP_ID = "id";
 const std::string ROAD_BEGIN_X0 = "x0";
 const std::string ROAD_BEGIN_Y0 = "y0";
 const std::string ROAD_END_X1 = "x1";

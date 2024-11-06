@@ -6,13 +6,12 @@
 
 #include "tagged.h"
 #include "model.h"
+#include "json_loader.h"
 
 namespace app {
-
-using PlayersList = std::optional<std::vector<std::shared_ptr<app::Dog>>>;
+using PlayersList = std::optional<std::vector<std::shared_ptr<app::Dog> > >;
 
 using PlayerDogId = uint32_t;
-
 
 
 class Player {
@@ -34,21 +33,21 @@ private:
 
 class Players {
 public:
-    std::shared_ptr<Player> Add(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session);
+    std::shared_ptr<Player> Add(const std::shared_ptr<Dog> &dog, const std::shared_ptr<model::GameSession> &session);
 
-    std::shared_ptr<Player> FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id& map_id);
+    std::shared_ptr<Player> FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id &map_id);
 
 private:
-    std::vector<std::shared_ptr<Player>> players_;
+    std::vector<std::shared_ptr<Player> > players_;
 
     // Используем std::pair<dog_id, map_id> как ключ для быстрого поиска игрока
     using DogMapKey = std::pair<uint32_t, model::Map::Id>;
 
     struct DogMapKeyHasher {
-        std::size_t operator()(const DogMapKey& key) const {
+        std::size_t operator()(const DogMapKey &key) const {
             std::size_t h1 = std::hash<uint32_t>()(key.first);
             std::size_t h2 = util::TaggedHasher<model::Map::Id>()(key.second);
-            return h1 ^ (h2 << 1);  // Комбинирование двух хэшей
+            return h1 ^ (h2 << 1); // Комбинирование двух хэшей
         }
     };
 
@@ -57,7 +56,8 @@ private:
 };
 
 namespace detail {
-struct TokenTag {};
+struct TokenTag {
+};
 } // namespace detail
 
 using Token = util::Tagged<std::string, detail::TokenTag>;
@@ -65,7 +65,7 @@ using Token = util::Tagged<std::string, detail::TokenTag>;
 class PlayerTokens {
 public:
     // Метод для поиска игрока по токену
-    std::shared_ptr<Player> FindPlayerByToken(const Token& token);
+    std::shared_ptr<Player> FindPlayerByToken(const Token &token);
 
     // Метод для добавления игрока и генерации токена
     Token AddPlayer(std::shared_ptr<Player> player);
@@ -74,14 +74,18 @@ private:
     using TokenHasher = util::TaggedHasher<Token>;
 
     std::random_device random_device_;
-    std::mt19937_64 generator1_{[this] {
-        std::uniform_int_distribution<std::mt19937_64::result_type> dist;
-        return dist(random_device_);
-    }()};
-    std::mt19937_64 generator2_{[this] {
-        std::uniform_int_distribution<std::mt19937_64::result_type> dist;
-        return dist(random_device_);
-    }()};
+    std::mt19937_64 generator1_{
+        [this] {
+            std::uniform_int_distribution<std::mt19937_64::result_type> dist;
+            return dist(random_device_);
+        }()
+    };
+    std::mt19937_64 generator2_{
+        [this] {
+            std::uniform_int_distribution<std::mt19937_64::result_type> dist;
+            return dist(random_device_);
+        }()
+    };
 
     std::unordered_map<Token, std::shared_ptr<Player>, TokenHasher> token_to_player_;
 
@@ -89,14 +93,14 @@ private:
     Token GenerateToken();
 };
 
-bool IsValidToken(const app::Token& token);
+bool IsValidToken(const app::Token &token);
 
 struct JoinGameResult {
-   Token token{""};
-   PlayerDogId player_id{0};
+    Token token{""};
+    PlayerDogId player_id{0};
 };
 
-using GameStateResult = std::vector<std::shared_ptr<Dog>>;
+using GameStateResult = std::vector<std::shared_ptr<Dog> >;
 
 enum class MovePlayersResult {
     OK,
@@ -104,43 +108,135 @@ enum class MovePlayersResult {
     UNKNOWN_MOVE
 };
 
-class JoinGameUseCase {
+class GetMapByIdUseCase {
 public:
-    JoinGameUseCase(model::Game& game, PlayerTokens& player_tokens, Players& players);
+    explicit GetMapByIdUseCase(model::Game &game)
+        : game_model_(game) {
+    }
 
-    JoinGameResult JoinGame(const model::Map::Id& map_id, const std::string& name);
+    [[nodiscard]] json::object GetMapById(const model::Map::Id &map_id) const {
+        const auto map = game_model_.FindMap(map_id);
+        if (!map) {
+            return {};
+        }
+
+        // Добавление map id
+        json::object map_json;
+        map_json[MAP_ID] = *(map->GetId());
+        map_json["name"] = map->GetName();
+
+        // Добавление дорог
+        json::array roads_json;
+        map_json["roads"] = AddRoads(map);
+
+        // Добавление зданий
+        json::array buildings_json;
+        map_json["buildings"] = AddBuildings(map);
+
+        // Добавление офисов
+        json::array objects_json;
+        map_json["offices"] = AddOffices(map);
+
+        // Добавление типов трофеев
+        const json::array loot_types_json = map->GetExtraData().GetLootTypes();
+        map_json["loot_types"] = loot_types_json;
+
+        return map_json;
+    }
 
 private:
-    model::Game& game_model_;
-    PlayerTokens& player_tokens_;
-    Players& players_;
+    model::Game &game_model_;
+
+    static json::array AddRoads(const model::Map *map) {
+        json::array roads_json;
+
+        for (const auto &road: map->GetRoads()) {
+            json::object road_json;
+            road_json[ROAD_BEGIN_X0] = road.GetStart().x;
+            road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
+
+            if (road.IsHorizontal()) {
+                road_json[ROAD_END_X1] = road.GetEnd().x;
+            } else {
+                road_json[ROAD_END_Y1] = road.GetEnd().y;
+            }
+
+            roads_json.push_back(road_json);
+        }
+        return roads_json;
+    }
+
+    static json::array AddBuildings(const model::Map *map) {
+        json::array buildings_json;
+
+        for (const auto &building: map->GetBuildings()) {
+            const auto &bounds = building.GetBounds();
+            buildings_json.push_back({
+                {X, bounds.position.x},
+                {Y, bounds.position.y},
+                {BUILDING_WIDTH, bounds.size.width},
+                {BUILDING_HEIGHT, bounds.size.height}
+            });
+        }
+        return buildings_json;
+    }
+
+    static json::array AddOffices(const model::Map *map) {
+        json::array offices_json;
+
+        for (const auto &office: map->GetOffices()) {
+            offices_json.push_back({
+                {OFFICE_ID, *office.GetId()},
+                {X, office.GetPosition().x},
+                {Y, office.GetPosition().y},
+                {OFFICE_OFFSET_X, office.GetOffset().dx},
+                {OFFICE_OFFSET_Y, office.GetOffset().dy}
+            });
+        }
+        return offices_json;
+    }
+};
+
+class JoinGameUseCase {
+public:
+    JoinGameUseCase(model::Game &game, PlayerTokens &player_tokens, Players &players);
+
+    JoinGameResult JoinGame(const model::Map::Id &map_id, const std::string &name);
+
+private:
+    model::Game &game_model_;
+    PlayerTokens &player_tokens_;
+    Players &players_;
 };
 
 class ListPlayersUseCase {
 public:
-    explicit ListPlayersUseCase(PlayerTokens& player_tokens);
+    explicit ListPlayersUseCase(PlayerTokens &player_tokens);
 
-    PlayersList ListPlayers(const Token& token);
+    PlayersList ListPlayers(const Token &token);
+
 private:
-    PlayerTokens& player_tokens_;
+    PlayerTokens &player_tokens_;
 };
 
 class GameStateUseCase {
 public:
-    explicit GameStateUseCase(PlayerTokens& player_tokens);
+    explicit GameStateUseCase(PlayerTokens &player_tokens);
 
-    std::optional<GameStateResult> GameState(const Token& token);
+    std::optional<GameStateResult> GameState(const Token &token);
+
 private:
-    PlayerTokens& player_tokens_;
+    PlayerTokens &player_tokens_;
 };
 
 class MovePlayersUseCase {
 public:
-    explicit MovePlayersUseCase(PlayerTokens& player_tokens);
+    explicit MovePlayersUseCase(PlayerTokens &player_tokens);
 
     MovePlayersResult MovePlayers(const Token &token, std::string_view move);
+
 private:
-    PlayerTokens& player_tokens_;
+    PlayerTokens &player_tokens_;
 };
 
 class TickUseCase {
@@ -148,33 +244,33 @@ public:
     explicit TickUseCase(model::Game &game_model, std::chrono::milliseconds time_delta);
 
     void Update();
+
 private:
-    model::Game& game_model_;
+    model::Game &game_model_;
     std::chrono::milliseconds time_delta_;
 };
 
 class Application {
 public:
+    explicit Application(model::Game &model_game);
 
-    explicit Application(model::Game& model_game);
+    json::object GetMapsById(const model::Map::Id &map_id) const;
 
+    JoinGameResult JoinGame(const model::Map::Id &map_id, const std::string &user_name);
 
+    PlayersList ListPlayers(const Token &token);
 
-    JoinGameResult JoinGame(const model::Map::Id& map_id, const std::string& user_name);
+    std::optional<GameStateResult> GameState(const Token &token);
 
-    PlayersList ListPlayers(const Token& token);
-
-    std::optional<GameStateResult> GameState(const Token& token);
-
-    MovePlayersResult MovePlayers(const Token& token, std::string_view move);
+    MovePlayersResult MovePlayers(const Token &token, std::string_view move);
 
     void Tick(std::chrono::milliseconds time_delta);
+
 private:
-    model::Game& game_model_;
+    model::Game &game_model_;
     Players players_;
     PlayerTokens player_tokens_;
 
-    std::shared_ptr<Player> FindPlayerByToken(const Token& token);
+    std::shared_ptr<Player> FindPlayerByToken(const Token &token);
 };
-
 } // namespace app

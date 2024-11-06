@@ -1,19 +1,15 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 #include <random>
-#include <sstream>
 #include <iomanip>
 #include <memory>
-#include <cassert>
 #include <chrono>
 
 #include "extra_data.h"
 #include "loot_generator.h"
 #include "tagged.h"
-//#include "app.h"
 
 
 namespace app {
