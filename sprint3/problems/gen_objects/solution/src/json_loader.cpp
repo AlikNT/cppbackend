@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "extra_data.h"
+
 namespace json = boost::json;
 
 namespace json_loader {
@@ -89,6 +91,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
     game.AddLootGenerator(std::move(loot_generator));
 
     if (root.contains("maps")) {
+        extra_data::ExtraDataStorage extra_data;
         for (const auto& map_json : root["maps"].as_array()) {
             const json::object& map_obj = map_json.as_object();
 
@@ -100,9 +103,14 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
             if (map_obj.contains("dogSpeed")) {
                 map_dog_speed = map_obj.at("dogSpeed").as_double();
             }
-
             // Создаем базовую карту
             model::Map map(map_id, map_name, map_dog_speed);
+
+            if (map_obj.contains("lootTypes")) {
+                auto loot_types = map_obj.at("lootTypes").as_array();
+                extra_data.AddLootTypesJson(std::move(loot_types));
+            }
+            map.SetExtraData(std::move(extra_data));
 
             // Парсим и добавляем дороги, здания и офисы
             map = ParseRoads(map_obj, std::move(map));

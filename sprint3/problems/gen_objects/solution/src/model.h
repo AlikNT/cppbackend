@@ -10,6 +10,7 @@
 #include <cassert>
 #include <chrono>
 
+#include "extra_data.h"
 #include "loot_generator.h"
 #include "tagged.h"
 //#include "app.h"
@@ -167,6 +168,8 @@ private:
 
 class Map {
 public:
+
+
     using Id = util::Tagged<std::string, Map>;
     using Roads = std::vector<Road>;
     using Buildings = std::vector<Building>;
@@ -194,6 +197,8 @@ public:
 
     double GetDogSpeed() const;
 
+    void SetExtraData(extra_data::ExtraDataStorage extra_data);
+
 private:
     using OfficeIdToIndex = std::unordered_map<Office::Id, size_t, util::TaggedHasher<Office::Id>>;
 
@@ -204,6 +209,7 @@ private:
     OfficeIdToIndex warehouse_id_to_index_;
     Offices offices_;
     double dog_speed_;
+    extra_data::ExtraDataStorage extra_data_;
 
     // Хеш-функция для unordered_map с ключом pair<int, int>
     struct pair_hash {

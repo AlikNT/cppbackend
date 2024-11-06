@@ -118,6 +118,10 @@ double Map::GetDogSpeed() const {
     return dog_speed_;
 }
 
+void Map::SetExtraData(extra_data::ExtraDataStorage extra_data) {
+    extra_data_ = std::move(extra_data);
+}
+
 std::vector<size_t> Map::GetRoadsByPosition(const app::DogPosition &pos) const {
     auto [cell_x, cell_y] = GetCellIndex(pos);
 
