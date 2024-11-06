@@ -1,9 +1,11 @@
 [Connection: close]
 [Host: localhost]
-[Content-Type: application/json]
 [Cookie: None]
 /api/v1/maps
 /api/v1/maps/map1
+/api/v1/maps/town
+[Content-Type: application/json]
 /api/v1/game/join
 {"userName": "Scooby Doo", "mapId": "map1"}
+/api/v1/game/players
 /api/v1/game/tick
