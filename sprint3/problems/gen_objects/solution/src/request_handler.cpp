@@ -233,7 +233,7 @@ StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
     const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
     const auto map_id = model::Map::Id{map_id_str};
 
-    json::object map_json = app_.GetMapsById(map_id);
+    const json::object map_json = app_.GetMapsById(map_id);
     if (map_json.empty()) {
         return GetErrorResponse(req, http::status::not_found, "mapNotFound", "Map not found");
     }
@@ -286,7 +286,7 @@ StringResponse ApiRequestHandler::HandleJoinGame(const HttpRequest &req) const {
                                 std::make_pair(http::field::cache_control, "no-cache"));
     }
 
-    model::Map::Id map_id(map_id_str);
+    const model::Map::Id map_id(map_id_str);
     // Проверяем, существует ли карта с указанным map_id
     const model::Map* map = game_.FindMap(map_id);
     if (!map) {
@@ -343,31 +343,12 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
                                     std::make_pair(http::field::allow, "GET, HEAD"),
                                     std::make_pair(http::field::cache_control, "no-cache"));
         }
-        // Проверяем наличие игроков по предъявленному токену
-        auto dogs_list = app_.GameState(token);
-        if (!dogs_list) {
+
+        const json::object json_body = app_.GameState(token);
+        if (json_body.empty()) {
             return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
                                     std::make_pair(http::field::cache_control, "no-cache"));
         }
-        // Создание JSON-ответа
-        json::object json_body;
-        json::object players_json;
-
-        const std::unordered_map<app::Direction, std::string> dir {
-                {app::Direction::NORTH, "U"},
-                {app::Direction::SOUTH, "D"},
-                {app::Direction::WEST, "L"},
-                {app::Direction::EAST, "R"}
-        };
-        for (const auto& dog : *dogs_list) {
-            json::object player_json;
-            player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
-            player_json["speed"] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
-            player_json["dir"] = dir.at(dog->GetDirection());
-            players_json[std::to_string(dog->GetId())] = player_json;
-        }
-
-        json_body["players"] = players_json;
 
         return GetJsonResponse(req, json_body);
     });

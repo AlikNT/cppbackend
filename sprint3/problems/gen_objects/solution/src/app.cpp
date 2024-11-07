@@ -122,7 +122,7 @@ PlayersList Application::ListPlayers(const Token& token) {
     return list_players.ListPlayers(token);
 }
 
-std::optional<GameStateResult> Application::GameState(const Token &token) {
+json::object Application::GameState(const Token &token) {
     GameStateUseCase game_state(player_tokens_);
     return game_state.GameState(token);
 }
@@ -163,18 +163,37 @@ bool IsValidToken(const Token &token) {
 GameStateUseCase::GameStateUseCase(PlayerTokens &player_tokens)
     : player_tokens_(player_tokens) {}
 
-std::optional<GameStateResult> GameStateUseCase::GameState(const Token &token) {
+json::object GameStateUseCase::GameState(const Token &token) {
     // Ищем игрока по токену
-    auto player = player_tokens_.FindPlayerByToken(token);
+    const auto player = player_tokens_.FindPlayerByToken(token);
     if (!player) {
-        return std::nullopt;
+        return {};
     }
 
     // Получаем список игроков в сессии
-    auto session = player->GetSession();
+    const auto session = player->GetSession();
     auto dogs = session->GetDogs();
 
-    return dogs;
+    // Создание JSON-ответа
+    json::object json_body;
+    json::object players_json;
+
+    const std::unordered_map<app::Direction, std::string> dir{
+        {app::Direction::NORTH, "U"},
+        {app::Direction::SOUTH, "D"},
+        {app::Direction::WEST, "L"},
+        {app::Direction::EAST, "R"}
+    };
+    for (const auto &dog: dogs) {
+        json::object player_json;
+        player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
+        player_json["speed"] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
+        player_json["dir"] = dir.at(dog->GetDirection());
+        players_json[std::to_string(dog->GetId())] = player_json;
+    }
+    json_body["players"] = players_json;
+
+    return json_body;
 }
 
 MovePlayersUseCase::MovePlayersUseCase(PlayerTokens &player_tokens)

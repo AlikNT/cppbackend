@@ -223,7 +223,7 @@ class GameStateUseCase {
 public:
     explicit GameStateUseCase(PlayerTokens &player_tokens);
 
-    std::optional<GameStateResult> GameState(const Token &token);
+    json::object GameState(const Token &token);
 
 private:
     PlayerTokens &player_tokens_;
@@ -260,7 +260,7 @@ public:
 
     PlayersList ListPlayers(const Token &token);
 
-    std::optional<GameStateResult> GameState(const Token &token);
+    json::object GameState(const Token &token);
 
     MovePlayersResult MovePlayers(const Token &token, std::string_view move);
 
