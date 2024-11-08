@@ -27,7 +27,7 @@ SCENARIO("Model testing") {
             session->AddDog("DogName3");
             session->AddLoots(2);
             THEN("Check correct loots adding") {
-                REQUIRE(session->GetLootsCount() < 3);
+                REQUIRE(session->GetLootsCount() == 2);
             }
             THEN("Check correct loots positions") {
                 const auto& loots = session->GetLoots();

@@ -216,8 +216,15 @@ StringResponse ApiRequestHandler::GetApiResponse(const HttpRequest &req) const {
 
 StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
     using namespace std::literals;
-    json::array maps_json;
 
+    // Проверяем метод GET или HEAD
+    if (req.method() != http::verb::get && req.method() != http::verb::head) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                std::make_pair(http::field::allow, "GET, HEAD"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
+    json::array maps_json;
     for (const auto& map : game_.GetMaps()) {
         maps_json.push_back({
             {OFFICE_ID, *map.GetId()},
@@ -229,13 +236,21 @@ StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
 }
 
 StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
+    // Проверяем метод GET или HEAD
+    if (req.method() != http::verb::get && req.method() != http::verb::head) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                std::make_pair(http::field::allow, "GET, HEAD"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
+
     const std::string target = std::string(req.target());
     const std::string map_id_str = target.substr(strlen("/api/v1/maps/"));
     const auto map_id = model::Map::Id{map_id_str};
 
     const json::object map_json = app_.GetMapsById(map_id);
     if (map_json.empty()) {
-        return GetErrorResponse(req, http::status::not_found, "mapNotFound", "Map not found");
+        return GetErrorResponse(req, http::status::not_found, "mapNotFound", "Map not found",
+            std::make_pair(http::field::cache_control, "no-cache"));
     }
 
     return GetJsonResponse(req, map_json);
@@ -335,14 +350,13 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
 }
 
 StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
+    // Проверка метода GET, HEAD
+    if (req.method() != http::verb::get && req.method() != http::verb::head) {
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
+                                std::make_pair(http::field::allow, "GET, HEAD"),
+                                std::make_pair(http::field::cache_control, "no-cache"));
+    }
     return ExecuteAuthorized(req, [req, this](const app::Token& token) {
-
-        // Проверка метода GET, HEAD
-        if (req.method() != http::verb::get && req.method() != http::verb::head) {
-            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                    std::make_pair(http::field::allow, "GET, HEAD"),
-                                    std::make_pair(http::field::cache_control, "no-cache"));
-        }
 
         const json::object json_body = app_.GameState(token);
         if (json_body.empty()) {

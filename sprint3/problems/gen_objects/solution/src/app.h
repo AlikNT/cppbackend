@@ -139,7 +139,7 @@ public:
 
         // Добавление типов трофеев
         const json::array loot_types_json = map->GetExtraData().GetLootTypes();
-        map_json["loot_types"] = loot_types_json;
+        map_json["lootTypes"] = loot_types_json;
 
         return map_json;
     }

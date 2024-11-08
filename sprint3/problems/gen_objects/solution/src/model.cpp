@@ -402,8 +402,8 @@ void GameSession::AddLoots(const unsigned loots_count) {
             random_loot_x = loot_gen::GenerateRandomDouble(road_x - HALF_ROAD_WIDTH, road_x + HALF_ROAD_WIDTH);
             random_loot_y = loot_gen::GenerateRandomDouble(road_y1 - HALF_ROAD_WIDTH, road_y2 + HALF_ROAD_WIDTH);
         }
-        auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
-        // loots_[loot_id_max_] = app::Loot(random_loot_type, {random_loot_x, random_loot_y});
+        const auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
+        loots_.emplace(loot_id_max_, app::Loot(random_loot_type, {random_loot_x, random_loot_y}));
         ++loot_id_max_;
     }
 }
