@@ -170,20 +170,20 @@ json::object GameStateUseCase::GameState(const Token &token) {
         return {};
     }
 
-    // Получаем список игроков в сессии
-    const auto session = player->GetSession();
-    auto dogs = session->GetDogs();
-
-    // Создание JSON-ответа
-    json::object json_body;
-    json::object players_json;
-
     const std::unordered_map<app::Direction, std::string> dir{
         {app::Direction::NORTH, "U"},
         {app::Direction::SOUTH, "D"},
         {app::Direction::WEST, "L"},
         {app::Direction::EAST, "R"}
     };
+
+    json::object json_body;
+
+    // Получаем список игроков в сессии
+    const auto session = player->GetSession();
+    const auto dogs = session->GetDogs();
+
+    json::object players_json;
     for (const auto &dog: dogs) {
         json::object player_json;
         player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
@@ -192,6 +192,15 @@ json::object GameStateUseCase::GameState(const Token &token) {
         players_json[std::to_string(dog->GetId())] = player_json;
     }
     json_body["players"] = players_json;
+
+    json::object lost_objects_json;
+    for (const auto& [loot_id, loot] : session->GetLoots()) {
+        json::object loot_json;
+        loot_json["type"] = loot.GetLootTypeId();
+        loot_json["pos"] = {loot.GetLootPosition().x, loot.GetLootPosition().y};
+        lost_objects_json[std::to_string(loot_id)] = loot_json;
+    }
+    json_body["lostObjects"] = lost_objects_json;
 
     return json_body;
 }

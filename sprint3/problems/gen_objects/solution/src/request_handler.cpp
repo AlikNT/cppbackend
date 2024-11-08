@@ -316,7 +316,7 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
         }
 
         // Проверяем наличие игроков по предъявленному токену
-        auto players = app_.ListPlayers(token);
+        const auto players = app_.ListPlayers(token);
         if (!players) {
             return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
                                     std::make_pair(http::field::cache_control, "no-cache"));

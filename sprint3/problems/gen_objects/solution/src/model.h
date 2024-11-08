@@ -69,13 +69,17 @@ private:
 
 class Loot {
 public:
-    Loot(unsigned loot_type, const LootPosition &loot_position)
-        : loot_type_(loot_type),
+    Loot(const unsigned loot_type, const LootPosition &loot_position)
+        : loot_type_id_(loot_type),
           loot_position_(loot_position) {
     }
 
+    [[nodiscard]] unsigned GetLootTypeId() const noexcept;
+
+    [[nodiscard]] LootPosition GetLootPosition() const;
+
 private:
-    unsigned loot_type_{};
+    unsigned loot_type_id_{};
     LootPosition loot_position_;
 };
 
@@ -195,6 +199,10 @@ public:
 
     [[nodiscard]] const extra_data::ExtraDataStorage & GetExtraData() const;
 
+    void SetLootTypesCount(unsigned loot_types_count);
+
+    [[nodiscard]] unsigned GetLootTypesCount() const;
+
 private:
     using OfficeIdToIndex = std::unordered_map<Office::Id, size_t, util::TaggedHasher<Office::Id>>;
 
@@ -206,6 +214,7 @@ private:
     Offices offices_;
     double dog_speed_;
     extra_data::ExtraDataStorage extra_data_;
+    unsigned loot_types_count_{0};
 
     // Хеш-функция для unordered_map с ключом pair<int, int>
     struct pair_hash {
@@ -222,11 +231,16 @@ private:
 
 class GameSession {
 public:
+    using Loots = std::unordered_map<unsigned, app::Loot>;
+
     // Конструктор, который связывает сессию с картой
     explicit GameSession(const Map* map);
 
     // Добавление собаки/игрока в сессию
     std::shared_ptr<app::Dog> AddDog(const std::string& player_name);
+
+    // Добавление трофея
+    void AddLoots(unsigned loots_count);
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayerCount() const noexcept;
@@ -235,14 +249,23 @@ public:
     [[nodiscard]] const Map* GetMap() const noexcept;
 
     std::vector<std::shared_ptr<app::Dog>> & GetDogs();
+
+    unsigned GetLootsCount() const;
+
+    Loots GetLoots() const;
+
 private:
     std::vector<std::shared_ptr<app::Dog>> dogs_;
     const Map* map_;
     std::unordered_map<uint32_t, size_t> dog_id_to_index_;
+    Loots loots_;
+    unsigned loot_id_max_{0};
 };
 
 class Game {
 public:
+
+
     using Maps = std::vector<Map>;
 
     void AddMap(Map map);
@@ -258,6 +281,7 @@ public:
     void Update(std::chrono::milliseconds time_delta_ms);
 
     void AddLootGenerator(loot_gen::LootGenerator generator);
+
 
 private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;

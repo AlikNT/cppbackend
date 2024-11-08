@@ -1,10 +1,10 @@
-#include "json_loader.h"
-
 #include <boost/json.hpp>
 #include <fstream>
 #include <iostream>
 
+#include "json_loader.h"
 #include "extra_data.h"
+#include "loot_generator.h"
 
 namespace json = boost::json;
 
@@ -87,7 +87,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
         period = std::chrono::milliseconds(static_cast<int>(loot_config.at("period").as_double()) * MS_IN_S);
         probability = loot_config.at("probability").as_double();
     }
-    loot_gen::LootGenerator loot_generator(period, probability);
+    loot_gen::LootGenerator loot_generator(period, probability, loot_gen::GenerateRandomBase);
     game.AddLootGenerator(std::move(loot_generator));
 
     if (root.contains("maps")) {
@@ -108,6 +108,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
 
             if (map_obj.contains("lootTypes")) {
                 auto loot_types = map_obj.at("lootTypes").as_array();
+                map.SetLootTypesCount(loot_types.size());
                 extra_data.AddLootTypesJson(std::move(loot_types));
             }
             map.AddExtraData(std::move(extra_data));

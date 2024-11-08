@@ -2,8 +2,30 @@
 
 #include <algorithm>
 #include <cmath>
+#include <random>
 
 namespace loot_gen {
+
+double GenerateRandomBase() {
+    static std::random_device rd; // Источник энтропии
+    static std::mt19937 generator(rd()); // Генератор случайных чисел
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0); // Диапазон от 0 до 1
+
+    return distribution(generator);
+}
+
+unsigned GenerateRandomUnsigned(const unsigned min, const unsigned max) {
+    return min + static_cast<unsigned>((max - min + 1) * GenerateRandomBase());
+}
+
+double GenerateRandomDouble(const double min, const double max) {
+    return min + (max - min) * GenerateRandomBase();
+}
+
+LootGenerator::LootGenerator(TimeInterval base_interval, double probability, RandomGenerator random_gen): base_interval_{base_interval}
+    , probability_{probability}
+    , random_generator_{std::move(random_gen)} {
+}
 
 unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
                                  unsigned looter_count) {
@@ -19,4 +41,7 @@ unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
     return generated_loot;
 }
 
+double LootGenerator::DefaultGenerator() noexcept {
+    return 1.0;
+}
 } // namespace loot_gen

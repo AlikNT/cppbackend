@@ -45,6 +45,13 @@ void Dog::SetDogDirection(Direction direction) {
     dog_direction_ = direction;
 }
 
+unsigned Loot::GetLootTypeId() const noexcept {
+    return loot_type_id_;
+}
+
+LootPosition Loot::GetLootPosition() const {
+    return loot_position_;
+}
 }
 
 namespace model {
@@ -287,11 +294,20 @@ void Game::Update(std::chrono::milliseconds time_delta_ms) {
             }
             dog->SetDogPosition(new_pos);
         }
+        session->AddLoots(loot_generator_.Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
     }
 }
 
 void Game::AddLootGenerator(loot_gen::LootGenerator generator) {
     generator = std::move(generator);
+}
+
+void Map::SetLootTypesCount(const unsigned loot_types_count) {
+    loot_types_count_ = loot_types_count;
+}
+
+unsigned Map::GetLootTypesCount() const {
+    return loot_types_count_;
 }
 
 Road::Road(Road::HorizontalTag, Point start, Coord end_x) noexcept
@@ -362,6 +378,32 @@ std::shared_ptr<app::Dog> GameSession::AddDog(const std::string &player_name) {
     return dog;
 }
 
+void GameSession::AddLoots(const unsigned loots_count) {
+    for (unsigned i = 0; i < loots_count; ++i) {
+        const unsigned random_road_index = loot_gen::GenerateRandomUnsigned(0, map_->GetRoads().size() - 1);
+        auto road = map_->GetRoads()[random_road_index];
+        double random_loot_x;
+        double random_loot_y;
+        constexpr double HALF_ROAD_WIDTH = 0.4;
+        if (road.IsHorizontal()) {
+            const int road_x1 = std::min(road.GetStart().x, road.GetEnd().x);
+            const int road_x2 = std::max(road.GetStart().x, road.GetEnd().x);
+            const int road_y = road.GetStart().y;
+            random_loot_x = loot_gen::GenerateRandomDouble(road_x1 - HALF_ROAD_WIDTH, road_x2 + HALF_ROAD_WIDTH);
+            random_loot_y = loot_gen::GenerateRandomDouble(road_y - HALF_ROAD_WIDTH, road_y + HALF_ROAD_WIDTH);
+        } else {
+            const int road_y1 = std::min(road.GetStart().y, road.GetEnd().y);
+            const int road_y2 = std::max(road.GetStart().y, road.GetEnd().y);
+            const int road_x = road.GetStart().x;
+            random_loot_x = loot_gen::GenerateRandomDouble(road_x - HALF_ROAD_WIDTH, road_x + HALF_ROAD_WIDTH);
+            random_loot_y = loot_gen::GenerateRandomDouble(road_y1 - HALF_ROAD_WIDTH, road_y2 + HALF_ROAD_WIDTH);
+        }
+        auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
+        // loots_[loot_id_max_] = app::Loot(random_loot_type, {random_loot_x, random_loot_y});
+        ++loot_id_max_;
+    }
+}
+
 size_t GameSession::GetPlayerCount() const noexcept {
     return dogs_.size();
 }
@@ -374,4 +416,11 @@ std::vector<std::shared_ptr<app::Dog>> & GameSession::GetDogs() {
     return dogs_;
 }
 
+unsigned GameSession::GetLootsCount() const {
+    return loots_.size();
+}
+
+GameSession::Loots GameSession::GetLoots() const {
+    return loots_;
+}
 }  // namespace model

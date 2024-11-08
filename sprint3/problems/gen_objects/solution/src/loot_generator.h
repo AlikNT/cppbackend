@@ -4,6 +4,15 @@
 
 namespace loot_gen {
 
+// Функция для генерации случайного значения double в интервале от 0 до 1
+double GenerateRandomBase();
+
+// Функция для генерации случайного значения unsigned в заданном интервале [min, max]
+unsigned GenerateRandomUnsigned(unsigned min, unsigned max);
+
+// Функция для генерации случайного значения double в заданном интервале [min, max]
+double GenerateRandomDouble(double min, double max);
+
 /*
  *  Генератор трофеев
  */
@@ -18,11 +27,7 @@ public:
      * random_generator - генератор псевдослучайных чисел в диапазоне от [0 до 1]
      */
     LootGenerator(TimeInterval base_interval, double probability,
-                  RandomGenerator random_gen = DefaultGenerator)
-        : base_interval_{base_interval}
-        , probability_{probability}
-        , random_generator_{std::move(random_gen)} {
-    }
+                  RandomGenerator random_gen = DefaultGenerator);
 
     /*
      * Возвращает количество трофеев, которые должны появиться на карте спустя
@@ -36,9 +41,8 @@ public:
     unsigned Generate(TimeInterval time_delta, unsigned loot_count, unsigned looter_count);
 
 private:
-    static double DefaultGenerator() noexcept {
-        return 1.0;
-    };
+    static double DefaultGenerator() noexcept;
+
     TimeInterval base_interval_;
     double probability_;
     TimeInterval time_without_loot_{};
