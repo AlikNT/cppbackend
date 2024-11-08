@@ -264,8 +264,7 @@ private:
 
 class Game {
 public:
-
-
+    using LootGeneratorPtr = std::shared_ptr<loot_gen::LootGenerator>;
     using Maps = std::vector<Map>;
 
     void AddMap(Map map);
@@ -280,8 +279,9 @@ public:
 
     void Update(std::chrono::milliseconds time_delta_ms);
 
-    void AddLootGenerator(loot_gen::LootGenerator generator);
+    void AddLootGenerator(const LootGeneratorPtr &generator_ptr);
 
+    LootGeneratorPtr GetLootGenerator() const;
 
 private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
@@ -293,7 +293,7 @@ private:
     MapIdToIndex map_id_to_index_;
     Sessions sessions_;
     MapIdToSessionIndex map_id_to_session_index_;
-    loot_gen::LootGenerator loot_generator_{std::chrono::milliseconds(0), 0};
+    LootGeneratorPtr loot_generator_ptr_;
 };
 
 }  // namespace model

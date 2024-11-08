@@ -19,10 +19,10 @@ model::Map ParseRoads(const json::object& map_obj, model::Map map) {
             model::Point start{static_cast<int>(road_obj.at(ROAD_BEGIN_X0).as_int64()), static_cast<int>(road_obj.at(ROAD_BEGIN_Y0).as_int64())};
 
             if (road_obj.contains(ROAD_END_X1)) {  // Горизонтальная дорога
-                model::Coord end_x = static_cast<int>(road_obj.at(ROAD_END_X1).as_int64());
+                const auto end_x = static_cast<int>(road_obj.at(ROAD_END_X1).as_int64());
                 map.AddRoad(model::Road(model::Road::HORIZONTAL, start, end_x));
             } else if (road_obj.contains(ROAD_END_Y1)) {  // Вертикальная дорога
-                model::Coord end_y = static_cast<int>(road_obj.at(ROAD_END_Y1).as_int64());
+                const auto end_y = static_cast<int>(road_obj.at(ROAD_END_Y1).as_int64());
                 map.AddRoad(model::Road(model::Road::VERTICAL, start, end_y));
             }
         }
@@ -87,8 +87,8 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
         period = std::chrono::milliseconds(static_cast<int>(loot_config.at("period").as_double()) * MS_IN_S);
         probability = loot_config.at("probability").as_double();
     }
-    loot_gen::LootGenerator loot_generator(period, probability, loot_gen::GenerateRandomBase);
-    game.AddLootGenerator(std::move(loot_generator));
+    auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
+    game.AddLootGenerator(loot_generator_ptr);
 
     if (root.contains("maps")) {
         extra_data::ExtraDataStorage extra_data;

@@ -294,12 +294,16 @@ void Game::Update(std::chrono::milliseconds time_delta_ms) {
             }
             dog->SetDogPosition(new_pos);
         }
-        session->AddLoots(loot_generator_.Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
+        session->AddLoots(loot_generator_ptr_->Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
     }
 }
 
-void Game::AddLootGenerator(loot_gen::LootGenerator generator) {
-    generator = std::move(generator);
+void Game::AddLootGenerator(const LootGeneratorPtr &generator_ptr) {
+    loot_generator_ptr_ = generator_ptr;
+}
+
+Game::LootGeneratorPtr Game::GetLootGenerator() const {
+    return loot_generator_ptr_;
 }
 
 void Map::SetLootTypesCount(const unsigned loot_types_count) {

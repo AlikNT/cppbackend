@@ -41,6 +41,14 @@ unsigned LootGenerator::Generate(TimeInterval time_delta, unsigned loot_count,
     return generated_loot;
 }
 
+LootGenerator::TimeInterval LootGenerator::GetTimeInterval() const {
+    return base_interval_;
+}
+
+double LootGenerator::GetProbability() const {
+    return probability_;
+}
+
 double LootGenerator::DefaultGenerator() noexcept {
     return 1.0;
 }

@@ -42,6 +42,12 @@ target_link_libraries(game_server PRIVATE CONAN_PKG::boost Threads::Threads)
 add_executable(game_server_tests
 		src/model.h
 		src/model.cpp
+		src/app.h
+		src/app.cpp
+		src/json_loader.h
+		src/json_loader.cpp
+		src/extra_data.h
+		src/extra_data.cpp
 		src/loot_generator.h
 		src/loot_generator.cpp
 		src/tagged.h

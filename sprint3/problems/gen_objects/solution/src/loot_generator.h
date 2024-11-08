@@ -40,6 +40,10 @@ public:
      */
     unsigned Generate(TimeInterval time_delta, unsigned loot_count, unsigned looter_count);
 
+    [[nodiscard]] TimeInterval GetTimeInterval() const;
+
+    [[nodiscard]] double GetProbability() const;
+
 private:
     static double DefaultGenerator() noexcept;
 
