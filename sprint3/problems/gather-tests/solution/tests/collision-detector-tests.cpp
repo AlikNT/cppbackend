@@ -67,13 +67,13 @@ TEST_CASE("Test FindGatherEvents for different scenarios") {
     TestProvider provider;
 
     SECTION("Single gatherer moving towards a single item") {
-        provider.AddItem({10, 0}, 0.8);
-        provider.AddGatherer({0, 0}, {20, 0}, 1);
+        provider.AddItem({10, 0}, 0.71);
+        provider.AddGatherer({0, 0.8}, {20, 0.8}, 0.1);
 
         auto events = collision_detector::FindGatherEvents(provider);
 
         std::vector<collision_detector::GatheringEvent> expected_events = {
-            {0, 0, 0, 0.5} // item_id, gatherer_id, sq_distance, time
+            {0, 0, 0.64, 0.5} // item_id, gatherer_id, sq_distance, time
         };
 
         REQUIRE(events.size() == expected_events.size());
