@@ -68,9 +68,11 @@ public:
 
     void AddLoot(const LootPtr& loot_ptr);
 
-    [[nodiscard]] size_t GetLootsCount() const;
+    [[nodiscard]] size_t GetLootsCountInBag() const;
 
-    void ClearLoots();
+    [[nodiscard]] std::vector<LootPtr> GetLootsInBag() const;
+
+    void ClearLootsInBag();
 
 private:
     PlayerDogId dog_id_;
@@ -78,7 +80,7 @@ private:
     DogPosition dog_position_;
     DogSpeed dog_speed_;
     Direction dog_direction_ = Direction::NORTH;
-    std::vector<LootPtr> loots_;
+    std::vector<LootPtr> loots_in_bag_;
 };
 
 enum class LootStatus {
@@ -289,11 +291,14 @@ public:
 
     std::shared_ptr<app::Dog> GetDogById(app::PlayerDogId id) const;
 
+    size_t GetIndexByLootPtr(const std::shared_ptr<app::Loot> &loot_ptr) const;
+
 private:
     Dogs dogs_;
     const Map* map_;
     std::unordered_map<app::PlayerDogId, size_t> dog_id_to_index_;
     Loots loots_;
+    std::unordered_map<std::shared_ptr<app::Loot>, size_t> loots_to_id_;
 };
 
 class Game {

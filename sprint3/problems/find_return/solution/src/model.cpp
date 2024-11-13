@@ -46,15 +46,19 @@ void Dog::SetDogDirection(Direction direction) {
 }
 
 void Dog::AddLoot(const LootPtr& loot_ptr) {
-    loots_.emplace_back(loot_ptr);
+    loots_in_bag_.emplace_back(loot_ptr);
 }
 
-size_t Dog::GetLootsCount() const {
-    return loots_.size();
+size_t Dog::GetLootsCountInBag() const {
+    return loots_in_bag_.size();
 }
 
-void Dog::ClearLoots() {
-    loots_.clear();
+std::vector<Dog::LootPtr> Dog::GetLootsInBag() const {
+    return loots_in_bag_;
+}
+
+void Dog::ClearLootsInBag() {
+    loots_in_bag_.clear();
 }
 
 unsigned Loot::GetLootTypeId() const noexcept {
@@ -380,12 +384,12 @@ void Game::Tick(const std::chrono::milliseconds time_delta_ms) {
             auto dog = session->GetDogById(event.gatherer_id);
             if (std::holds_alternative<std::shared_ptr<app::Loot>>(map_object)) {
                 auto loot = std::get<std::shared_ptr<app::Loot>>(map_object);
-                if (dog->GetLootsCount() < session->GetMap()->GetBagCapacity()) {
+                if (dog->GetLootsCountInBag() < session->GetMap()->GetBagCapacity()) {
                     loot->SetLootStatus(app::LootStatus::BAG);
                     dog->AddLoot(loot);
                 }
             } else {
-                dog->ClearLoots();
+                dog->ClearLootsInBag();
             }
         }
         session->AddLoots(loot_generator_ptr_->Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
@@ -503,6 +507,7 @@ void GameSession::AddLoots(const size_t loots_count) {
         const auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
         auto loot_ptr = std::make_shared<app::Loot>(app::Loot{random_loot_type, {random_loot_x, random_loot_y}});
         loots_.emplace_back(loot_ptr);
+        loots_to_id_[loot_ptr] = loots_.size() - 1;
     }
 }
 
@@ -543,5 +548,12 @@ std::shared_ptr<app::Dog> GameSession::GetDogById(app::PlayerDogId id) const {
         throw std::runtime_error("Invalid dog index");
     }
     return dogs_[dog_index];
+}
+
+size_t GameSession::GetIndexByLootPtr(const std::shared_ptr<app::Loot> &loot_ptr) const {
+    if (loots_to_id_.contains(loot_ptr)) {
+        return loots_to_id_.at(loot_ptr);
+    }
+    throw std::invalid_argument("Invalid Loot");
 }
 }  // namespace model
