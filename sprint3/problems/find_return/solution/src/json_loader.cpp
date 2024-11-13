@@ -80,7 +80,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
         dog_speed = root["defaultDogSpeed"].as_double();
     }
 
-    constexpr unsigned DEFAULT_BAG_CAPACITY = 3;
+    constexpr size_t DEFAULT_BAG_CAPACITY = 3;
     unsigned bag_capacity = DEFAULT_BAG_CAPACITY;
     if (root.contains("defaultBagCapacity")) {
         bag_capacity = root["defaultBagCapacity"].as_uint64();
@@ -112,7 +112,7 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
             }
 
             // Получаем вместимость рюкзака для конкретной карты, если она указана
-            unsigned map_bag_capacity = bag_capacity;
+            size_t map_bag_capacity = bag_capacity;
             if (map_obj.contains("bagCapacity")) {
                 map_bag_capacity = map_obj.at("bagCapacity").as_uint64();
             }

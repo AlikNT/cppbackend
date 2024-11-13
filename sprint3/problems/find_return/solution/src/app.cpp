@@ -194,11 +194,12 @@ json::object GameStateUseCase::GameState(const Token &token) {
     json_body["players"] = players_json;
 
     json::object lost_objects_json;
-    for (const auto& [loot_id, loot] : session->GetLoots()) {
+    const auto& loots = session->GetLoots();
+    for (size_t i = 0; i < loots.size(); ++i) {
         json::object loot_json;
-        loot_json["type"] = loot.GetLootTypeId();
-        loot_json["pos"] = {loot.GetLootPosition().x, loot.GetLootPosition().y};
-        lost_objects_json[std::to_string(loot_id)] = loot_json;
+        loot_json["type"] = loots[i]->GetLootTypeId();
+        loot_json["pos"] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};
+        lost_objects_json[std::to_string(i)] = loot_json;
     }
     json_body["lostObjects"] = lost_objects_json;
 
@@ -241,7 +242,7 @@ TickUseCase::TickUseCase(model::Game &game_model, std::chrono::milliseconds time
     , time_delta_(time_delta) {}
 
 void TickUseCase::Update() {
-    game_model_.Update(time_delta_);
+    game_model_.Tick(time_delta_);
 }
 
 } // namespace app

@@ -1,12 +1,15 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 #include <random>
 #include <iomanip>
 #include <memory>
 #include <chrono>
+#include <variant>
 
+#include "collision_detector.h"
 #include "extra_data.h"
 #include "loot_generator.h"
 #include "tagged.h"
@@ -36,9 +39,13 @@ enum class Direction {
     EAST
 };
 
+class Loot;
 
 class Dog {
 public:
+    using LootId = size_t;
+    using LootPtr = std::shared_ptr<Loot>;
+
     Dog(std::string dog_name, PlayerDogId dog_id);
 
     [[nodiscard]] const std::string& GetName() const noexcept;
@@ -59,29 +66,49 @@ public:
 
     void SetDogDirection(Direction direction);
 
+    void AddLoot(const LootPtr& loot_ptr);
+
+    [[nodiscard]] size_t GetLootsCount() const;
+
+    void ClearLoots();
+
 private:
     PlayerDogId dog_id_;
     std::string dog_name_;
     DogPosition dog_position_;
     DogSpeed dog_speed_;
     Direction dog_direction_ = Direction::NORTH;
+    std::vector<LootPtr> loots_;
+};
+
+enum class LootStatus {
+    BAG,
+    ROAD,
+    STATUS
 };
 
 class Loot {
 public:
     Loot(const unsigned loot_type, const LootPosition &loot_position)
         : loot_type_id_(loot_type),
-          loot_position_(loot_position) {
+          loot_position_(loot_position),
+          loot_status_(LootStatus::ROAD) {
     }
 
     [[nodiscard]] unsigned GetLootTypeId() const noexcept;
 
     [[nodiscard]] LootPosition GetLootPosition() const;
 
+    void SetLootStatus(LootStatus loot_status);
+
+    [[nodiscard]] LootStatus GetLootStatus() const;
+
 private:
     unsigned loot_type_id_{};
     LootPosition loot_position_;
+    LootStatus loot_status_;
 };
+
 
 } // namespace app
 
@@ -173,7 +200,7 @@ public:
     using Buildings = std::vector<Building>;
     using Offices = std::vector<Office>;
 
-    Map(Id id, std::string name, double dog_speed, double bag_capacity) noexcept;
+    Map(Id id, std::string name, double dog_speed, size_t bag_capacity) noexcept;
 
     const Id& GetId() const noexcept;
 
@@ -215,9 +242,9 @@ private:
     OfficeIdToIndex warehouse_id_to_index_;
     Offices offices_;
     double dog_speed_;
-    unsigned bag_capacity_;
+    size_t bag_capacity_;
     extra_data::ExtraDataStorage extra_data_;
-    unsigned loot_types_count_{0};
+    size_t loot_types_count_{0};
 
     // Хеш-функция для unordered_map с ключом pair<int, int>
     struct pair_hash {
@@ -234,7 +261,8 @@ private:
 
 class GameSession {
 public:
-    using Loots = std::unordered_map<unsigned, app::Loot>;
+    using Dogs = std::vector<std::shared_ptr<app::Dog>>;
+    using Loots = std::vector<std::shared_ptr<app::Loot>>;
 
     // Конструктор, который связывает сессию с картой
     explicit GameSession(const Map* map);
@@ -243,7 +271,7 @@ public:
     std::shared_ptr<app::Dog> AddDog(const std::string& player_name);
 
     // Добавление трофея
-    void AddLoots(unsigned loots_count);
+    void AddLoots(size_t loots_count);
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayerCount() const noexcept;
@@ -253,16 +281,19 @@ public:
 
     std::vector<std::shared_ptr<app::Dog>> & GetDogs();
 
-    unsigned GetLootsCount() const;
+    size_t GetLootsCount() const;
 
     Loots GetLoots() const;
 
+    size_t GetDogIndexById(app::PlayerDogId id) const;
+
+    std::shared_ptr<app::Dog> GetDogById(app::PlayerDogId id) const;
+
 private:
-    std::vector<std::shared_ptr<app::Dog>> dogs_;
+    Dogs dogs_;
     const Map* map_;
-    std::unordered_map<uint32_t, size_t> dog_id_to_index_;
+    std::unordered_map<app::PlayerDogId, size_t> dog_id_to_index_;
     Loots loots_;
-    unsigned loot_id_max_{0};
 };
 
 class Game {
@@ -280,7 +311,7 @@ public:
 
     std::shared_ptr<GameSession> FindSession(const Map::Id& map_id);
 
-    void Update(std::chrono::milliseconds time_delta_ms);
+    void Tick(std::chrono::milliseconds time_delta_ms);
 
     void AddLootGenerator(const LootGeneratorPtr &generator_ptr);
 
@@ -300,3 +331,51 @@ private:
 };
 
 }  // namespace model
+
+namespace app {
+
+class ItemGathererProvider : public collision_detector::ItemGathererProvider {
+public:
+    using Items = std::vector<collision_detector::Item>;
+    using Gatherers = std::vector<collision_detector::Gatherer>;
+    using ItemIndex = size_t;
+    using GathererIndex = size_t;
+    using LootPtr = std::shared_ptr<Loot>;
+    using MapObject = std::variant<LootPtr, model::Office::Id>;
+    using MapObjectById = std::unordered_map<ItemIndex, MapObject>;
+    using DogById = std::unordered_map<GathererIndex, PlayerDogId>;
+
+    static constexpr double GATHERER_WIDTH = 0.6;
+
+    template <typename Object>
+    void AddItem(geom::Point2D position, double width, Object session_object);
+
+    void AddGatherer(geom::Point2D start_pos, geom::Point2D end_pos, PlayerDogId dog_id);
+
+    size_t ItemsCount() const override;
+
+    collision_detector::Item GetItem(size_t idx) const override;
+
+    MapObject GetMapObjectById(ItemIndex item_index) const;
+
+    size_t GatherersCount() const override;
+
+    collision_detector::Gatherer GetGatherer(size_t idx) const override;
+
+    PlayerDogId GetDogById(GathererIndex gather_index) const;
+
+    virtual ~ItemGathererProvider() = default;
+
+private:
+    Items items_;
+    Gatherers gatherers_;
+    MapObjectById map_object_by_id_;
+    DogById dog_by_id_;
+};
+
+template<typename Object>
+void ItemGathererProvider::AddItem(const geom::Point2D position, const double width, Object session_object) {
+    items_.emplace_back(collision_detector::Item{position, width});
+    map_object_by_id_[items_.size() - 1] = std::move(session_object);
+}
+} // namespace app

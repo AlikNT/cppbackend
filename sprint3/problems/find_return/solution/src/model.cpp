@@ -45,12 +45,74 @@ void Dog::SetDogDirection(Direction direction) {
     dog_direction_ = direction;
 }
 
+void Dog::AddLoot(const LootPtr& loot_ptr) {
+    loots_.emplace_back(loot_ptr);
+}
+
+size_t Dog::GetLootsCount() const {
+    return loots_.size();
+}
+
+void Dog::ClearLoots() {
+    loots_.clear();
+}
+
 unsigned Loot::GetLootTypeId() const noexcept {
     return loot_type_id_;
 }
 
 LootPosition Loot::GetLootPosition() const {
     return loot_position_;
+}
+
+void Loot::SetLootStatus(const LootStatus loot_status) {
+    loot_status_ = loot_status;
+}
+
+LootStatus Loot::GetLootStatus() const {
+    return loot_status_;
+}
+
+void ItemGathererProvider::AddGatherer(const geom::Point2D start_pos, const geom::Point2D end_pos,
+    const PlayerDogId dog_id) {
+    gatherers_.emplace_back(collision_detector::Gatherer{start_pos, end_pos, GATHERER_WIDTH});
+    dog_by_id_[gatherers_.size() - 1] = dog_id;
+}
+
+size_t ItemGathererProvider::ItemsCount() const {
+    return items_.size();
+}
+
+collision_detector::Item ItemGathererProvider::GetItem(size_t idx) const {
+    if (idx >= items_.size()) {
+        throw std::invalid_argument("index out of range");
+    }
+    return items_[idx];
+}
+
+ItemGathererProvider::MapObject ItemGathererProvider::GetMapObjectById(const ItemIndex item_index) const {
+    if (map_object_by_id_.contains(item_index)) {
+        return map_object_by_id_.at(item_index);
+    }
+    throw std::invalid_argument("Invalid item index");
+}
+
+size_t ItemGathererProvider::GatherersCount() const {
+    return gatherers_.size();
+}
+
+collision_detector::Gatherer ItemGathererProvider::GetGatherer(size_t idx) const {
+    if (idx >= gatherers_.size()) {
+        throw std::invalid_argument("Invalid index");
+    }
+    return gatherers_[idx];
+}
+
+PlayerDogId ItemGathererProvider::GetDogById(GathererIndex gather_index) const {
+    if (dog_by_id_.contains(gather_index)) {
+        return dog_by_id_.at(gather_index);
+    }
+    throw std::invalid_argument("Invalid gather index");
 }
 }
 
@@ -73,7 +135,7 @@ void Map::AddOffice(Office office) {
     }
 }
 
-Map::Map(Map::Id id, std::string name, const double dog_speed, const double bag_capacity) noexcept
+Map::Map(Map::Id id, std::string name, const double dog_speed, const size_t bag_capacity) noexcept
         : id_(std::move(id)),
         name_(std::move(name)),
         dog_speed_(dog_speed),
@@ -197,7 +259,7 @@ std::shared_ptr<GameSession> Game::AddSession(const Map::Id &map_id) {
     }
 
     // Проверяем, существует ли уже сессия для этой карты
-    if (map_id_to_session_index_.find(map_id) != map_id_to_session_index_.end()) {
+    if (map_id_to_session_index_.contains(map_id)) {
         throw std::runtime_error("Session for this map already exists");
     }
 
@@ -259,11 +321,12 @@ bool CorrectDogPosition(const Constrains &constrains, app::DogPosition &new_p, c
     return res;
 }
 
-void Game::Update(std::chrono::milliseconds time_delta_ms) {
-    constexpr double MS_IN_S = 1000;
-    auto time_delta = time_delta_ms.count();
-    for (auto& session : sessions_) {
-        for (auto& dog : session->GetDogs()) {
+void Game::Tick(const std::chrono::milliseconds time_delta_ms) {
+    const auto time_delta = time_delta_ms.count();
+    app::ItemGathererProvider provider;
+    for (const auto& session : sessions_) {
+        for (const auto& dog : session->GetDogs()) {
+            constexpr double MS_IN_S = 1000;
             app::DogPosition pos = dog->GetDogPosition();
             app::DogSpeed speed = dog->GetDogSpeed();
 
@@ -294,6 +357,36 @@ void Game::Update(std::chrono::milliseconds time_delta_ms) {
                 dog->SetDogSpeed({0.0, 0.0});
             }
             dog->SetDogPosition(new_pos);
+            provider.AddGatherer({pos.x, pos.y}, {new_pos.x, new_pos.y}, dog->GetId());
+        }
+        for (const auto & loot : session->GetLoots()) {
+            constexpr double LOOT_WIDTH = 0.0;
+            if (loot->GetLootStatus() != app::LootStatus::ROAD) {
+                continue;
+            }
+            provider.AddItem({loot->GetLootPosition().x, loot->GetLootPosition().y}, LOOT_WIDTH, loot);
+        }
+        for (const auto & office : session->GetMap()->GetOffices()) {
+            constexpr double OFFICE_WIDTH = 0.5;
+            const geom::Point2D office_position = {static_cast<double>(office.GetPosition().x), static_cast<double>(office.GetPosition().y)};
+            provider.AddItem(office_position, OFFICE_WIDTH, office.GetId());
+        }
+        auto events = collision_detector::FindGatherEvents(provider);
+        std::sort(events.begin(), events.end(), [](const collision_detector::GatheringEvent &a, const collision_detector::GatheringEvent &b) {
+            return a.time < b.time;
+        });
+        for (const auto& event : events) {
+            auto map_object = provider.GetMapObjectById(event.item_id);
+            auto dog = session->GetDogById(event.gatherer_id);
+            if (std::holds_alternative<std::shared_ptr<app::Loot>>(map_object)) {
+                auto loot = std::get<std::shared_ptr<app::Loot>>(map_object);
+                if (dog->GetLootsCount() < session->GetMap()->GetBagCapacity()) {
+                    loot->SetLootStatus(app::LootStatus::BAG);
+                    dog->AddLoot(loot);
+                }
+            } else {
+                dog->ClearLoots();
+            }
         }
         session->AddLoots(loot_generator_ptr_->Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
     }
@@ -387,7 +480,7 @@ std::shared_ptr<app::Dog> GameSession::AddDog(const std::string &player_name) {
     return dog;
 }
 
-void GameSession::AddLoots(const unsigned loots_count) {
+void GameSession::AddLoots(const size_t loots_count) {
     for (unsigned i = 0; i < loots_count; ++i) {
         const unsigned random_road_index = loot_gen::GenerateRandomUnsigned(0, map_->GetRoads().size() - 1);
         auto road = map_->GetRoads()[random_road_index];
@@ -408,8 +501,8 @@ void GameSession::AddLoots(const unsigned loots_count) {
             random_loot_y = loot_gen::GenerateRandomDouble(road_y1 - HALF_ROAD_WIDTH, road_y2 + HALF_ROAD_WIDTH);
         }
         const auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
-        loots_.emplace(loot_id_max_, app::Loot(random_loot_type, {random_loot_x, random_loot_y}));
-        ++loot_id_max_;
+        auto loot_ptr = std::make_shared<app::Loot>(app::Loot{random_loot_type, {random_loot_x, random_loot_y}});
+        loots_.emplace_back(loot_ptr);
     }
 }
 
@@ -425,11 +518,30 @@ std::vector<std::shared_ptr<app::Dog>> & GameSession::GetDogs() {
     return dogs_;
 }
 
-unsigned GameSession::GetLootsCount() const {
+size_t GameSession::GetLootsCount() const {
     return loots_.size();
 }
 
 GameSession::Loots GameSession::GetLoots() const {
     return loots_;
+}
+
+size_t GameSession::GetDogIndexById(app::PlayerDogId id) const {
+    const auto it = dog_id_to_index_.find(id);
+    if (it == dog_id_to_index_.end()) {
+        throw std::runtime_error("Dog not found");
+    }
+    return it->second;
+}
+
+std::shared_ptr<app::Dog> GameSession::GetDogById(app::PlayerDogId id) const {
+    if (!dog_id_to_index_.contains(id)) {
+        throw std::runtime_error("Invalid dog id");
+    }
+    size_t dog_index = dog_id_to_index_.at(id);
+    if (dog_index >= dogs_.size()) {
+        throw std::runtime_error("Invalid dog index");
+    }
+    return dogs_[dog_index];
 }
 }  // namespace model

@@ -35,9 +35,9 @@ SCENARIO("Model testing") {
             }
             THEN("Check correct loots positions") {
                 const auto& loots = session->GetLoots();
-                for (const auto& [loot_id, loot] : loots) {
-                    REQUIRE(loot.GetLootTypeId() < 2);
-                    auto road_indexes = session->GetMap()->GetRoadsByPosition(loot.GetLootPosition());
+                for (const auto& loot_ptr : loots) {
+                    REQUIRE(loot_ptr->GetLootTypeId() < 2);
+                    auto road_indexes = session->GetMap()->GetRoadsByPosition(loot_ptr->GetLootPosition());
                     REQUIRE(!road_indexes.empty());
                 }
             }
