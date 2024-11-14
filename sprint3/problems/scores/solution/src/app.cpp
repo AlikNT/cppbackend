@@ -162,6 +162,54 @@ bool IsValidToken(const Token &token) {
 GameStateUseCase::GameStateUseCase(PlayerTokens &player_tokens)
     : player_tokens_(player_tokens) {}
 
+json::array MakeLootsInBagJson(const model::GameSession& session, const Dog& dog) {
+    json::array bag_json;
+    for (const auto &loot_ptr: dog.GetLootsInBag()) {
+        if (loot_ptr->GetLootStatus() != app::LootStatus::BAG) {
+            continue;
+        }
+        json::object loot_in_bag_json;
+        loot_in_bag_json["id"s] = session.GetIndexByLootPtr(loot_ptr);
+        loot_in_bag_json["type"s] = loot_ptr->GetLootTypeId();
+        bag_json.emplace_back(std::move(loot_in_bag_json));
+    }
+    return bag_json;
+}
+
+json::object MakePlayersJson(const model::GameSession& session, const std::vector<std::shared_ptr<Dog>>& dogs) {
+    const std::unordered_map<app::Direction, std::string> dir{
+        {app::Direction::NORTH, "U"s},
+        {app::Direction::SOUTH, "D"s},
+        {app::Direction::WEST, "L"s},
+        {app::Direction::EAST, "R"s}
+    };
+    json::object players_json;
+    for (const auto &dog: dogs) {
+        json::object player_json;
+        player_json["pos"s] = {dog->GetPosition().x, dog->GetPosition().y};
+        player_json["speed"s] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
+        player_json["dir"s] = dir.at(dog->GetDirection());
+
+        json::array bag_json = MakeLootsInBagJson(session, *dog);
+        player_json["bag"s] = std::move(bag_json);
+        player_json["score"s] = dog->GetScore();
+        players_json[std::to_string(dog->GetId())] = std::move(player_json);
+    }
+    return players_json;
+}
+
+json::object MakeLostObjectsJson(const model::GameSession& session) {
+    json::object lost_objects_json;
+    const auto &loots = session.GetLoots();
+    for (size_t i = 0; i < loots.size(); ++i) {
+        json::object loot_json;
+        loot_json["type"s] = loots[i]->GetLootTypeId();
+        loot_json["pos"s] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};
+        lost_objects_json[std::to_string(i)] = std::move(loot_json);
+    }
+    return lost_objects_json;
+}
+
 json::object GameStateUseCase::GameState(const Token &token) {
     // Ищем игрока по токену
     const auto player = player_tokens_.FindPlayerByToken(token);
@@ -169,49 +217,18 @@ json::object GameStateUseCase::GameState(const Token &token) {
         return {};
     }
 
-    const std::unordered_map<app::Direction, std::string> dir{
-        {app::Direction::NORTH, "U"s},
-        {app::Direction::SOUTH, "D"s},
-        {app::Direction::WEST, "L"s},
-        {app::Direction::EAST, "R"s}
-    };
-
     json::object json_body;
 
     // Получаем список игроков в сессии
     const auto session = player->GetSession();
     const auto dogs = session->GetDogs();
 
-    json::object players_json;
-    for (const auto &dog: dogs) {
-        json::object player_json;
-        player_json["pos"s] = {dog->GetPosition().x, dog->GetPosition().y};
-        player_json["speed"s] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
-        player_json["dir"s] = dir.at(dog->GetDirection());
-        json::array bag_json;
-        for (const auto& loot_ptr : dog->GetLootsInBag()) {
-            if (loot_ptr->GetLootStatus() != app::LootStatus::BAG) {
-                continue;
-            }
-            json::object loot_in_bag_json;
-            loot_in_bag_json["id"s] = session->GetIndexByLootPtr(loot_ptr);
-            loot_in_bag_json["type"s] = loot_ptr->GetLootTypeId();
-            bag_json.emplace_back(std::move(loot_in_bag_json));
-        }
-        player_json["bag"s] = std::move(bag_json);
-        player_json["score"s] = dog->GetScore();
-        players_json[std::to_string(dog->GetId())] = std::move(player_json);
-    }
+    // Формируем json списка игроков
+    json::object players_json = MakePlayersJson(*session, dogs);
     json_body["players"s] = std::move(players_json);
 
-    json::object lost_objects_json;
-    const auto& loots = session->GetLoots();
-    for (size_t i = 0; i < loots.size(); ++i) {
-        json::object loot_json;
-        loot_json["type"s] = loots[i]->GetLootTypeId();
-        loot_json["pos"s] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};
-        lost_objects_json[std::to_string(i)] = std::move(loot_json);
-    }
+    // Формируем json потерянных объектов
+    json::object lost_objects_json = MakeLostObjectsJson(*session);
     json_body["lostObjects"s] = std::move(lost_objects_json);
 
     return json_body;
