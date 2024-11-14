@@ -283,7 +283,7 @@ public:
     void AddLoots(size_t loots_count);
 
     // Возвращает количество игроков в сессии
-    [[nodiscard]] size_t GetPlayerCount() const noexcept;
+    [[nodiscard]] size_t GetPlayersCount() const noexcept;
 
     // Возвращает карту, с которой связана сессия
     [[nodiscard]] const Map* GetMap() const noexcept;

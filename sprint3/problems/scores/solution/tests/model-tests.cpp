@@ -9,7 +9,7 @@ using namespace std::literals;
 
 SCENARIO("Model testing") {
     GIVEN("Game initialization") {
-        model::Game game = json_loader::LoadGame("../tests/data/config.json"s);
+        model::Game game = json_loader::LoadGame("../tests/data/test_config.json"s);
         app::Application app(game);
         THEN("Check correct parsing loots generator config") {
             auto loot_generator = game.GetLootGenerator();
@@ -23,6 +23,12 @@ SCENARIO("Model testing") {
         THEN("Check correct parsing bag capacity") {
             REQUIRE(game.FindMap(model::Map::Id("map1"s))->GetBagCapacity() == 3);
             REQUIRE(game.FindMap(model::Map::Id("town"s))->GetBagCapacity() == 3);
+        }
+        THEN("Check correct parsing loot values") {
+            REQUIRE(game.FindMap(model::Map::Id("map1"s))->GetLootValue(0) == 10);
+            REQUIRE(game.FindMap(model::Map::Id("map1"s))->GetLootValue(1) == 30);
+            REQUIRE(game.FindMap(model::Map::Id("town"s))->GetLootValue(0) == 10);
+            REQUIRE(game.FindMap(model::Map::Id("town"s))->GetLootValue(1) == 10);
         }
         WHEN("Add session and dogs to map") {
             const auto& session = game.AddSession(model::Map::Id("town"s));

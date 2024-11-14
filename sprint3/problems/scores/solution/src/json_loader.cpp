@@ -62,6 +62,99 @@ model::Map ParseOffices(const json::object& map_obj, model::Map map) {
     return map;
 }
 
+double ParseDefaultDogSpeed(json::object& root) {
+    constexpr double DEFAULT_DOG_SPEED = 1.0;
+    double dog_speed = DEFAULT_DOG_SPEED;  // Значение по умолчанию
+    if (root.contains("defaultDogSpeed"s)) {
+        dog_speed = root["defaultDogSpeed"s].as_double();
+    }
+    return dog_speed;
+}
+
+unsigned ParseDefaultBagCapacity(json::object& root) {
+    constexpr size_t DEFAULT_BAG_CAPACITY = 3;
+    unsigned bag_capacity = DEFAULT_BAG_CAPACITY;
+    if (root.contains("defaultBagCapacity"s)) {
+        bag_capacity = root["defaultBagCapacity"s].as_uint64();
+    }
+    return bag_capacity;
+}
+
+std::pair<loot_gen::LootGenerator::TimeInterval, double> ParseLootGeneratorConfigValues(json::object& root) {
+    std::chrono::milliseconds period(0);
+    double probability = 0.0;
+    if (root.contains("lootGeneratorConfig"s)) {
+        constexpr int MS_IN_S = 1000;
+        const auto& loot_config = root["lootGeneratorConfig"s].as_object();
+        period = std::chrono::milliseconds(static_cast<int>(loot_config.at("period"s).as_double()) * MS_IN_S);
+        probability = loot_config.at("probability"s).as_double();
+    }
+    return std::make_pair(period, probability);
+}
+
+double ParseDogSpeed(const double dog_speed, json::object& root) {
+    double map_dog_speed = dog_speed;
+    if (root.contains("dogSpeed"s)) {
+        map_dog_speed = root.at("dogSpeed"s).as_double();
+    }
+    return map_dog_speed;
+}
+
+size_t ParseBagCapacity(const size_t bag_capacity, json::object& root) {
+    size_t map_bag_capacity = bag_capacity;
+    if (root.contains("bagCapacity"s)) {
+        map_bag_capacity = root.at("bagCapacity"s).as_uint64();
+    }
+    return map_bag_capacity;
+}
+
+model::Map ParseLoots(const json::object& map_obj, model::Map map) {
+    extra_data::ExtraDataStorage extra_data;
+    if (map_obj.contains("lootTypes"s)) {
+        auto loot_types = map_obj.at("lootTypes"s).as_array();
+        for (auto &loot_type: loot_types) {
+            json::object loot_json = loot_type.as_object();
+            if (loot_json.contains("value"s)) {
+                map.AddLootValue(loot_json.at("value"s).as_int64());
+            }
+        }
+        extra_data.AddLootTypesJson(std::move(loot_types));
+    }
+    map.AddExtraData(std::move(extra_data));
+    return map;
+}
+
+void LoadMap(model::Game& game, const double dog_speed, const size_t bag_capacity, json::object& root) {
+    if (root.contains("maps"s)) {
+        for (const auto& map_json : root["maps"s].as_array()) {
+            const json::object& map_obj = map_json.as_object();
+
+            auto map_id = model::Map::Id(map_obj.at(OFFICE_ID).as_string().c_str());
+            std::string map_name = map_obj.at("name"s).as_string().c_str();
+
+            // Получаем скорость для конкретной карты, если она указана
+            const double map_dog_speed = ParseDogSpeed(dog_speed, root);
+
+            // Получаем вместимость рюкзака для конкретной карты, если она указана
+            size_t map_bag_capacity = ParseBagCapacity(bag_capacity, root);
+
+            // Создаем базовую карту
+            model::Map map(map_id, map_name, map_dog_speed, map_bag_capacity);
+
+            // Парсим трофеи
+            map = ParseLoots(map_obj, std::move(map));
+
+            // Парсим и добавляем дороги, здания и офисы
+            map = ParseRoads(map_obj, std::move(map));
+            map = ParseBuildings(map_obj, std::move(map));
+            map = ParseOffices(map_obj, std::move(map));
+
+            // Добавляем карту в игру
+            game.AddMap(std::move(map));
+        }
+    }
+}
+
 model::Game LoadGame(const std::filesystem::path& json_path) {
     std::ifstream file(json_path);
     if (!file.is_open()) {
@@ -75,73 +168,15 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
     json::object root = parsed_json.as_object();
 
     model::Game game;
-    constexpr double DEFAULT_DOG_SPEED = 1.0;
-    double dog_speed = DEFAULT_DOG_SPEED;  // Значение по умолчанию
-    if (root.contains("defaultDogSpeed"s)) {
-        dog_speed = root["defaultDogSpeed"s].as_double();
-    }
+    double dog_speed = ParseDefaultDogSpeed(root);
+    unsigned bag_capacity = ParseDefaultBagCapacity(root);
+    auto [period, probability] = ParseLootGeneratorConfigValues(root);
 
-    constexpr size_t DEFAULT_BAG_CAPACITY = 3;
-    unsigned bag_capacity = DEFAULT_BAG_CAPACITY;
-    if (root.contains("defaultBagCapacity"s)) {
-        bag_capacity = root["defaultBagCapacity"s].as_uint64();
-    }
-
-    std::chrono::milliseconds period(0);
-    double probability = 0.0;
-    if (root.contains("lootGeneratorConfig"s)) {
-        constexpr int MS_IN_S = 1000;
-        const auto& loot_config = root["lootGeneratorConfig"s].as_object();
-        period = std::chrono::milliseconds(static_cast<int>(loot_config.at("period"s).as_double()) * MS_IN_S);
-        probability = loot_config.at("probability"s).as_double();
-    }
     auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
     game.AddLootGenerator(loot_generator_ptr);
 
-    if (root.contains("maps"s)) {
-        extra_data::ExtraDataStorage extra_data;
-        for (const auto& map_json : root["maps"s].as_array()) {
-            const json::object& map_obj = map_json.as_object();
+    LoadMap(game, dog_speed, bag_capacity, root);
 
-            auto map_id = model::Map::Id(map_obj.at(OFFICE_ID).as_string().c_str());
-            std::string map_name = map_obj.at("name"s).as_string().c_str();
-
-            // Получаем скорость для конкретной карты, если она указана
-            double map_dog_speed = dog_speed;
-            if (map_obj.contains("dogSpeed"s)) {
-                map_dog_speed = map_obj.at("dogSpeed"s).as_double();
-            }
-
-            // Получаем вместимость рюкзака для конкретной карты, если она указана
-            size_t map_bag_capacity = bag_capacity;
-            if (map_obj.contains("bagCapacity"s)) {
-                map_bag_capacity = map_obj.at("bagCapacity"s).as_uint64();
-            }
-
-            // Создаем базовую карту
-            model::Map map(map_id, map_name, map_dog_speed, map_bag_capacity);
-
-            if (map_obj.contains("lootTypes"s)) {
-                auto loot_types = map_obj.at("lootTypes"s).as_array();
-                for (auto & loot_type : loot_types) {
-                    json::object loot_json = loot_type.as_object();
-                    if (loot_json.contains("value"s)) {
-                        map.AddLootValue(loot_json.at("value"s).as_int64());
-                    }
-                }
-                extra_data.AddLootTypesJson(std::move(loot_types));
-            }
-            map.AddExtraData(std::move(extra_data));
-
-            // Парсим и добавляем дороги, здания и офисы
-            map = ParseRoads(map_obj, std::move(map));
-            map = ParseBuildings(map_obj, std::move(map));
-            map = ParseOffices(map_obj, std::move(map));
-
-            // Добавляем карту в игру
-            game.AddMap(std::move(map));
-        }
-    }
     return game;
 }
 

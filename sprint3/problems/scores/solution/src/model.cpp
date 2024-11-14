@@ -531,7 +531,7 @@ void GameSession::AddLoots(const size_t loots_count) {
     }
 }
 
-size_t GameSession::GetPlayerCount() const noexcept {
+size_t GameSession::GetPlayersCount() const noexcept {
     return dogs_.size();
 }
 
@@ -563,7 +563,7 @@ std::shared_ptr<app::Dog> GameSession::GetDogById(app::PlayerDogId id) const {
     if (!dog_id_to_index_.contains(id)) {
         throw std::runtime_error("Invalid dog id"s);
     }
-    size_t dog_index = dog_id_to_index_.at(id);
+    const size_t dog_index = dog_id_to_index_.at(id);
     if (dog_index >= dogs_.size()) {
         throw std::runtime_error("Invalid dog index"s);
     }
