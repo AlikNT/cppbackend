@@ -71,12 +71,6 @@ struct Args {
 }  // namespace
 
 int main(int argc, const char* argv[]) {
-/*
-    if (argc != 3) {
-        std::cerr << "Usage: game_server <game-config-json> <file name>"sv << std::endl;
-        return EXIT_FAILURE;
-    }
-*/
     server_logging::InitLogging();
     try {
         if (auto args = ParseCommandLine(argc, argv)) {

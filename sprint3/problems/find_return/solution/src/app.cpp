@@ -3,8 +3,7 @@
 #include <utility>
 
 namespace app {
-
-
+using namespace std::literals;
 
 Player::Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> session)
         : dog_(std::move(dog))
@@ -171,10 +170,10 @@ json::object GameStateUseCase::GameState(const Token &token) {
     }
 
     const std::unordered_map<app::Direction, std::string> dir{
-        {app::Direction::NORTH, "U"},
-        {app::Direction::SOUTH, "D"},
-        {app::Direction::WEST, "L"},
-        {app::Direction::EAST, "R"}
+        {app::Direction::NORTH, "U"s},
+        {app::Direction::SOUTH, "D"s},
+        {app::Direction::WEST, "L"s},
+        {app::Direction::EAST, "R"s}
     };
 
     json::object json_body;
@@ -186,33 +185,33 @@ json::object GameStateUseCase::GameState(const Token &token) {
     json::object players_json;
     for (const auto &dog: dogs) {
         json::object player_json;
-        player_json["pos"] = {dog->GetPosition().x, dog->GetPosition().y};
-        player_json["speed"] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
-        player_json["dir"] = dir.at(dog->GetDirection());
+        player_json["pos"s] = {dog->GetPosition().x, dog->GetPosition().y};
+        player_json["speed"s] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
+        player_json["dir"s] = dir.at(dog->GetDirection());
         json::array bag_json;
         for (const auto& loot_ptr : dog->GetLootsInBag()) {
             if (loot_ptr->GetLootStatus() != app::LootStatus::BAG) {
                 continue;
             }
             json::object loot_in_bag_json;
-            loot_in_bag_json["id"] = session->GetIndexByLootPtr(loot_ptr);
-            loot_in_bag_json["type"] = loot_ptr->GetLootTypeId();
+            loot_in_bag_json["id"s] = session->GetIndexByLootPtr(loot_ptr);
+            loot_in_bag_json["type"s] = loot_ptr->GetLootTypeId();
             bag_json.emplace_back(std::move(loot_in_bag_json));
         }
-        player_json["bag"] = std::move(bag_json);
+        player_json["bag"s] = std::move(bag_json);
         players_json[std::to_string(dog->GetId())] = std::move(player_json);
     }
-    json_body["players"] = std::move(players_json);
+    json_body["players"s] = std::move(players_json);
 
     json::object lost_objects_json;
     const auto& loots = session->GetLoots();
     for (size_t i = 0; i < loots.size(); ++i) {
         json::object loot_json;
-        loot_json["type"] = loots[i]->GetLootTypeId();
-        loot_json["pos"] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};
+        loot_json["type"s] = loots[i]->GetLootTypeId();
+        loot_json["pos"s] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};
         lost_objects_json[std::to_string(i)] = std::move(loot_json);
     }
-    json_body["lostObjects"] = std::move(lost_objects_json);
+    json_body["lostObjects"s] = std::move(lost_objects_json);
 
     return json_body;
 }

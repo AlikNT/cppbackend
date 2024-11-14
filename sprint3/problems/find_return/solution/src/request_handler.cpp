@@ -2,17 +2,18 @@
 
 #include "request_handler.h"
 
+using namespace std::literals;
 namespace http_handler {
 
 const std::unordered_map<std::string, std::string> FileRequestHandler::mime_types_ = {
-        {".htm", "text/html"}, {".html", "text/html"},
-        {".css", "text/css"}, {".txt", "text/plain"},
-        {".js", "text/javascript"}, {".json", "application/json"},
-        {".xml", "application/xml"}, {".png", "image/png"},
-        {".jpg", "image/jpeg"}, {".jpeg", "image/jpeg"},
-        {".gif", "image/gif"}, {".bmp", "image/bmp"},
-        {".ico", "image/vnd.microsoft.icon"}, {".tiff", "image/tiff"},
-        {".svg", "image/svg+xml"}, {".mp3", "audio/mpeg"}
+        {".htm"s, "text/html"s}, {".html"s, "text/html"s},
+        {".css"s, "text/css"s}, {".txt"s, "text/plain"s},
+        {".js"s, "text/javascript"s}, {".json"s, "application/json"s},
+        {".xml"s, "application/xml"s}, {".png"s, "image/png"s},
+        {".jpg"s, "image/jpeg"s}, {".jpeg"s, "image/jpeg"s},
+        {".gif"s, "image/gif"s}, {".bmp"s, "image/bmp"s},
+        {".ico"s, "image/vnd.microsoft.icon"s}, {".tiff"s, "image/tiff"s},
+        {".svg"s, "image/svg+xml"s}, {".mp3"s, "audio/mpeg"s}
 };
 
 std::string FileRequestHandler::GetMimeType(const std::string &extension) {
@@ -20,7 +21,7 @@ std::string FileRequestHandler::GetMimeType(const std::string &extension) {
     if (it != mime_types_.end()) {
         return it->second;
     }
-    return "application/octet-stream";  // MIME тип по умолчанию
+    return "application/octet-stream"s;  // MIME тип по умолчанию
 }
 
 std::string FileRequestHandler::UrlDecode(const std::string &url) {
@@ -94,7 +95,7 @@ FileRequestResult FileRequestHandler::GetFileResponse(const HttpRequest &req) {
 
     // Если путь является директорией, добавляем к нему index.html
     if (fs::is_directory(full_path)) {
-        full_path /= "index.html";
+        full_path /= "index.html"s;
     }
 
     // Проверка, что запрашиваемый путь находится внутри каталога статических файлов
@@ -166,7 +167,7 @@ StringResponse RequestHandler::ReportServerError(unsigned int version, bool keep
     StringResponse res{http::status::internal_server_error, version};
     res.set(http::field::content_type, "text/plain");
     res.keep_alive(keep_alive);
-    res.body() = "Internal Server Error";
+    res.body() = "Internal Server Error"s;
     res.prepare_payload();
     return res;
 }
@@ -175,8 +176,8 @@ template<typename... Headers>
 StringResponse ApiRequestHandler::GetErrorResponse(const HttpRequest &req, http::status status, const std::string &code,
                                                    const std::string &message, const Headers&... headers) const {
     json::object error_json{
-            {"code", code},
-            {"message", message}
+            {"code"s, code},
+            {"message"s, message}
     };
     StringResponse res{status, req.version()};
     res.set(http::field::content_type, "application/json");
@@ -190,38 +191,37 @@ StringResponse ApiRequestHandler::GetErrorResponse(const HttpRequest &req, http:
 
 StringResponse ApiRequestHandler::GetApiResponse(const HttpRequest &req) const {
     const std::string target = std::string(req.target());
-    if (target == "/api/v1/maps" || target == "/api/v1/maps/") {
+    if (target == "/api/v1/maps"s || target == "/api/v1/maps/"s) {
         return GetMaps(req);
-    } else if (target.starts_with("/api/v1/maps/")) {
+    } else if (target.starts_with("/api/v1/maps/"s)) {
         return GetMapById(req);
-    } else if (target == "/api/v1/game/join" || target == "/api/v1/game/join/") {
+    } else if (target == "/api/v1/game/join"s || target == "/api/v1/game/join/"s) {
         return HandleJoinGame(req);
-    } else if (target == "/api/v1/game/players" || target == "/api/v1/game/players/") {
+    } else if (target == "/api/v1/game/players"s || target == "/api/v1/game/players/"s) {
         return GetPlayers(req);
-    } else if (target == "/api/v1/game/state" || target == "/api/v1/game/state/") {
+    } else if (target == "/api/v1/game/state"s || target == "/api/v1/game/state/"s) {
         return GetGameState(req);
-    } else if (target == "/api/v1/game/player/action" || target == "/api/v1/game/player/action/") {
+    } else if (target == "/api/v1/game/player/action"s || target == "/api/v1/game/player/action/"s) {
         return HandleMovePlayers(req);
-    } else if (target == "/api/v1/game/tick" || target == "/api/v1/game/tick/") {
+    } else if (target == "/api/v1/game/tick"s || target == "/api/v1/game/tick/"s) {
         if (tick_period_) {
-            return GetErrorResponse(req, http::status::bad_request, "badRequest", "Invalid endpoint");
+            return GetErrorResponse(req, http::status::bad_request, "badRequest"s, "Invalid endpoint"s);
         } else {
             return HandleTimeControl(req);
         }
     } else if (target.starts_with("/api/")) {
-        return GetErrorResponse(req, http::status::bad_request, "badRequest", "Bad request");
+        return GetErrorResponse(req, http::status::bad_request, "badRequest"s, "Bad request"s);
     }
-    return GetErrorResponse(req, http::status::bad_request, "badRequest", "Unknown API endpoint");
+    return GetErrorResponse(req, http::status::bad_request, "badRequest"s, "Unknown API endpoint"s);
 }
 
 StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
-    using namespace std::literals;
 
     // Проверяем метод GET или HEAD
     if (req.method() != http::verb::get && req.method() != http::verb::head) {
-        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                std::make_pair(http::field::allow, "GET, HEAD"),
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Invalid method"s,
+                                std::make_pair(http::field::allow, "GET, HEAD"s),
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     json::array maps_json;
@@ -238,9 +238,9 @@ StringResponse ApiRequestHandler::GetMaps(const HttpRequest &req) const {
 StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
     // Проверяем метод GET или HEAD
     if (req.method() != http::verb::get && req.method() != http::verb::head) {
-        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                std::make_pair(http::field::allow, "GET, HEAD"),
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Invalid method"s,
+                                std::make_pair(http::field::allow, "GET, HEAD"s),
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     const std::string target = std::string(req.target());
@@ -249,8 +249,8 @@ StringResponse ApiRequestHandler::GetMapById(const HttpRequest &req) const {
 
     const json::object map_json = app_.GetMapsById(map_id);
     if (map_json.empty()) {
-        return GetErrorResponse(req, http::status::not_found, "mapNotFound", "Map not found",
-            std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::not_found, "mapNotFound"s, "Map not found"s,
+            std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     return GetJsonResponse(req, map_json);
@@ -264,15 +264,15 @@ ApiRequestHandler::ApiRequestHandler(model::Game &game, app::Application &app, i
 StringResponse ApiRequestHandler::HandleJoinGame(const HttpRequest &req) const {
     // Проверяем заголовок Content-Type
     if (req["Content-Type"] != "application/json") {
-        return GetErrorResponse(req, http::status::bad_request, "invalidContentType", "Content-Type must be application/json",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidContentType"s, "Content-Type must be application/json"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Проверяем метод POST
     if (req.method() != http::verb::post) {
-        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Method must be POST",
-                                std::make_pair(http::field::allow, "POST"),
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Method must be POST"s,
+                                std::make_pair(http::field::allow, "POST"s),
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Парсим JSON-тело запроса
@@ -280,33 +280,33 @@ StringResponse ApiRequestHandler::HandleJoinGame(const HttpRequest &req) const {
     try {
         body = json::parse(req.body());
     } catch (const std::exception&) {
-        return GetErrorResponse(req, http::status::bad_request, "invalidJson", "Invalid JSON format",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidJson"s, "Invalid JSON format"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Извлекаем поля user_name и map_id
     std::string user_name;
     std::string map_id_str;
     try {
-        user_name = json::value_to<std::string>(body.at("userName"));
-        map_id_str = json::value_to<std::string>(body.at("mapId"));
+        user_name = json::value_to<std::string>(body.at("userName"s));
+        map_id_str = json::value_to<std::string>(body.at("mapId"s));
     } catch (const std::exception&) {
-        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "User_name and map_id are required",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "User_name and map_id are required"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Проверяем поле user_name на пустое значение
     if (user_name.empty()) {
-        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "User_name must not be empty",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "User_name must not be empty"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     const model::Map::Id map_id(map_id_str);
     // Проверяем, существует ли карта с указанным map_id
     const model::Map* map = game_.FindMap(map_id);
     if (!map) {
-        return GetErrorResponse(req, http::status::not_found, "mapNotFound", "The specified map ID does not exist",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::not_found, "mapNotFound"s, "The specified map ID does not exist"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Добавляем игрока и получаем токен
@@ -314,8 +314,8 @@ StringResponse ApiRequestHandler::HandleJoinGame(const HttpRequest &req) const {
 
     // Формируем ответ
     boost::json::object json_body;
-    json_body["authToken"] = *join_game_result.token;
-    json_body["playerId"] = join_game_result.player_id;
+    json_body["authToken"s] = *join_game_result.token;
+    json_body["playerId"s] = join_game_result.player_id;
 
     return GetJsonResponse(req, json_body);
 }
@@ -325,23 +325,23 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
 
         // Проверяем метод GET или HEAD
         if (req.method() != http::verb::get && req.method() != http::verb::head) {
-            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                    std::make_pair(http::field::allow, "GET, HEAD"),
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Invalid method"s,
+                                    std::make_pair(http::field::allow, "GET, HEAD"s),
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
 
         // Проверяем наличие игроков по предъявленному токену
         const auto players = app_.ListPlayers(token);
         if (!players) {
-            return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::unauthorized, "unknownToken"s, "Player token has not been found"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
 
         // Формируем JSON-ответ
         json::object players_json;
         for (const auto& p : *players) {
             json::object player_json;
-            player_json["name"] = p->GetName();
+            player_json["name"s] = p->GetName();
             players_json[std::to_string(p->GetId())] = player_json;
         }
 
@@ -352,16 +352,16 @@ StringResponse ApiRequestHandler::GetPlayers(const HttpRequest &req) const {
 StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
     // Проверка метода GET, HEAD
     if (req.method() != http::verb::get && req.method() != http::verb::head) {
-        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                std::make_pair(http::field::allow, "GET, HEAD"),
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Invalid method"s,
+                                std::make_pair(http::field::allow, "GET, HEAD"s),
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
     return ExecuteAuthorized(req, [req, this](const app::Token& token) {
 
         const json::object json_body = app_.GameState(token);
         if (json_body.empty()) {
-            return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::unauthorized, "unknownToken"s, "Player token has not been found"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
 
         return GetJsonResponse(req, json_body);
@@ -370,7 +370,7 @@ StringResponse ApiRequestHandler::GetGameState(const HttpRequest &req) const {
 
 std::optional<app::Token> ApiRequestHandler::TryExtractToken(const HttpRequest &req) const {
     // Проверяем наличие и валидность заголовка Authorization
-    if (req.find(http::field::authorization) == req.end() || !req[http::field::authorization].starts_with("Bearer ")) {
+    if (req.find(http::field::authorization) == req.end() || !req[http::field::authorization].starts_with("Bearer "s)) {
         return std::nullopt;
     }
 
@@ -390,41 +390,41 @@ StringResponse ApiRequestHandler::HandleMovePlayers(const HttpRequest &req) cons
 
         // Проверка метода POST
         if (req.method() != http::verb::post) {
-            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Invalid method",
-                                    std::make_pair(http::field::allow, "POST"),
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Invalid method"s,
+                                    std::make_pair(http::field::allow, "POST"s),
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
         // Проверка заголовка Content-Type
         if (req["Content-Type"] != "application/json") {
-            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid content type",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Invalid content type"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
         // Парсим JSON
         json::value body;
         try {
             body = boost::json::parse(req.body());
         } catch (const std::exception&) {
-            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid JSON",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Invalid JSON"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
         // Пытаемся получить значение move
         std::string move;
         try {
             move = json::value_to<std::string>(body.at("move"));
         } catch (const std::exception&) {
-            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Failed to parse move request JSON",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Failed to parse move request JSON"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
 
         // Обрабатываем move и получаем результат
         auto move_players_result = app_.MovePlayers(token, move);
         if (move_players_result == app::MovePlayersResult::UNKNOWN_TOKEN) {
-            return GetErrorResponse(req, http::status::unauthorized, "unknownToken", "Player token has not been found",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::unauthorized, "unknownToken"s, "Player token has not been found"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
         if (move_players_result == app::MovePlayersResult::UNKNOWN_MOVE) {
-            return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid move value",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Invalid move value"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
         return GetJsonResponse(req, boost::json::object{});
     });
@@ -433,15 +433,15 @@ StringResponse ApiRequestHandler::HandleMovePlayers(const HttpRequest &req) cons
 StringResponse ApiRequestHandler::HandleTimeControl(const HttpRequest &req) const {
     // Проверяем заголовок Content-Type
     if (req["Content-Type"] != "application/json") {
-        return GetErrorResponse(req, http::status::bad_request, "invalidContentType", "Content-Type must be application/json",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidContentType"s, "Content-Type must be application/json"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Проверяем метод POST
     if (req.method() != http::verb::post) {
-        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod", "Method must be POST",
-                                std::make_pair(http::field::allow, "POST"),
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::method_not_allowed, "invalidMethod"s, "Method must be POST"s,
+                                std::make_pair(http::field::allow, "POST"s),
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 
     // Парсим JSON
@@ -449,21 +449,21 @@ StringResponse ApiRequestHandler::HandleTimeControl(const HttpRequest &req) cons
     try {
         body = boost::json::parse(req.body());
     } catch (const std::exception&) {
-        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Invalid JSON",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Invalid JSON"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
     // Пытаемся получить значение timeDelta
     int time_delta;
     try {
-        if (!body.at("timeDelta").is_int64()) {
-            return GetErrorResponse(req, http::status::bad_request, "invalidArgument",
-                                    "'timeDelta' must be an integer",
-                                    std::make_pair(http::field::cache_control, "no-cache"));
+        if (!body.at("timeDelta"s).is_int64()) {
+            return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s,
+                                    "'timeDelta' must be an integer"s,
+                                    std::make_pair(http::field::cache_control, "no-cache"s));
         }
-        time_delta = json::value_to<int>(body.at("timeDelta"));
+        time_delta = json::value_to<int>(body.at("timeDelta"s));
     } catch (const std::exception&) {
-        return GetErrorResponse(req, http::status::bad_request, "invalidArgument", "Failed to parse tick request JSON",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::bad_request, "invalidArgument"s, "Failed to parse tick request JSON"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
     std::chrono::milliseconds time_delta_ms(time_delta);
     app_.Tick(time_delta_ms);
@@ -476,8 +476,8 @@ StringResponse ApiRequestHandler::ExecuteAuthorized(const HttpRequest &req, Fn &
     if (auto token = TryExtractToken(req)) {
         return action(*token);
     } else {
-        return GetErrorResponse(req, http::status::unauthorized, "invalidToken", "Invalid authorization or token",
-                                std::make_pair(http::field::cache_control, "no-cache"));
+        return GetErrorResponse(req, http::status::unauthorized, "invalidToken"s, "Invalid authorization or token"s,
+                                std::make_pair(http::field::cache_control, "no-cache"s));
     }
 }
 

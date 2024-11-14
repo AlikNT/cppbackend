@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+using namespace std::literals;
+
 namespace app {
 
 Dog::Dog(std::string dog_name, PlayerDogId dog_id)
@@ -89,7 +91,7 @@ size_t ItemGathererProvider::ItemsCount() const {
 
 collision_detector::Item ItemGathererProvider::GetItem(size_t idx) const {
     if (idx >= items_.size()) {
-        throw std::invalid_argument("index out of range");
+        throw std::invalid_argument("index out of range"s);
     }
     return items_[idx];
 }
@@ -98,7 +100,7 @@ ItemGathererProvider::MapObject ItemGathererProvider::GetMapObjectById(const Ite
     if (map_object_by_id_.contains(item_index)) {
         return map_object_by_id_.at(item_index);
     }
-    throw std::invalid_argument("Invalid item index");
+    throw std::invalid_argument("Invalid item index"s);
 }
 
 size_t ItemGathererProvider::GatherersCount() const {
@@ -107,7 +109,7 @@ size_t ItemGathererProvider::GatherersCount() const {
 
 collision_detector::Gatherer ItemGathererProvider::GetGatherer(size_t idx) const {
     if (idx >= gatherers_.size()) {
-        throw std::invalid_argument("Invalid index");
+        throw std::invalid_argument("Invalid index"s);
     }
     return gatherers_[idx];
 }
@@ -116,7 +118,7 @@ PlayerDogId ItemGathererProvider::GetDogById(GathererIndex gather_index) const {
     if (dog_by_id_.contains(gather_index)) {
         return dog_by_id_.at(gather_index);
     }
-    throw std::invalid_argument("Invalid gather index");
+    throw std::invalid_argument("Invalid gather index"s);
 }
 }
 
@@ -125,7 +127,7 @@ using namespace std::literals;
 
 void Map::AddOffice(Office office) {
     if (warehouse_id_to_index_.contains(office.GetId())) {
-        throw std::invalid_argument("Duplicate warehouse");
+        throw std::invalid_argument("Duplicate warehouse"s);
     }
 
     const size_t index = offices_.size();
@@ -259,12 +261,12 @@ const Map *Game::FindMap(const Map::Id &id) const noexcept {
 std::shared_ptr<GameSession> Game::AddSession(const Map::Id &map_id) {
     const Map* map = FindMap(map_id);
     if (!map) {
-        throw std::runtime_error("Map with the given ID does not exist");
+        throw std::runtime_error("Map with the given ID does not exist"s);
     }
 
     // Проверяем, существует ли уже сессия для этой карты
     if (map_id_to_session_index_.contains(map_id)) {
-        throw std::runtime_error("Session for this map already exists");
+        throw std::runtime_error("Session for this map already exists"s);
     }
 
     // Добавляем сессию в вектор
@@ -534,18 +536,18 @@ GameSession::Loots GameSession::GetLoots() const {
 size_t GameSession::GetDogIndexById(app::PlayerDogId id) const {
     const auto it = dog_id_to_index_.find(id);
     if (it == dog_id_to_index_.end()) {
-        throw std::runtime_error("Dog not found");
+        throw std::runtime_error("Dog not found"s);
     }
     return it->second;
 }
 
 std::shared_ptr<app::Dog> GameSession::GetDogById(app::PlayerDogId id) const {
     if (!dog_id_to_index_.contains(id)) {
-        throw std::runtime_error("Invalid dog id");
+        throw std::runtime_error("Invalid dog id"s);
     }
     size_t dog_index = dog_id_to_index_.at(id);
     if (dog_index >= dogs_.size()) {
-        throw std::runtime_error("Invalid dog index");
+        throw std::runtime_error("Invalid dog index"s);
     }
     return dogs_[dog_index];
 }
@@ -554,6 +556,6 @@ size_t GameSession::GetIndexByLootPtr(const std::shared_ptr<app::Loot> &loot_ptr
     if (loots_to_id_.contains(loot_ptr)) {
         return loots_to_id_.at(loot_ptr);
     }
-    throw std::invalid_argument("Invalid Loot");
+    throw std::invalid_argument("Invalid Loot"s);
 }
 }  // namespace model
