@@ -335,76 +335,106 @@ bool CorrectDogPosition(const Constrains &constrains, app::DogPosition &new_p, c
     return res;
 }
 
+Constrains CalculateConstrains(const std::vector<size_t>& on_roads_indexes, const GameSession& session) {
+    Constrains constrains{0, 0, 0, 0};
+    for (auto it = on_roads_indexes.begin(); it != on_roads_indexes.end(); ++it) {
+        const Road &road = session.GetMap()->GetRoads()[*it];
+        // Инициализируем ограничения по первой дороге
+        if (it == on_roads_indexes.begin()) {
+            constrains.x_min = std::min(road.GetStart().x, road.GetEnd().x);
+            constrains.x_max = std::max(road.GetStart().x, road.GetEnd().x);
+            constrains.y_min = std::min(road.GetStart().y, road.GetEnd().y);
+            constrains.y_max = std::max(road.GetStart().y, road.GetEnd().y);
+        } else {
+            constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
+            constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
+            constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
+            constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
+        }
+    }
+    return constrains;
+}
+
+void ActDogsOnTick (GameSession &session, app::ItemGathererProvider& provider, const uint64_t time_delta) {
+    for (const auto &dog: session.GetDogs()) {
+        constexpr double MS_IN_S = 1000;
+        app::DogPosition pos = dog->GetDogPosition();
+        app::DogSpeed speed = dog->GetDogSpeed();
+
+        // Предварительно рассчитываем новую позицию
+        app::DogPosition new_pos = pos;
+        new_pos.x += speed.sx * static_cast<double>(time_delta) / MS_IN_S;
+        new_pos.y += speed.sy * static_cast<double>(time_delta) / MS_IN_S;
+
+        // Получаем список дорог на текущей позиции
+        std::vector<size_t> on_roads_indexes = session.GetMap()->GetRoadsByPosition(pos);
+        // Считаем ограничения по дорогам, которые пересекают текущую позицию
+        Constrains constrains = CalculateConstrains(on_roads_indexes, session);
+        if (CorrectDogPosition(constrains, new_pos, dog->GetDirection())) {
+            dog->SetDogSpeed({0.0, 0.0});
+        }
+        dog->SetDogPosition(new_pos);
+        provider.AddGatherer({pos.x, pos.y}, {new_pos.x, new_pos.y}, dog->GetId());
+    }
+}
+
+void AddLootsToGathererProvider(const GameSession &session, app::ItemGathererProvider& provider) {
+    for (const auto &loot: session.GetLoots()) {
+        constexpr double LOOT_WIDTH = 0.0;
+        if (loot->GetLootStatus() != app::LootStatus::ROAD) {
+            continue;
+        }
+        provider.AddItem({loot->GetLootPosition().x, loot->GetLootPosition().y}, LOOT_WIDTH, loot);
+    }
+}
+
+void AddOfficesToGathererProvider(const GameSession &session, app::ItemGathererProvider& provider) {
+    for (const auto &office: session.GetMap()->GetOffices()) {
+        constexpr double OFFICE_WIDTH = 0.5;
+        const geom::Point2D office_position = {
+            static_cast<double>(office.GetPosition().x), static_cast<double>(office.GetPosition().y)
+        };
+        provider.AddItem(office_position, OFFICE_WIDTH, office.GetId());
+    }
+}
+
+void DetectCollisions(const GameSession& session, const app::ItemGathererProvider& provider) {
+    auto events = collision_detector::FindGatherEvents(provider);
+    std::sort(events.begin(), events.end(),
+              [](const collision_detector::GatheringEvent &a, const collision_detector::GatheringEvent &b) {
+                  return a.time < b.time;
+              });
+    for (const auto& event: events) {
+        auto map_object = provider.GetMapObjectById(event.item_id);
+        auto dog = session.GetDogById(event.gatherer_id);
+        if (std::holds_alternative<std::shared_ptr<app::Loot> >(map_object)) {
+            auto loot = std::get<std::shared_ptr<app::Loot> >(map_object);
+            if (dog->GetLootsCountInBag() < session.GetMap()->GetBagCapacity()) {
+                loot->SetLootStatus(app::LootStatus::BAG);
+                dog->AddLoot(loot);
+            }
+        } else {
+            for (const auto &loot: dog->GetLootsInBag()) {
+                dog->AddScoreValue(session.GetMap()->GetLootValue(loot->GetLootTypeId()));
+            }
+            dog->ClearLootsInBag();
+        }
+    }
+}
+
 void Game::Tick(const std::chrono::milliseconds time_delta_ms) {
     const auto time_delta = time_delta_ms.count();
     app::ItemGathererProvider provider;
     for (const auto& session : sessions_) {
-        for (const auto& dog : session->GetDogs()) {
-            constexpr double MS_IN_S = 1000;
-            app::DogPosition pos = dog->GetDogPosition();
-            app::DogSpeed speed = dog->GetDogSpeed();
-
-            // Предварительно рассчитываем новую позицию
-            app::DogPosition new_pos = pos;
-            new_pos.x += speed.sx * static_cast<double>(time_delta) / MS_IN_S;
-            new_pos.y += speed.sy * static_cast<double>(time_delta) / MS_IN_S;
-
-            // Получаем список дорог на текущей позиции
-            std::vector<size_t> on_roads_indexes = session->GetMap()->GetRoadsByPosition(pos);
-            Constrains constrains{0, 0, 0, 0};
-            for (auto it = on_roads_indexes.begin(); it != on_roads_indexes.end(); ++it) {
-                const Road& road = session->GetMap()->GetRoads()[*it];
-                // Инициализируем ограничения по первой дороге
-                if (it == on_roads_indexes.begin()) {
-                    constrains.x_min = std::min(road.GetStart().x, road.GetEnd().x);
-                    constrains.x_max = std::max(road.GetStart().x, road.GetEnd().x);
-                    constrains.y_min = std::min(road.GetStart().y, road.GetEnd().y);
-                    constrains.y_max = std::max(road.GetStart().y, road.GetEnd().y);
-                } else {
-                    constrains.x_min = std::min(std::min(road.GetStart().x, road.GetEnd().x), constrains.x_min);
-                    constrains.x_max = std::max(std::max(road.GetStart().x, road.GetEnd().x), constrains.x_max);
-                    constrains.y_min = std::min(std::min(road.GetStart().y, road.GetEnd().y), constrains.y_min);
-                    constrains.y_max = std::max(std::max(road.GetStart().y, road.GetEnd().y), constrains.y_max);
-                }
-            }
-            if (CorrectDogPosition(constrains, new_pos, dog->GetDirection())) {
-                dog->SetDogSpeed({0.0, 0.0});
-            }
-            dog->SetDogPosition(new_pos);
-            provider.AddGatherer({pos.x, pos.y}, {new_pos.x, new_pos.y}, dog->GetId());
-        }
-        for (const auto & loot : session->GetLoots()) {
-            constexpr double LOOT_WIDTH = 0.0;
-            if (loot->GetLootStatus() != app::LootStatus::ROAD) {
-                continue;
-            }
-            provider.AddItem({loot->GetLootPosition().x, loot->GetLootPosition().y}, LOOT_WIDTH, loot);
-        }
-        for (const auto & office : session->GetMap()->GetOffices()) {
-            constexpr double OFFICE_WIDTH = 0.5;
-            const geom::Point2D office_position = {static_cast<double>(office.GetPosition().x), static_cast<double>(office.GetPosition().y)};
-            provider.AddItem(office_position, OFFICE_WIDTH, office.GetId());
-        }
-        auto events = collision_detector::FindGatherEvents(provider);
-        std::sort(events.begin(), events.end(), [](const collision_detector::GatheringEvent &a, const collision_detector::GatheringEvent &b) {
-            return a.time < b.time;
-        });
-        for (const auto& event : events) {
-            auto map_object = provider.GetMapObjectById(event.item_id);
-            auto dog = session->GetDogById(event.gatherer_id);
-            if (std::holds_alternative<std::shared_ptr<app::Loot>>(map_object)) {
-                auto loot = std::get<std::shared_ptr<app::Loot>>(map_object);
-                if (dog->GetLootsCountInBag() < session->GetMap()->GetBagCapacity()) {
-                    loot->SetLootStatus(app::LootStatus::BAG);
-                    dog->AddLoot(loot);
-                }
-            } else {
-                for (const auto& loot : dog->GetLootsInBag()) {
-                    dog->AddScoreValue(session->GetMap()->GetLootValue(loot->GetLootTypeId()));
-                }
-                dog->ClearLootsInBag();
-            }
-        }
+        // Перемещение собак, добавление в провайдер для расчета столкновений
+        ActDogsOnTick(*session, provider, time_delta);
+        // Добавление трофеев в провайдер для расчета столкновений
+        AddLootsToGathererProvider(*session, provider);
+        // Добавление баз в провайдер для расчета столкновений
+        AddOfficesToGathererProvider(*session, provider);
+        // Расчет столкновений и действия, связанные с этим
+        DetectCollisions(*session, provider);
+        // Добавление случайных трофеев на дороги
         session->AddLoots(loot_generator_ptr_->Generate(time_delta_ms, session->GetLootsCount(), session->GetDogs().size()));
     }
 }
