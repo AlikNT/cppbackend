@@ -80,7 +80,9 @@ JoinGameUseCase::JoinGameUseCase(model::Game &game, PlayerTokens &player_tokens,
 JoinGameResult JoinGameUseCase::JoinGame(const model::Map::Id &map_id, const std::string &name) {
     // Поиск карты
     const model::Map* map = game_model_.FindMap(map_id);
-    assert(map);
+    if (!map) {
+        throw std::runtime_error("Map not found");
+    }
 
     auto session = game_model_.FindSession(map_id);
     if (!session) {

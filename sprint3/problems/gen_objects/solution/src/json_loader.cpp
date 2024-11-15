@@ -87,7 +87,8 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
         period = std::chrono::milliseconds(static_cast<int>(loot_config.at("period").as_double()) * MS_IN_S);
         probability = loot_config.at("probability").as_double();
     }
-    auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
+    // auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
+    auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability);
     game.AddLootGenerator(loot_generator_ptr);
 
     if (root.contains("maps")) {

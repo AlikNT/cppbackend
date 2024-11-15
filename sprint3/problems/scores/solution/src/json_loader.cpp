@@ -172,7 +172,8 @@ model::Game LoadGame(const std::filesystem::path& json_path) {
     unsigned bag_capacity = ParseDefaultBagCapacity(root);
     auto [period, probability] = ParseLootGeneratorConfigValues(root);
 
-    auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
+    // auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability, loot_gen::GenerateRandomBase);
+    auto loot_generator_ptr = std::make_shared<loot_gen::LootGenerator>(period, probability);
     game.AddLootGenerator(loot_generator_ptr);
 
     LoadMap(game, dog_speed, bag_capacity, root);
