@@ -574,7 +574,9 @@ std::vector<std::shared_ptr<app::Dog>> & GameSession::GetDogs() {
 }
 
 size_t GameSession::GetLootsCount() const {
-    return loots_.size();
+    return std::ranges::count_if(loots_, [](const std::shared_ptr<app::Loot>& loot) {
+        return loot->GetLootStatus() == app::LootStatus::ROAD;
+    });
 }
 
 GameSession::Loots GameSession::GetLoots() const {

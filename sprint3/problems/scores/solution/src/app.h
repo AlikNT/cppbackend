@@ -18,9 +18,9 @@ class Player {
 public:
     Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> session);
 
-    std::shared_ptr<Dog> GetDog();
+    [[nodiscard]] std::shared_ptr<Dog> GetDog() const;
 
-    PlayerDogId GetPlayerId();
+    [[nodiscard]] PlayerDogId GetPlayerId() const;
 
     std::shared_ptr<model::GameSession> GetSession();
 
@@ -110,91 +110,18 @@ enum class MovePlayersResult {
 
 class GetMapByIdUseCase {
 public:
-    explicit GetMapByIdUseCase(model::Game &game)
-        : game_model_(game) {
-    }
+    explicit GetMapByIdUseCase(model::Game &game);
 
-    [[nodiscard]] json::object GetMapById(const model::Map::Id &map_id) const {
-        const auto map = game_model_.FindMap(map_id);
-        if (!map) {
-            return {};
-        }
-
-        // Добавление map id
-        json::object map_json;
-        map_json[MAP_ID] = *(map->GetId());
-        map_json["name"] = map->GetName();
-
-        // Добавление дорог
-        json::array roads_json;
-        map_json["roads"] = AddRoads(map);
-
-        // Добавление зданий
-        json::array buildings_json;
-        map_json["buildings"] = AddBuildings(map);
-
-        // Добавление офисов
-        json::array objects_json;
-        map_json["offices"] = AddOffices(map);
-
-        // Добавление типов трофеев
-        const json::array loot_types_json = map->GetExtraData().GetLootTypes();
-        map_json["lootTypes"] = loot_types_json;
-
-        return map_json;
-    }
+    [[nodiscard]] json::object GetMapById(const model::Map::Id &map_id) const;
 
 private:
     model::Game &game_model_;
 
-    static json::array AddRoads(const model::Map *map) {
-        json::array roads_json;
+    static json::array AddRoads(const model::Map *map);
 
-        for (const auto &road: map->GetRoads()) {
-            json::object road_json;
-            road_json[ROAD_BEGIN_X0] = road.GetStart().x;
-            road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
+    static json::array AddBuildings(const model::Map *map);
 
-            if (road.IsHorizontal()) {
-                road_json[ROAD_END_X1] = road.GetEnd().x;
-            } else {
-                road_json[ROAD_END_Y1] = road.GetEnd().y;
-            }
-
-            roads_json.push_back(road_json);
-        }
-        return roads_json;
-    }
-
-    static json::array AddBuildings(const model::Map *map) {
-        json::array buildings_json;
-
-        for (const auto &building: map->GetBuildings()) {
-            const auto &bounds = building.GetBounds();
-            buildings_json.push_back({
-                {X, bounds.position.x},
-                {Y, bounds.position.y},
-                {BUILDING_WIDTH, bounds.size.width},
-                {BUILDING_HEIGHT, bounds.size.height}
-            });
-        }
-        return buildings_json;
-    }
-
-    static json::array AddOffices(const model::Map *map) {
-        json::array offices_json;
-
-        for (const auto &office: map->GetOffices()) {
-            offices_json.push_back({
-                {OFFICE_ID, *office.GetId()},
-                {X, office.GetPosition().x},
-                {Y, office.GetPosition().y},
-                {OFFICE_OFFSET_X, office.GetOffset().dx},
-                {OFFICE_OFFSET_Y, office.GetOffset().dy}
-            });
-        }
-        return offices_json;
-    }
+    static json::array AddOffices(const model::Map *map);
 };
 
 class JoinGameUseCase {

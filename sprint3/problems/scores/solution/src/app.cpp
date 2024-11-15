@@ -9,11 +9,11 @@ Player::Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> ses
         : dog_(std::move(dog))
         , session_(std::move(session)) {}
 
-std::shared_ptr<Dog> Player::GetDog() {
+std::shared_ptr<Dog> Player::GetDog() const {
     return dog_;
 }
 
-PlayerDogId Player::GetPlayerId() {
+PlayerDogId Player::GetPlayerId() const {
     return dog_->GetId();
 }
 
@@ -159,12 +159,94 @@ bool IsValidToken(const Token &token) {
     return token_str.size() == TOKEN_SIZE && std::all_of(token_str.begin(), token_str.end(), ::isxdigit);
 }
 
+GetMapByIdUseCase::GetMapByIdUseCase(model::Game &game): game_model_(game) {
+}
+
+json::object GetMapByIdUseCase::GetMapById(const model::Map::Id &map_id) const {
+    const auto map = game_model_.FindMap(map_id);
+    if (!map) {
+        return {};
+    }
+
+    // Добавление map id
+    json::object map_json;
+    map_json[MAP_ID] = *(map->GetId());
+    map_json["name"] = map->GetName();
+
+    // Добавление дорог
+    json::array roads_json;
+    map_json["roads"] = AddRoads(map);
+
+    // Добавление зданий
+    json::array buildings_json;
+    map_json["buildings"] = AddBuildings(map);
+
+    // Добавление офисов
+    json::array objects_json;
+    map_json["offices"] = AddOffices(map);
+
+    // Добавление типов трофеев
+    const json::array loot_types_json = map->GetExtraData().GetLootTypes();
+    map_json["lootTypes"] = loot_types_json;
+
+    return map_json;
+}
+
+json::array GetMapByIdUseCase::AddRoads(const model::Map *map) {
+    json::array roads_json;
+
+    for (const auto &road: map->GetRoads()) {
+        json::object road_json;
+        road_json[ROAD_BEGIN_X0] = road.GetStart().x;
+        road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
+
+        if (road.IsHorizontal()) {
+            road_json[ROAD_END_X1] = road.GetEnd().x;
+        } else {
+            road_json[ROAD_END_Y1] = road.GetEnd().y;
+        }
+
+        roads_json.push_back(road_json);
+    }
+    return roads_json;
+}
+
+json::array GetMapByIdUseCase::AddBuildings(const model::Map *map) {
+    json::array buildings_json;
+
+    for (const auto &building: map->GetBuildings()) {
+        const auto &bounds = building.GetBounds();
+        buildings_json.push_back({
+            {X, bounds.position.x},
+            {Y, bounds.position.y},
+            {BUILDING_WIDTH, bounds.size.width},
+            {BUILDING_HEIGHT, bounds.size.height}
+        });
+    }
+    return buildings_json;
+}
+
+json::array GetMapByIdUseCase::AddOffices(const model::Map *map) {
+    json::array offices_json;
+
+    for (const auto &office: map->GetOffices()) {
+        offices_json.push_back({
+            {OFFICE_ID, *office.GetId()},
+            {X, office.GetPosition().x},
+            {Y, office.GetPosition().y},
+            {OFFICE_OFFSET_X, office.GetOffset().dx},
+            {OFFICE_OFFSET_Y, office.GetOffset().dy}
+        });
+    }
+    return offices_json;
+}
+
 GameStateUseCase::GameStateUseCase(PlayerTokens &player_tokens)
     : player_tokens_(player_tokens) {}
 
 json::array MakeLootsInBagJson(const model::GameSession& session, const Dog& dog) {
     json::array bag_json;
-    for (const auto &loot_ptr: dog.GetLootsInBag()) {
+    for (const auto &loot_ptr : dog.GetLootsInBag()) {
         if (loot_ptr->GetLootStatus() != app::LootStatus::BAG) {
             continue;
         }
@@ -184,7 +266,7 @@ json::object MakePlayersJson(const model::GameSession& session, const std::vecto
         {app::Direction::EAST, "R"s}
     };
     json::object players_json;
-    for (const auto &dog: dogs) {
+    for (const auto &dog : dogs) {
         json::object player_json;
         player_json["pos"s] = {dog->GetPosition().x, dog->GetPosition().y};
         player_json["speed"s] = {dog->GetDogSpeed().sx, dog->GetDogSpeed().sy};
@@ -202,6 +284,9 @@ json::object MakeLostObjectsJson(const model::GameSession& session) {
     json::object lost_objects_json;
     const auto &loots = session.GetLoots();
     for (size_t i = 0; i < loots.size(); ++i) {
+        if (loots[i]->GetLootStatus() != app::LootStatus::ROAD) {
+            continue;
+        }
         json::object loot_json;
         loot_json["type"s] = loots[i]->GetLootTypeId();
         loot_json["pos"s] = {loots[i]->GetLootPosition().x, loots[i]->GetLootPosition().y};

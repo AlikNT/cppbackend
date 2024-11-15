@@ -265,7 +265,7 @@ private:
     std::unordered_map<std::pair<int, int>, std::vector<size_t>, pair_hash> cells_;  // Сетка ячеек
 
     // Преобразование позиции в индекс ячейки
-    static std::pair<int, int> GetCellIndex(const app::DogPosition& pos) ;
+    static std::pair<int, int> GetCellIndex(const app::DogPosition& pos);
 };
 
 class GameSession {
