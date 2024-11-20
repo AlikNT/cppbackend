@@ -276,6 +276,8 @@ class GameSession {
 public:
     using Dogs = std::vector<std::shared_ptr<app::Dog>>;
     using Loots = std::vector<std::shared_ptr<app::Loot>>;
+    using DogIdToIndex = std::unordered_map<app::PlayerDogId, size_t>;
+    using LootToId = std::unordered_map<std::shared_ptr<app::Loot>, size_t>;
 
     // Конструктор, который связывает сессию с картой
     explicit GameSession(const Map* map);
@@ -283,8 +285,12 @@ public:
     // Добавление собаки/игрока в сессию
     std::shared_ptr<app::Dog> AddDog(const std::string& player_name);
 
+    void AddDogPtr(std::shared_ptr<app::Dog> dog_ptr) noexcept;
+
     // Добавление трофея
-    void AddLoots(size_t loots_count);
+    void AddLoots(size_t loots_count) noexcept;
+
+    void AddLoot(std::shared_ptr<app::Loot> loot_ptr) noexcept;
 
     // Возвращает количество игроков в сессии
     [[nodiscard]] size_t GetPlayersCount() const noexcept;
@@ -292,7 +298,7 @@ public:
     // Возвращает карту, с которой связана сессия
     [[nodiscard]] const Map* GetMap() const noexcept;
 
-    std::vector<std::shared_ptr<app::Dog>> & GetDogs();
+    Dogs GetDogs() const;
 
     size_t GetLootsCount() const;
 
@@ -304,12 +310,20 @@ public:
 
     size_t GetIndexByLootPtr(const std::shared_ptr<app::Loot> &loot_ptr) const;
 
+    DogIdToIndex GetDogIdToIndexMap() const;
+
+    LootToId GetLootToIdMap() const;
+
+    void SetDogIdToIndexMap(DogIdToIndex dog_id_to_index) noexcept;
+
+    void SetLootToIdMap(LootToId loot_to_id) noexcept;
+
 private:
     Dogs dogs_;
     const Map* map_;
-    std::unordered_map<app::PlayerDogId, size_t> dog_id_to_index_;
+    DogIdToIndex dog_id_to_index_;
     Loots loots_;
-    std::unordered_map<std::shared_ptr<app::Loot>, size_t> loots_to_id_;
+    LootToId loot_to_id_;
 };
 
 class Game {

@@ -42,7 +42,7 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
             app::Dog dog{ "Pluto"s, 42};
             dog.SetDogPosition({42.2, 12.5});
             dog.AddScoreValue(42);
-            dog.AddLoot(std::make_shared<app::Loot>(app::Loot{2, {0.0, 0.0}}));
+            dog.AddLoot(std::make_shared<app::Loot>(app::Loot{2, {1.2, 3.4}}));
             dog.SetDogDirection(app::Direction::EAST);
             dog.SetDogSpeed({2.3, -1.2});
             return dog;
@@ -70,6 +70,43 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 CHECK(test_dog.GetLootsInBag().front()->GetLootPosition().x == restored.GetLootsInBag().front()->GetLootPosition().x);
                 CHECK(test_dog.GetLootsInBag().front()->GetLootPosition().y == restored.GetLootsInBag().front()->GetLootPosition().y);
                 CHECK(test_dog.GetLootsInBag().front()->GetLootStatus() == restored.GetLootsInBag().front()->GetLootStatus());
+            }
+        }
+    }
+    GIVEN("a game session") {
+        model::Map map(model::Map::Id("TestMap"s), "Test map", 1.5, 3);
+        const auto test_session = [&map] {
+            model::GameSession session(&map);
+            const auto loot_ptr = std::make_shared<app::Loot>(5, app::LootPosition{1.2, 3.4});
+            session.AddLoot(loot_ptr);
+            session.AddDog("TestDog1"s);
+            session.AddDog("TestDog2"s);
+            session.GetDogs()[0]->AddLoot(loot_ptr);
+            return session;
+        }();
+
+        WHEN("session is serialized") {
+            {
+                serialization::GameSessionRepr rep{test_session};
+                output_archive << rep;
+            }
+            THEN("it can be deserialized") {
+                InputArchive input_archive{strm};
+                serialization::GameSessionRepr repr;
+                input_archive >> repr;
+                const auto restored = repr.Restore(&map);
+                CHECK(test_session.GetDogs()[0]->GetName() == restored.GetDogs()[0]->GetName());
+                CHECK(test_session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == restored.GetLoots()[0]->GetLootPosition().x);
+                CHECK(test_session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == restored.GetLoots()[0]->GetLootPosition().y);
+                CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == test_session.GetLoots()[0]->GetLootPosition().x);
+                CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == test_session.GetLoots()[0]->GetLootPosition().y);
+                CHECK(test_session.GetDogs()[1]->GetName() == restored.GetDogs()[1]->GetName());
+                CHECK(test_session.GetLootsCount() == restored.GetLootsCount());
+                CHECK(test_session.GetDogIndexById(0) == restored.GetDogIndexById(0));
+                CHECK(test_session.GetDogIndexById(1) == restored.GetDogIndexById(1));
+                CHECK(test_session.GetDogById(0)->GetName() == restored.GetDogById(0)->GetName());
+                CHECK(test_session.GetDogById(1)->GetName() == restored.GetDogById(1)->GetName());
+                CHECK(test_session.GetDogIdToIndexMap().size() == restored.GetDogIdToIndexMap().size());
             }
         }
     }

@@ -534,7 +534,11 @@ std::shared_ptr<app::Dog> GameSession::AddDog(const std::string &player_name) {
     return dog;
 }
 
-void GameSession::AddLoots(const size_t loots_count) {
+void GameSession::AddDogPtr(std::shared_ptr<app::Dog> dog_ptr) noexcept {
+    dogs_.emplace_back(std::move(dog_ptr));
+}
+
+void GameSession::AddLoots(const size_t loots_count) noexcept {
     for (unsigned i = 0; i < loots_count; ++i) {
         const unsigned random_road_index = loot_gen::GenerateRandomUnsigned(0, map_->GetRoads().size() - 1);
         auto road = map_->GetRoads()[random_road_index];
@@ -557,8 +561,12 @@ void GameSession::AddLoots(const size_t loots_count) {
         const auto random_loot_type = loot_gen::GenerateRandomUnsigned(0, map_->GetLootTypesCount() - 1);
         auto loot_ptr = std::make_shared<app::Loot>(app::Loot{random_loot_type, {random_loot_x, random_loot_y}});
         loots_.emplace_back(loot_ptr);
-        loots_to_id_[loot_ptr] = loots_.size() - 1;
+        loot_to_id_[loot_ptr] = loots_.size() - 1;
     }
+}
+
+void GameSession::AddLoot(std::shared_ptr<app::Loot> loot_ptr) noexcept {
+    loots_.emplace_back(std::move(loot_ptr));
 }
 
 size_t GameSession::GetPlayersCount() const noexcept {
@@ -569,7 +577,7 @@ const Map *GameSession::GetMap() const noexcept {
     return map_;
 }
 
-std::vector<std::shared_ptr<app::Dog>> & GameSession::GetDogs() {
+GameSession::Dogs GameSession::GetDogs() const {
     return dogs_;
 }
 
@@ -603,9 +611,25 @@ std::shared_ptr<app::Dog> GameSession::GetDogById(app::PlayerDogId id) const {
 }
 
 size_t GameSession::GetIndexByLootPtr(const std::shared_ptr<app::Loot> &loot_ptr) const {
-    if (loots_to_id_.contains(loot_ptr)) {
-        return loots_to_id_.at(loot_ptr);
+    if (loot_to_id_.contains(loot_ptr)) {
+        return loot_to_id_.at(loot_ptr);
     }
     throw std::invalid_argument("Invalid Loot"s);
+}
+
+GameSession::DogIdToIndex GameSession::GetDogIdToIndexMap() const {
+    return dog_id_to_index_;
+}
+
+GameSession::LootToId GameSession::GetLootToIdMap() const {
+    return loot_to_id_;
+}
+
+void GameSession::SetDogIdToIndexMap(DogIdToIndex dog_id_to_index) noexcept {
+    dog_id_to_index_ = std::move(dog_id_to_index);
+}
+
+void GameSession::SetLootToIdMap(LootToId loot_to_id) noexcept {
+    loot_to_id_ = std::move(loot_to_id);
 }
 }  // namespace model
