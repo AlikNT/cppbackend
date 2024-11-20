@@ -2,6 +2,7 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/shared_ptr.hpp>
 #include <boost/serialization/unordered_map.hpp>
+#include <utility>
 
 #include "app.h"
 #include "model.h"
@@ -222,6 +223,39 @@ private:
     std::vector<std::shared_ptr<app::Loot>> loots_;
     std::unordered_map<app::PlayerDogId, size_t> dog_id_to_index_;
     std::unordered_map<std::shared_ptr<app::Loot>, size_t> loot_to_id_;
+};
+
+// Обертка для коллекции GameSession
+class GameSessionsRepr {
+public:
+    using ReprSessions = std::vector<GameSessionRepr>;
+
+    GameSessionsRepr() = default;
+
+    explicit GameSessionsRepr(const std::vector<std::shared_ptr<model::GameSession>>& sessions, const model::Map* map_ptr)
+        : map_ptr_(map_ptr) {
+        for (const auto& session : sessions) {
+            sessions_.emplace_back(*session); // Конвертируем GameSession в GameSessionRepr
+        }
+    }
+
+    // Восстанавливает вектор GameSession из представлений
+    [[nodiscard]] std::vector<std::shared_ptr<model::GameSession>> Restore() const {
+        std::vector<std::shared_ptr<model::GameSession>> sessions;
+        for (const auto& session_repr : sessions_) {
+            sessions.push_back(std::make_shared<model::GameSession>(session_repr.Restore(map_ptr_)));
+        }
+        return sessions;
+    }
+
+    template <typename Archive>
+    void serialize(Archive& ar, [[maybe_unused]] const unsigned int version) {
+        ar & sessions_;
+    }
+
+private:
+    ReprSessions sessions_;
+    const model::Map *map_ptr_;
 };
 
 /* Другие классы модели сериализуются и десериализуются похожим образом */

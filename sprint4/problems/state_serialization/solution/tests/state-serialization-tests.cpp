@@ -73,11 +73,11 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
             }
         }
     }
-    GIVEN("a game session") {
+    GIVEN("game session collection") {
         model::Map map(model::Map::Id("TestMap"s), "Test map", 1.5, 3);
-        const auto test_session = [&map] {
+        const auto test_session_1 = [&map] {
             model::GameSession session(&map);
-            const auto loot_ptr = std::make_shared<app::Loot>(5, app::LootPosition{1.2, 3.4});
+            const auto loot_ptr = std::make_shared<app::Loot>(1, app::LootPosition{1.2, 3.4});
             session.AddLoot(loot_ptr);
             session.AddDog("TestDog1"s);
             session.AddDog("TestDog2"s);
@@ -85,28 +85,47 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
             return session;
         }();
 
-        WHEN("session is serialized") {
+        const auto test_session_2 = [&map] {
+            model::GameSession session(&map);
+            const auto loot_ptr = std::make_shared<app::Loot>(2, app::LootPosition{5.6, 7.8});
+            session.AddLoot(loot_ptr);
+            session.AddDog("TestDog3"s);
+            session.AddDog("TestDog4"s);
+            session.GetDogs()[0]->AddLoot(loot_ptr);
+            return session;
+        }();
+        std::vector<std::shared_ptr<model::GameSession>> sessions;
+        sessions.emplace_back(std::make_shared<model::GameSession>(test_session_1));
+        sessions.emplace_back(std::make_shared<model::GameSession>(test_session_2));
+
+        WHEN("session collection is serialized") {
             {
-                serialization::GameSessionRepr rep{test_session};
-                output_archive << rep;
+                // serialization::GameSessionRepr rep{test_session};
+                // output_archive << rep;
+                serialization::GameSessionsRepr session_collection(sessions, &map);
+                output_archive << session_collection;
             }
             THEN("it can be deserialized") {
                 InputArchive input_archive{strm};
-                serialization::GameSessionRepr repr;
+                serialization::GameSessionsRepr repr;
                 input_archive >> repr;
-                const auto restored = repr.Restore(&map);
-                CHECK(test_session.GetDogs()[0]->GetName() == restored.GetDogs()[0]->GetName());
-                CHECK(test_session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == restored.GetLoots()[0]->GetLootPosition().x);
-                CHECK(test_session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == restored.GetLoots()[0]->GetLootPosition().y);
-                CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == test_session.GetLoots()[0]->GetLootPosition().x);
-                CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == test_session.GetLoots()[0]->GetLootPosition().y);
-                CHECK(test_session.GetDogs()[1]->GetName() == restored.GetDogs()[1]->GetName());
-                CHECK(test_session.GetLootsCount() == restored.GetLootsCount());
-                CHECK(test_session.GetDogIndexById(0) == restored.GetDogIndexById(0));
-                CHECK(test_session.GetDogIndexById(1) == restored.GetDogIndexById(1));
-                CHECK(test_session.GetDogById(0)->GetName() == restored.GetDogById(0)->GetName());
-                CHECK(test_session.GetDogById(1)->GetName() == restored.GetDogById(1)->GetName());
-                CHECK(test_session.GetDogIdToIndexMap().size() == restored.GetDogIdToIndexMap().size());
+                const auto restored_sessions = repr.Restore();
+                for (size_t i = 0; i < restored_sessions.size(); i++) {
+                    const auto& restored = *restored_sessions[i];
+                    const auto& session = *sessions[i];
+                    CHECK(session.GetDogs()[0]->GetName() == restored.GetDogs()[0]->GetName());
+                    CHECK(session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == restored.GetLoots()[0]->GetLootPosition().x);
+                    CHECK(session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == restored.GetLoots()[0]->GetLootPosition().y);
+                    CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == session.GetLoots()[0]->GetLootPosition().x);
+                    CHECK(restored.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == session.GetLoots()[0]->GetLootPosition().y);
+                    CHECK(session.GetDogs()[1]->GetName() == restored.GetDogs()[1]->GetName());
+                    CHECK(session.GetLootsCount() == restored.GetLootsCount());
+                    CHECK(session.GetDogIndexById(0) == restored.GetDogIndexById(0));
+                    CHECK(session.GetDogIndexById(1) == restored.GetDogIndexById(1));
+                    CHECK(session.GetDogById(0)->GetName() == restored.GetDogById(0)->GetName());
+                    CHECK(session.GetDogById(1)->GetName() == restored.GetDogById(1)->GetName());
+                    CHECK(session.GetDogIdToIndexMap().size() == restored.GetDogIdToIndexMap().size());
+                }
             }
         }
     }
