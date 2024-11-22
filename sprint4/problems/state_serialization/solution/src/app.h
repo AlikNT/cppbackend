@@ -18,11 +18,11 @@ class Player {
 public:
     Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> session);
 
-    [[nodiscard]] std::shared_ptr<Dog> GetDog() const;
+    [[nodiscard]] std::shared_ptr<Dog> GetDogPtr() const;
 
     [[nodiscard]] PlayerDogId GetPlayerId() const;
 
-    std::shared_ptr<model::GameSession> GetSession();
+    [[nodiscard]] std::shared_ptr<model::GameSession> GetSession() const;
 
     [[nodiscard]] app::DogSpeed GetDogSpeed() const;
 
@@ -31,28 +31,38 @@ private:
     std::shared_ptr<model::GameSession> session_;
 };
 
+struct DogMapKeyHasher {
+    std::size_t operator()(const std::pair<uint32_t, model::Map::Id> &key) const {
+        std::size_t h1 = std::hash<uint32_t>()(key.first);
+        std::size_t h2 = util::TaggedHasher<model::Map::Id>()(key.second);
+        return h1 ^ (h2 << 1); // Комбинирование двух хэшей
+    }
+};
+
 class Players {
 public:
-    std::shared_ptr<Player> Add(const std::shared_ptr<Dog> &dog, const std::shared_ptr<model::GameSession> &session);
+    using PlayersContainer = std::vector<std::shared_ptr<Player>>;
+    // Используем std::pair<dog_id, map_id> как ключ для быстрого поиска игрока
+    using DogMapKey = std::pair<uint32_t, model::Map::Id>;
+    using DogMapToPlayer = std::unordered_map<DogMapKey, std::shared_ptr<Player>, DogMapKeyHasher>;
+
+    std::shared_ptr<Player> AddPlayer(const std::shared_ptr<Dog> &dog, const std::shared_ptr<model::GameSession> &session);
 
     std::shared_ptr<Player> FindByDogIdAndMapId(PlayerDogId dog_id, const model::Map::Id &map_id);
 
+    [[nodiscard]] PlayersContainer GetPlayers() const;
+
+    DogMapToPlayer GetDogMapToPlayer() const;
+
+    void SetPlayer(const std::shared_ptr<Player>& player_ptr) noexcept;
+
+    void SetDogMapToPlayer(DogMapToPlayer dog_map_to_player) noexcept;
+
 private:
-    std::vector<std::shared_ptr<Player> > players_;
-
-    // Используем std::pair<dog_id, map_id> как ключ для быстрого поиска игрока
-    using DogMapKey = std::pair<uint32_t, model::Map::Id>;
-
-    struct DogMapKeyHasher {
-        std::size_t operator()(const DogMapKey &key) const {
-            std::size_t h1 = std::hash<uint32_t>()(key.first);
-            std::size_t h2 = util::TaggedHasher<model::Map::Id>()(key.second);
-            return h1 ^ (h2 << 1); // Комбинирование двух хэшей
-        }
-    };
+    PlayersContainer players_;
 
     // Сопоставление комбинации dog_id и map_id с указателем на игрока
-    std::unordered_map<DogMapKey, std::shared_ptr<Player>, DogMapKeyHasher> dog_map_to_player_;
+    DogMapToPlayer dog_map_to_player_;
 };
 
 namespace detail {

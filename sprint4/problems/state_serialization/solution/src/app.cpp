@@ -9,7 +9,7 @@ Player::Player(std::shared_ptr<Dog> dog, std::shared_ptr<model::GameSession> ses
         : dog_(std::move(dog))
         , session_(std::move(session)) {}
 
-std::shared_ptr<Dog> Player::GetDog() const {
+std::shared_ptr<Dog> Player::GetDogPtr() const {
     return dog_;
 }
 
@@ -17,7 +17,7 @@ PlayerDogId Player::GetPlayerId() const {
     return dog_->GetId();
 }
 
-std::shared_ptr<model::GameSession> Player::GetSession() {
+std::shared_ptr<model::GameSession> Player::GetSession() const {
     return session_;
 }
 
@@ -25,7 +25,7 @@ app::DogSpeed Player::GetDogSpeed() const {
    return dog_->GetDogSpeed();
 }
 
-std::shared_ptr<Player> Players::Add(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session) {
+std::shared_ptr<Player> Players::AddPlayer(const std::shared_ptr<Dog>& dog, const std::shared_ptr<model::GameSession>& session) {
     players_.emplace_back(std::make_shared<Player>(dog, session));
     auto& player = players_.back();
 
@@ -42,6 +42,22 @@ std::shared_ptr<Player> Players::FindByDogIdAndMapId(PlayerDogId dog_id, const m
         return it->second;
     }
     return nullptr;  // Возвращаем nullptr, если игрок не найден
+}
+
+Players::PlayersContainer Players::GetPlayers() const {
+    return players_;
+}
+
+Players::DogMapToPlayer Players::GetDogMapToPlayer() const {
+    return dog_map_to_player_;
+}
+
+void Players::SetPlayer(const std::shared_ptr<Player>& player_ptr) noexcept {
+    players_.push_back(player_ptr);
+}
+
+void Players::SetDogMapToPlayer(DogMapToPlayer dog_map_to_player) noexcept {
+    dog_map_to_player_ = std::move(dog_map_to_player);
 }
 
 std::shared_ptr<Player> PlayerTokens::FindPlayerByToken(const Token &token) {
@@ -93,7 +109,7 @@ JoinGameResult JoinGameUseCase::JoinGame(const model::Map::Id &map_id, const std
     auto dog = session->AddDog(name);
 
     // Добавление игрока
-    auto player = players_.Add(dog, session);
+    auto player = players_.AddPlayer(dog, session);
 
     // Генерация токена для игрока и его добавление в систему токенов
     return {player_tokens_.AddPlayer(player), dog->GetId()};
@@ -333,19 +349,19 @@ MovePlayersResult MovePlayersUseCase::MovePlayers(const Token &token, std::strin
     // Update the player's speed based on the move value
     double speed = player->GetSession()->GetMap()->GetDogSpeed();
     if (move == "L") {
-        player->GetDog()->SetDogSpeed({-speed, 0});
-        player->GetDog()->SetDogDirection(app::Direction::WEST);
+        player->GetDogPtr()->SetDogSpeed({-speed, 0});
+        player->GetDogPtr()->SetDogDirection(app::Direction::WEST);
     } else if (move == "R") {
-        player->GetDog()->SetDogSpeed({speed, 0});
-        player->GetDog()->SetDogDirection(app::Direction::EAST);
+        player->GetDogPtr()->SetDogSpeed({speed, 0});
+        player->GetDogPtr()->SetDogDirection(app::Direction::EAST);
     } else if (move == "U") {
-        player->GetDog()->SetDogSpeed({0, -speed});
-        player->GetDog()->SetDogDirection(app::Direction::NORTH);
+        player->GetDogPtr()->SetDogSpeed({0, -speed});
+        player->GetDogPtr()->SetDogDirection(app::Direction::NORTH);
     } else if (move == "D") {
-        player->GetDog()->SetDogSpeed({0, speed});
-        player->GetDog()->SetDogDirection(app::Direction::SOUTH);
+        player->GetDogPtr()->SetDogSpeed({0, speed});
+        player->GetDogPtr()->SetDogDirection(app::Direction::SOUTH);
     } else if (move.empty()) {
-        player->GetDog()->SetDogSpeed({0, 0});
+        player->GetDogPtr()->SetDogSpeed({0, 0});
     } else {
         return MovePlayersResult::UNKNOWN_MOVE;
     }

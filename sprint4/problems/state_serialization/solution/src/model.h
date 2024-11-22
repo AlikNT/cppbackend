@@ -330,10 +330,13 @@ class Game {
 public:
     using LootGeneratorPtr = std::shared_ptr<loot_gen::LootGenerator>;
     using Maps = std::vector<Map>;
+    using Sessions = std::vector<std::shared_ptr<GameSession>>;
 
     void AddMap(Map map);
 
     const Maps& GetMaps() const noexcept;
+
+    const Sessions& GetSessions() const noexcept;
 
     const Map* FindMap(const Map::Id& id) const noexcept;
 
@@ -351,7 +354,6 @@ private:
     using MapIdHasher = util::TaggedHasher<Map::Id>;
     using MapIdToIndex = std::unordered_map<Map::Id, size_t, MapIdHasher>;
     using MapIdToSessionIndex = std::unordered_map<Map::Id, size_t, MapIdHasher>;
-    using Sessions = std::vector<std::shared_ptr<GameSession>>;
 
     Maps maps_;
     MapIdToIndex map_id_to_index_;

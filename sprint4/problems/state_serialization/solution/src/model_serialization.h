@@ -1,4 +1,5 @@
 #pragma once
+
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/shared_ptr.hpp>
 #include <boost/serialization/unordered_map.hpp>
@@ -182,7 +183,6 @@ void serialize(Archive& ar, std::shared_ptr<Dog>& dog_ptr, [[maybe_unused]] cons
 } // namespace app
 
 namespace serialization {
-
 class GameSessionRepr {
 public:
     GameSessionRepr() = default;
@@ -195,8 +195,12 @@ public:
         , loot_to_id_(session.GetLootToIdMap()) {
     }
 
-    [[nodiscard]] model::GameSession Restore(const model::Map* map) const {
-        model::GameSession session(map);
+    [[nodiscard]] model::GameSession Restore(const model::Game& game) const {
+        const auto map_ptr = game.FindMap(model::Map::Id(map_id_));
+        if (!map_ptr) {
+            throw std::invalid_argument("Invalid map id");
+        }
+        model::GameSession session(map_ptr);
         for (const auto& dog : dogs_) {
             session.AddDogPtr(dog);
         }
@@ -217,6 +221,10 @@ public:
         ar & loot_to_id_;
     }
 
+    model::Map::Id GetMapId() const {
+        return model::Map::Id(map_id_);
+    }
+
 private:
     std::vector<std::shared_ptr<app::Dog>> dogs_;
     std::string map_id_;
@@ -228,22 +236,21 @@ private:
 // Обертка для коллекции GameSession
 class GameSessionsRepr {
 public:
-    using ReprSessions = std::vector<GameSessionRepr>;
+    using SessionsRepr = std::vector<GameSessionRepr>;
 
     GameSessionsRepr() = default;
 
-    explicit GameSessionsRepr(const std::vector<std::shared_ptr<model::GameSession>>& sessions, const model::Map* map_ptr)
-        : map_ptr_(map_ptr) {
-        for (const auto& session : sessions) {
-            sessions_.emplace_back(*session); // Конвертируем GameSession в GameSessionRepr
+    explicit GameSessionsRepr(const model::Game& game) {
+        for (const auto& session : game.GetSessions()) {
+            sessions_.emplace_back(*session);
         }
     }
 
     // Восстанавливает вектор GameSession из представлений
-    [[nodiscard]] std::vector<std::shared_ptr<model::GameSession>> Restore() const {
+    [[nodiscard]] std::vector<std::shared_ptr<model::GameSession>> Restore(const model::Game& game) const {
         std::vector<std::shared_ptr<model::GameSession>> sessions;
         for (const auto& session_repr : sessions_) {
-            sessions.push_back(std::make_shared<model::GameSession>(session_repr.Restore(map_ptr_)));
+            sessions.push_back(std::make_shared<model::GameSession>(session_repr.Restore(game)));
         }
         return sessions;
     }
@@ -254,9 +261,85 @@ public:
     }
 
 private:
-    ReprSessions sessions_;
-    const model::Map *map_ptr_;
+    SessionsRepr sessions_;
 };
+
+class PlayerRepr {
+public:
+    PlayerRepr() = default;
+
+    explicit PlayerRepr(const app::Player& player)
+        : dog_ptr_(player.GetDogPtr())
+        , session_repr_(GameSessionRepr(*player.GetSession())) {}
+
+    [[nodiscard]] app::Player Restore(const model::Game& game) const {
+        app::Player player(dog_ptr_, std::make_shared<model::GameSession>(session_repr_.Restore(game)));
+        return player;
+    }
+
+    template <typename Archive>
+    void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
+        ar & dog_ptr_;
+        ar & session_repr_;
+    }
+
+private:
+    std::shared_ptr<app::Dog> dog_ptr_;
+    GameSessionRepr session_repr_;
+};
+
+/*
+class PlayersRepr {
+public:
+    PlayersRepr() = default;
+
+    explicit PlayersRepr(const app::Players& players) {
+        // : dog_map_to_player_(players.GetDogMapToPlayer()) {
+        // Сохраняем вектор игроков
+        for (const auto& player_ptr : players.GetPlayers()) {
+            players_repr_.emplace_back(*player_ptr);
+        }
+
+        /*
+        // Сохраняем карту dog_map_to_player_
+        for (const auto& [key, player_ptr] : players.GetDogMapToPlayer()) {
+            dog_map_to_player_[key] = player_ptr;
+        }
+    #1#
+    }
+
+    [[nodiscard]] app::Players Restore() const {
+        app::Players players;
+
+        // Восстанавливаем вектор игроков
+        for (const auto& player_repr : players_repr_) {
+            // players.SetPlayer(std::make_shared<app::Player>(player_repr.Restore()));
+            const auto player = std::make_shared<app::Player>(player_repr.Restore());
+            players.AddPlayer(player->GetDogPtr(), player->GetSession());
+        }
+
+        /*
+        // Восстанавливаем карту dog_map_to_player_
+        for (const auto& [key, player_repr] : dog_map_to_player_) {
+            players.dog_map_to_player_.emplace(key, player_repr.Restore());
+        }
+        #1#
+        // players.SetDogMapToPlayer(dog_map_to_player_);
+
+        return players;
+    }
+
+    template <typename Archive>
+    void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
+        // ar & dog_map_to_player_;
+        ar & players_repr_;
+    }
+
+private:
+    std::vector<PlayerRepr> players_repr_;
+    // app::Players::DogMapToPlayer dog_map_to_player_;
+};
+*/
 
 /* Другие классы модели сериализуются и десериализуются похожим образом */
 

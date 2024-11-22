@@ -74,45 +74,83 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
         }
     }
     GIVEN("game session collection") {
-        model::Map map(model::Map::Id("TestMap"s), "Test map", 1.5, 3);
-        const auto test_session_1 = [&map] {
-            model::GameSession session(&map);
-            const auto loot_ptr = std::make_shared<app::Loot>(1, app::LootPosition{1.2, 3.4});
-            session.AddLoot(loot_ptr);
-            session.AddDog("TestDog1"s);
-            session.AddDog("TestDog2"s);
-            session.GetDogs()[0]->AddLoot(loot_ptr);
-            return session;
-        }();
+        model::Game game;
+        model::Map map_1(model::Map::Id("TestMap_1"s), "Test map 1", 1.5, 3);
+        model::Map map_2(model::Map::Id("TestMap_2"s), "Test map 2", 1.5, 3);
+        model::Map map_3(model::Map::Id("TestMap_3"s), "Test map 3", 1.5, 3);
+        game.AddMap(map_1);
+        game.AddMap(map_2);
+        game.AddMap(map_3);
+        auto test_session_1 = game.AddSession(map_1.GetId());
+        const auto loot_ptr_1 = std::make_shared<app::Loot>(1, app::LootPosition{1.2, 3.4});
+        test_session_1->AddLoot(loot_ptr_1);
+        test_session_1->AddDog("TestDog1"s);
+        test_session_1->AddDog("TestDog2"s);
+        test_session_1->GetDogs()[0]->AddLoot(loot_ptr_1);
 
-        const auto test_session_2 = [&map] {
-            model::GameSession session(&map);
-            const auto loot_ptr = std::make_shared<app::Loot>(2, app::LootPosition{5.6, 7.8});
-            session.AddLoot(loot_ptr);
-            session.AddDog("TestDog3"s);
-            session.AddDog("TestDog4"s);
-            session.GetDogs()[0]->AddLoot(loot_ptr);
-            return session;
-        }();
+        auto test_session_2 = game.AddSession(map_2.GetId());
+        const auto loot_ptr_2 = std::make_shared<app::Loot>(1, app::LootPosition{3.4, 5.6});
+        test_session_2->AddLoot(loot_ptr_2);
+        test_session_2->AddDog("TestDog3"s);
+        test_session_2->AddDog("TestDog4"s);
+        test_session_2->GetDogs()[0]->AddLoot(loot_ptr_2);
+
+        auto test_session_3 = game.AddSession(map_3.GetId());
+        const auto loot_ptr_3 = std::make_shared<app::Loot>(1, app::LootPosition{6.7, 8.9});
+        test_session_3->AddLoot(loot_ptr_3);
+        test_session_3->AddDog("TestDog5"s);
+        test_session_3->AddDog("TestDog6"s);
+        test_session_3->GetDogs()[0]->AddLoot(loot_ptr_3);
+
         std::vector<std::shared_ptr<model::GameSession>> sessions;
-        sessions.emplace_back(std::make_shared<model::GameSession>(test_session_1));
-        sessions.emplace_back(std::make_shared<model::GameSession>(test_session_2));
+        sessions.emplace_back(test_session_1);
+        sessions.emplace_back(test_session_2);
+        sessions.emplace_back(test_session_3);
+        /*
+        app::Players test_players;
+        test_players.AddPlayer(test_session_1->GetDogs()[0], sessions[0]);
+        test_players.AddPlayer(test_session_1->GetDogs()[1], sessions[1]);
+        test_players.AddPlayer(test_session_2->GetDogs()[0], sessions[0]);
+        test_players.AddPlayer(test_session_2->GetDogs()[1], sessions[1]);
+        */
 
         WHEN("session collection is serialized") {
             {
-                // serialization::GameSessionRepr rep{test_session};
-                // output_archive << rep;
-                serialization::GameSessionsRepr session_collection(sessions, &map);
-                output_archive << session_collection;
+                serialization::GameSessionRepr session_repr{*test_session_3};
+                output_archive << session_repr;
             }
-            THEN("it can be deserialized") {
+            {
+                serialization::GameSessionsRepr sessions_repr(game);
+                output_archive << sessions_repr;
+            }
+            {
+                /*
+                serialization::PlayersRepr players_repr(test_players);
+                output_archive << players_repr;
+            */
+            }
+            THEN("session collection can be deserialized") {
                 InputArchive input_archive{strm};
-                serialization::GameSessionsRepr repr;
-                input_archive >> repr;
-                const auto restored_sessions = repr.Restore();
+
+                serialization::GameSessionRepr session_repr;
+                input_archive >> session_repr;
+                const auto restored_session = session_repr.Restore(game);
+                CHECK(*test_session_3->GetMap()->GetId() == *restored_session.GetMap()->GetId());
+
+                serialization::GameSessionsRepr sessions_repr;
+                input_archive >> sessions_repr;
+                const auto restored_sessions = sessions_repr.Restore(game);
+
+                /*
+                serialization::PlayersRepr players_repr;
+                input_archive >> players_repr;
+                const auto restored_players = players_repr.Restore();
+                */
+
                 for (size_t i = 0; i < restored_sessions.size(); i++) {
                     const auto& restored = *restored_sessions[i];
                     const auto& session = *sessions[i];
+                    CHECK(*session.GetMap()->GetId() == *restored.GetMap()->GetId());
                     CHECK(session.GetDogs()[0]->GetName() == restored.GetDogs()[0]->GetName());
                     CHECK(session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().x == restored.GetLoots()[0]->GetLootPosition().x);
                     CHECK(session.GetDogs()[0]->GetLootsInBag().front()->GetLootPosition().y == restored.GetLoots()[0]->GetLootPosition().y);
@@ -126,6 +164,17 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                     CHECK(session.GetDogById(1)->GetName() == restored.GetDogById(1)->GetName());
                     CHECK(session.GetDogIdToIndexMap().size() == restored.GetDogIdToIndexMap().size());
                 }
+                /*
+                CHECK(test_players.GetDogMapToPlayer().size() == restored_players.GetDogMapToPlayer().size());
+                CHECK(test_players.GetPlayers()[0]->GetDogPtr()->GetName() == restored_players.GetPlayers()[0]->GetDogPtr()->GetName());
+                CHECK(test_players.GetPlayers()[1]->GetDogPtr()->GetName() == restored_players.GetPlayers()[1]->GetDogPtr()->GetName());
+                CHECK(test_players.GetPlayers()[2]->GetDogPtr()->GetName() == restored_players.GetPlayers()[2]->GetDogPtr()->GetName());
+                CHECK(test_players.GetPlayers()[3]->GetDogPtr()->GetName() == restored_players.GetPlayers()[3]->GetDogPtr()->GetName());
+                CHECK(test_players.GetPlayers()[0]->GetSession()->GetDogs()[0]->GetName() == restored_players.GetPlayers()[0]->GetSession()->GetDogs()[0]->GetName());
+                CHECK(test_players.GetPlayers()[1]->GetSession()->GetDogs()[0]->GetName() == restored_players.GetPlayers()[1]->GetSession()->GetDogs()[0]->GetName());
+                CHECK(test_players.GetPlayers()[0]->GetSession()->GetDogs()[1]->GetName() == restored_players.GetPlayers()[0]->GetSession()->GetDogs()[1]->GetName());
+                CHECK(test_players.GetPlayers()[1]->GetSession()->GetDogs()[1]->GetName() == restored_players.GetPlayers()[1]->GetSession()->GetDogs()[1]->GetName());
+            */
             }
         }
     }
