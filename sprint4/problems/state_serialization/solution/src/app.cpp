@@ -60,7 +60,7 @@ void Players::SetDogMapToPlayer(DogMapToPlayer dog_map_to_player) noexcept {
     dog_map_to_player_ = std::move(dog_map_to_player);
 }
 
-std::shared_ptr<Player> PlayerTokens::FindPlayerByToken(const Token &token) {
+std::shared_ptr<Player> PlayerTokens::FindPlayerByToken(const Token &token) const {
     auto it = token_to_player_.find(token);
     if (it != token_to_player_.end()) {
         return it->second;
@@ -72,6 +72,17 @@ Token PlayerTokens::AddPlayer(std::shared_ptr<Player> player) {
     Token token = GenerateToken();
     token_to_player_[token] = std::move(player);
     return token;
+}
+
+PlayerTokens::TokenToPlayer PlayerTokens::GetTokens() const {
+    return token_to_player_;
+}
+
+void PlayerTokens::SetTokens(TokenToPlayer token_to_player) {
+    if (token_to_player.empty()) {
+        throw std::invalid_argument("token_to_player is empty");
+    }
+    token_to_player_ = std::move(token_to_player);
 }
 
 Token PlayerTokens::GenerateToken() {

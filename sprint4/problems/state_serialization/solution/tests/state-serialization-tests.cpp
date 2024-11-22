@@ -81,6 +81,7 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
         game.AddMap(map_1);
         game.AddMap(map_2);
         game.AddMap(map_3);
+
         auto test_session_1 = game.AddSession(map_1.GetId());
         const auto loot_ptr_1 = std::make_shared<app::Loot>(1, app::LootPosition{1.2, 3.4});
         test_session_1->AddLoot(loot_ptr_1);
@@ -106,13 +107,12 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
         sessions.emplace_back(test_session_1);
         sessions.emplace_back(test_session_2);
         sessions.emplace_back(test_session_3);
-        /*
         app::Players test_players;
-        test_players.AddPlayer(test_session_1->GetDogs()[0], sessions[0]);
-        test_players.AddPlayer(test_session_1->GetDogs()[1], sessions[1]);
-        test_players.AddPlayer(test_session_2->GetDogs()[0], sessions[0]);
-        test_players.AddPlayer(test_session_2->GetDogs()[1], sessions[1]);
-        */
+        app::PlayerTokens player_tokens;
+        player_tokens.AddPlayer(test_players.AddPlayer(test_session_1->GetDogs()[0], sessions[0]));
+        player_tokens.AddPlayer(test_players.AddPlayer(test_session_1->GetDogs()[1], sessions[1]));
+        player_tokens.AddPlayer(test_players.AddPlayer(test_session_2->GetDogs()[0], sessions[0]));
+        player_tokens.AddPlayer(test_players.AddPlayer(test_session_2->GetDogs()[1], sessions[1]));
 
         WHEN("session collection is serialized") {
             {
@@ -124,10 +124,12 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 output_archive << sessions_repr;
             }
             {
-                /*
                 serialization::PlayersRepr players_repr(test_players);
                 output_archive << players_repr;
-            */
+            }
+            {
+                serialization::PlayerTokensRepr player_tokens_repr(player_tokens);
+                output_archive << player_tokens_repr;
             }
             THEN("session collection can be deserialized") {
                 InputArchive input_archive{strm};
@@ -141,11 +143,15 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 input_archive >> sessions_repr;
                 const auto restored_sessions = sessions_repr.Restore(game);
 
-                /*
                 serialization::PlayersRepr players_repr;
                 input_archive >> players_repr;
-                const auto restored_players = players_repr.Restore();
-                */
+                const auto restored_players = players_repr.Restore(game);
+
+                serialization::PlayerTokensRepr player_tokens_repr;
+                input_archive >> player_tokens_repr;
+                app::PlayerTokens::TokenToPlayer restored_token_to_player = player_tokens_repr.Restore(game);
+                app::PlayerTokens restored_player_tokens;
+                restored_player_tokens.SetTokens(restored_token_to_player);
 
                 for (size_t i = 0; i < restored_sessions.size(); i++) {
                     const auto& restored = *restored_sessions[i];
@@ -164,7 +170,6 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                     CHECK(session.GetDogById(1)->GetName() == restored.GetDogById(1)->GetName());
                     CHECK(session.GetDogIdToIndexMap().size() == restored.GetDogIdToIndexMap().size());
                 }
-                /*
                 CHECK(test_players.GetDogMapToPlayer().size() == restored_players.GetDogMapToPlayer().size());
                 CHECK(test_players.GetPlayers()[0]->GetDogPtr()->GetName() == restored_players.GetPlayers()[0]->GetDogPtr()->GetName());
                 CHECK(test_players.GetPlayers()[1]->GetDogPtr()->GetName() == restored_players.GetPlayers()[1]->GetDogPtr()->GetName());
@@ -174,7 +179,9 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 CHECK(test_players.GetPlayers()[1]->GetSession()->GetDogs()[0]->GetName() == restored_players.GetPlayers()[1]->GetSession()->GetDogs()[0]->GetName());
                 CHECK(test_players.GetPlayers()[0]->GetSession()->GetDogs()[1]->GetName() == restored_players.GetPlayers()[0]->GetSession()->GetDogs()[1]->GetName());
                 CHECK(test_players.GetPlayers()[1]->GetSession()->GetDogs()[1]->GetName() == restored_players.GetPlayers()[1]->GetSession()->GetDogs()[1]->GetName());
-            */
+                for (const auto& [token, player] : player_tokens.GetTokens()) {
+                    CHECK(restored_player_tokens.GetTokens()[token]->GetPlayerId() == player->GetPlayerId());
+                }
             }
         }
     }

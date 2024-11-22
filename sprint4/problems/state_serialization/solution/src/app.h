@@ -74,14 +74,20 @@ using Token = util::Tagged<std::string, detail::TokenTag>;
 
 class PlayerTokens {
 public:
+    using TokenHasher = util::TaggedHasher<Token>;
+    using TokenToPlayer = std::unordered_map<Token, std::shared_ptr<Player>, TokenHasher>;
+
     // Метод для поиска игрока по токену
-    std::shared_ptr<Player> FindPlayerByToken(const Token &token);
+    std::shared_ptr<Player> FindPlayerByToken(const Token &token) const;
 
     // Метод для добавления игрока и генерации токена
     Token AddPlayer(std::shared_ptr<Player> player);
 
+    TokenToPlayer GetTokens() const;
+
+    void SetTokens(TokenToPlayer token_to_player);
+
 private:
-    using TokenHasher = util::TaggedHasher<Token>;
 
     std::random_device random_device_;
     std::mt19937_64 generator1_{
@@ -97,7 +103,7 @@ private:
         }()
     };
 
-    std::unordered_map<Token, std::shared_ptr<Player>, TokenHasher> token_to_player_;
+    TokenToPlayer token_to_player_;
 
     // Метод для генерации уникального токена
     Token GenerateToken();

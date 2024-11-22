@@ -288,58 +288,64 @@ private:
     GameSessionRepr session_repr_;
 };
 
-/*
 class PlayersRepr {
 public:
     PlayersRepr() = default;
 
     explicit PlayersRepr(const app::Players& players) {
-        // : dog_map_to_player_(players.GetDogMapToPlayer()) {
-        // Сохраняем вектор игроков
         for (const auto& player_ptr : players.GetPlayers()) {
             players_repr_.emplace_back(*player_ptr);
         }
-
-        /*
-        // Сохраняем карту dog_map_to_player_
-        for (const auto& [key, player_ptr] : players.GetDogMapToPlayer()) {
-            dog_map_to_player_[key] = player_ptr;
-        }
-    #1#
     }
 
-    [[nodiscard]] app::Players Restore() const {
+    [[nodiscard]] app::Players Restore(const model::Game& game) const {
         app::Players players;
 
         // Восстанавливаем вектор игроков
         for (const auto& player_repr : players_repr_) {
-            // players.SetPlayer(std::make_shared<app::Player>(player_repr.Restore()));
-            const auto player = std::make_shared<app::Player>(player_repr.Restore());
+            const auto player = std::make_shared<app::Player>(player_repr.Restore(game));
             players.AddPlayer(player->GetDogPtr(), player->GetSession());
         }
-
-        /*
-        // Восстанавливаем карту dog_map_to_player_
-        for (const auto& [key, player_repr] : dog_map_to_player_) {
-            players.dog_map_to_player_.emplace(key, player_repr.Restore());
-        }
-        #1#
-        // players.SetDogMapToPlayer(dog_map_to_player_);
 
         return players;
     }
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
-        // ar & dog_map_to_player_;
         ar & players_repr_;
     }
 
 private:
     std::vector<PlayerRepr> players_repr_;
-    // app::Players::DogMapToPlayer dog_map_to_player_;
 };
-*/
+
+class PlayerTokensRepr {
+public:
+    PlayerTokensRepr() = default;
+
+    explicit PlayerTokensRepr(const app::PlayerTokens& player_tokens) {
+        for (const auto& [token, player_ptr] : player_tokens.GetTokens()) {
+            player_tokens_.emplace_back(*token, PlayerRepr(*player_ptr));
+        }
+    }
+
+    [[nodiscard]] app::PlayerTokens::TokenToPlayer Restore(const model::Game& game) const {
+        app::PlayerTokens::TokenToPlayer token_to_player;
+        for (const auto& [token_str, player_ptr] : player_tokens_) {
+            auto x = app::Token(token_str);
+            token_to_player[app::Token(token_str)] = std::make_shared<app::Player>(player_ptr.Restore(game));
+        }
+        return token_to_player;
+    }
+
+    template <typename Archive>
+    void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
+        ar & player_tokens_;
+    }
+
+private:
+    std::vector<std::pair<std::string, PlayerRepr>> player_tokens_;
+};
 
 /* Другие классы модели сериализуются и десериализуются похожим образом */
 
