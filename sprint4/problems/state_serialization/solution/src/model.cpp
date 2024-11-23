@@ -290,6 +290,10 @@ std::shared_ptr<GameSession> Game::AddSession(const Map::Id &map_id) {
     return sessions_.back();
 }
 
+void Game::SetSessions(Sessions sessions) {
+    sessions_ = std::move(sessions);
+}
+
 std::shared_ptr<GameSession> Game::FindSession(const Map::Id &map_id) {
     auto it = map_id_to_session_index_.find(map_id);
     if (it != map_id_to_session_index_.end()) {

@@ -174,8 +174,20 @@ model::Game & Application::GetGame() const {
     return game_model_;
 }
 
+void Application::SetSessions(model::Game::Sessions sessions) const {
+    game_model_.SetSessions(std::move(sessions));
+}
+
 const Players & Application::GetPlayers() const {
     return players_;
+}
+
+void Application::SetPlayers(Players players) {
+    players_ = std::move(players);
+}
+
+void Application::TokenToPlayer(PlayerTokens::TokenToPlayer token_to_player) {
+    player_tokens_.SetTokens(std::move(token_to_player));
 }
 
 const PlayerTokens & Application::GetPlayerTokens() const {

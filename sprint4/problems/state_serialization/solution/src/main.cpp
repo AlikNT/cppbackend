@@ -82,11 +82,16 @@ int main(int argc, const char* argv[]) {
             // 1. Загружаем карту из файла и создаем модель игры
             model::Game game = json_loader::LoadGame(args->config_file);
             app::Application app(game);
-            infrastructure::SerializingListener listener(app, 50ms, "game_server.data"s);
-            // Подключаем метод Save как обработчик сигнала tick
-            sig::scoped_connection conn = app.DoOnTick([&listener](milliseconds delta) {
-                listener.Save(delta);
-            });
+            std::unique_ptr<infrastructure::SerializingListener> listener = nullptr;
+            std::unique_ptr<sig::scoped_connection> conn = nullptr;
+            if (!args->state_file.empty()) {
+                listener = std::make_unique<infrastructure::SerializingListener>(app, milliseconds(args->state_period), args->state_file);
+                listener->Load();
+                // Подключаем метод Save как обработчик сигнала tick
+                conn = std::make_unique<sig::scoped_connection>(app.DoOnTick([&listener](milliseconds delta) {
+                    listener->Save(delta);
+                }));
+            }
 
             // 2. Инициализируем io_context
             const unsigned num_threads = std::thread::hardware_concurrency();
@@ -94,9 +99,12 @@ int main(int argc, const char* argv[]) {
 
             // 3. Добавляем асинхронный обработчик сигналов SIGINT и SIGTERM
             net::signal_set signals(ioc, SIGINT, SIGTERM);
-            signals.async_wait([&ioc](const sys::error_code &ec, [[maybe_unused]] int signal_number) {
+            signals.async_wait([&ioc, &args, &listener](const sys::error_code &ec, [[maybe_unused]] int signal_number) {
                 if (!ec) {
                     ioc.stop();
+                    if (!args->state_file.empty()) {
+                        listener->Save();
+                    }
                     server_logging::LogServerExit(0, "");
                 }
             });

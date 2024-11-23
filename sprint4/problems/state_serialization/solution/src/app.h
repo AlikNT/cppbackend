@@ -221,7 +221,13 @@ public:
 
     model::Game& GetGame() const;
 
+    void SetSessions (model::Game::Sessions sessions) const;
+
     const Players& GetPlayers() const;
+
+    void SetPlayers(Players players);
+
+    void TokenToPlayer(PlayerTokens::TokenToPlayer token_to_player);
 
     const PlayerTokens& GetPlayerTokens() const;
 

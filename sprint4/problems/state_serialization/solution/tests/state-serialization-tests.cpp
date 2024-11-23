@@ -128,7 +128,7 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 output_archive << players_repr;
             }
             {
-                serialization::PlayerTokensRepr player_tokens_repr(player_tokens);
+                serialization::TokenToPlayer player_tokens_repr(player_tokens);
                 output_archive << player_tokens_repr;
             }
             THEN("session collection can be deserialized") {
@@ -147,7 +147,7 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 input_archive >> players_repr;
                 const auto restored_players = players_repr.Restore(game);
 
-                serialization::PlayerTokensRepr player_tokens_repr;
+                serialization::TokenToPlayer player_tokens_repr;
                 input_archive >> player_tokens_repr;
                 app::PlayerTokens::TokenToPlayer restored_token_to_player = player_tokens_repr.Restore(game);
                 app::PlayerTokens restored_player_tokens;

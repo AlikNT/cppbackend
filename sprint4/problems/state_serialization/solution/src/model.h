@@ -342,6 +342,8 @@ public:
 
     std::shared_ptr<GameSession> AddSession(const Map::Id& map_id);
 
+    void SetSessions(Sessions sessions);
+
     std::shared_ptr<GameSession> FindSession(const Map::Id& map_id);
 
     void Tick(std::chrono::milliseconds time_delta_ms);

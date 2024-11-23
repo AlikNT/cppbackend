@@ -319,19 +319,19 @@ private:
     std::vector<PlayerRepr> players_repr_;
 };
 
-class PlayerTokensRepr {
+class TokenToPlayer {
 public:
-    PlayerTokensRepr() = default;
+    TokenToPlayer() = default;
 
-    explicit PlayerTokensRepr(const app::PlayerTokens& player_tokens) {
+    explicit TokenToPlayer(const app::PlayerTokens& player_tokens) {
         for (const auto& [token, player_ptr] : player_tokens.GetTokens()) {
-            player_tokens_.emplace_back(*token, PlayerRepr(*player_ptr));
+            token_to_player_.emplace_back(*token, PlayerRepr(*player_ptr));
         }
     }
 
     [[nodiscard]] app::PlayerTokens::TokenToPlayer Restore(const model::Game& game) const {
         app::PlayerTokens::TokenToPlayer token_to_player;
-        for (const auto& [token_str, player_ptr] : player_tokens_) {
+        for (const auto& [token_str, player_ptr] : token_to_player_) {
             auto x = app::Token(token_str);
             token_to_player[app::Token(token_str)] = std::make_shared<app::Player>(player_ptr.Restore(game));
         }
@@ -340,11 +340,11 @@ public:
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
-        ar & player_tokens_;
+        ar & token_to_player_;
     }
 
 private:
-    std::vector<std::pair<std::string, PlayerRepr>> player_tokens_;
+    std::vector<std::pair<std::string, PlayerRepr>> token_to_player_;
 };
 
 /* Другие классы модели сериализуются и десериализуются похожим образом */
