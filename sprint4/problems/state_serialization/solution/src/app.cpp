@@ -160,9 +160,26 @@ MovePlayersResult Application::MovePlayers(const Token &token, std::string_view 
     return move_players.MovePlayers(token, move);
 }
 
+sig::connection Application::DoOnTick(const TickSignal::slot_type &handler) {
+    return tick_signal_.connect(handler);
+}
+
 void Application::Tick(std::chrono::milliseconds time_delta) {
     TickUseCase tick(game_model_, time_delta);
     tick.Update();
+    tick_signal_(time_delta);
+}
+
+model::Game & Application::GetGame() const {
+    return game_model_;
+}
+
+const Players & Application::GetPlayers() const {
+    return players_;
+}
+
+const PlayerTokens & Application::GetPlayerTokens() const {
+    return player_tokens_;
 }
 
 PlayersList ListPlayersUseCase::ListPlayers(const Token &token) {

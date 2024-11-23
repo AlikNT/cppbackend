@@ -1,5 +1,5 @@
 #include "sdk.h"
-//
+
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/program_options.hpp>
@@ -9,6 +9,7 @@
 #include "json_loader.h"
 #include "request_handler.h"
 #include "app.h"
+#include "infrastructure.h"
 
 using namespace std::literals;
 namespace net = boost::asio;
@@ -33,6 +34,8 @@ struct Args {
     int tick_period = 0;
     std::string config_file;
     std::string www_root;
+    std::string state_file;
+    int state_period = 0;
     bool randomize_spawn_points = false;
 };
 
@@ -47,6 +50,8 @@ struct Args {
             ("tick-period,t", po::value<int>(&args.tick_period)->value_name("milliseconds"s), "set tick period")
             ("config-file,c", po::value<std::string>(&args.config_file)->value_name("file"s), "set config file path")
             ("www-root,w", po::value<std::string>(&args.www_root)->value_name("dir"s), "set static files root")
+            ("state-file", po::value<std::string>(&args.state_file)->value_name("file"s), "set state file path")
+            ("state-period", po::value<int>(&args.state_period)->value_name("milliseconds"s), "set state period")
             ("randomize-spawn-points", po::bool_switch(&args.randomize_spawn_points), "spawn dogs at random positions");
 
     po::variables_map vm;
@@ -77,6 +82,11 @@ int main(int argc, const char* argv[]) {
             // 1. Загружаем карту из файла и создаем модель игры
             model::Game game = json_loader::LoadGame(args->config_file);
             app::Application app(game);
+            infrastructure::SerializingListener listener(app, 50ms, "game_server.data"s);
+            // Подключаем метод Save как обработчик сигнала tick
+            sig::scoped_connection conn = app.DoOnTick([&listener](milliseconds delta) {
+                listener.Save(delta);
+            });
 
             // 2. Инициализируем io_context
             const unsigned num_threads = std::thread::hardware_concurrency();

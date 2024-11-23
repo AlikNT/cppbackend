@@ -12,8 +12,6 @@ find_package(Threads REQUIRED)
 add_library(game_model STATIC
 	src/geom.h
 	src/model_serialization.h
-	# src/model_precode.h
-	# src/model_precode.cpp
 	src/model.cpp
 	src/app.cpp
 	src/json_loader.cpp
@@ -24,6 +22,7 @@ add_library(game_model STATIC
 	src/collision_detector.cpp
 	src/loot_generator.cpp
 	src/tagged.h
+	src/infrastructure.cpp
 )
 
 target_include_directories(game_model PUBLIC CONAN_PKG::boost)

@@ -3,10 +3,13 @@
 #include <string>
 #include <optional>
 #include <chrono>
+#include <boost/signals2.hpp>
 
 #include "tagged.h"
 #include "model.h"
 #include "json_loader.h"
+
+namespace sig = boost::signals2;
 
 namespace app {
 using PlayersList = std::optional<std::vector<std::shared_ptr<app::Dog> > >;
@@ -195,6 +198,9 @@ private:
 
 class Application {
 public:
+    using milliseconds = std::chrono::milliseconds;
+    using TickSignal = sig::signal<void(milliseconds delta)>;
+
     explicit Application(model::Game &model_game);
 
     json::object GetMapsById(const model::Map::Id &map_id) const;
@@ -207,12 +213,23 @@ public:
 
     MovePlayersResult MovePlayers(const Token &token, std::string_view move);
 
+    // Обработчик сигнала tick и возвращаем объект connection для управления,
+    // при помощи которого можно отписаться от сигнала
+    [[nodiscard]] sig::connection DoOnTick(const TickSignal::slot_type& handler);
+
     void Tick(std::chrono::milliseconds time_delta);
+
+    model::Game& GetGame() const;
+
+    const Players& GetPlayers() const;
+
+    const PlayerTokens& GetPlayerTokens() const;
 
 private:
     model::Game &game_model_;
     Players players_;
     PlayerTokens player_tokens_;
+    TickSignal tick_signal_;
 
     std::shared_ptr<Player> FindPlayerByToken(const Token &token);
 };
