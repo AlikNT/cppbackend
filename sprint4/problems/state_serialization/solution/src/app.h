@@ -88,7 +88,7 @@ public:
 
     TokenToPlayer GetTokens() const;
 
-    void SetTokens(TokenToPlayer token_to_player);
+    void SetTokenToPlayer(TokenToPlayer token_to_player);
 
 private:
 

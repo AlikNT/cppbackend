@@ -151,7 +151,7 @@ SCENARIO_METHOD(Fixture, "Dog Serialization") {
                 input_archive >> player_tokens_repr;
                 app::PlayerTokens::TokenToPlayer restored_token_to_player = player_tokens_repr.Restore(game);
                 app::PlayerTokens restored_player_tokens;
-                restored_player_tokens.SetTokens(restored_token_to_player);
+                restored_player_tokens.SetTokenToPlayer(restored_token_to_player);
 
                 for (size_t i = 0; i < restored_sessions.size(); i++) {
                     const auto& restored = *restored_sessions[i];

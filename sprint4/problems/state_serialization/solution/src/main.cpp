@@ -35,7 +35,7 @@ struct Args {
     std::string config_file;
     std::string www_root;
     std::string state_file;
-    int state_period = 0;
+    int save_state_period = 0;
     bool randomize_spawn_points = false;
 };
 
@@ -51,7 +51,7 @@ struct Args {
             ("config-file,c", po::value<std::string>(&args.config_file)->value_name("file"s), "set config file path")
             ("www-root,w", po::value<std::string>(&args.www_root)->value_name("dir"s), "set static files root")
             ("state-file", po::value<std::string>(&args.state_file)->value_name("file"s), "set state file path")
-            ("state-period", po::value<int>(&args.state_period)->value_name("milliseconds"s), "set state period")
+            ("save-state-period", po::value<int>(&args.save_state_period)->value_name("milliseconds"s), "set state period")
             ("randomize-spawn-points", po::bool_switch(&args.randomize_spawn_points), "spawn dogs at random positions");
 
     po::variables_map vm;
@@ -85,7 +85,7 @@ int main(int argc, const char* argv[]) {
             std::unique_ptr<infrastructure::SerializingListener> listener = nullptr;
             std::unique_ptr<sig::scoped_connection> conn = nullptr;
             if (!args->state_file.empty()) {
-                listener = std::make_unique<infrastructure::SerializingListener>(app, milliseconds(args->state_period), args->state_file);
+                listener = std::make_unique<infrastructure::SerializingListener>(app, milliseconds(args->save_state_period), args->state_file);
                 listener->Load();
                 // Подключаем метод Save как обработчик сигнала tick
                 conn = std::make_unique<sig::scoped_connection>(app.DoOnTick([&listener](milliseconds delta) {

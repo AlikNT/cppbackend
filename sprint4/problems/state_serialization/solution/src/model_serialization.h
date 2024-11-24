@@ -63,16 +63,9 @@ class LootRepr {
 public:
     LootRepr() = default;
 
-    explicit LootRepr(const app::Loot& loot)
-        : loot_type_id_(loot.GetLootTypeId()),
-        loot_position_(loot.GetLootPosition()),
-        loot_status_(loot.GetLootStatus()) {}
+    explicit LootRepr(const app::Loot& loot);
 
-    [[nodiscard]] app::Loot Restore() const {
-        app::Loot loot(loot_type_id_, loot_position_);
-        loot.SetLootStatus(loot_status_);
-        return loot;
-    }
+    [[nodiscard]] app::Loot Restore() const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -117,27 +110,9 @@ public:
 
     DogRepr() = default;
 
-    explicit DogRepr(const app::Dog& dog)
-        : id_(dog.GetId())
-        , name_(dog.GetName())
-        , pos_(dog.GetPosition())
-        , speed_(dog.GetSpeed())
-        , direction_(dog.GetDirection())
-        , score_(dog.GetScore())
-        , bag_content_(dog.GetLootsInBag()) {
-    }
+    explicit DogRepr(const app::Dog& dog);
 
-    [[nodiscard]] app::Dog Restore() const {
-        app::Dog dog{name_, id_};
-        dog.SetDogPosition(pos_);
-        dog.SetDogSpeed(speed_);
-        dog.SetDogDirection(direction_);
-        dog.AddScoreValue(score_);
-        for (const auto& item : bag_content_) {
-            dog.AddLoot(item);
-        }
-        return dog;
-    }
+    [[nodiscard]] app::Dog Restore() const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -187,30 +162,9 @@ class GameSessionRepr {
 public:
     GameSessionRepr() = default;
 
-    explicit GameSessionRepr(const model::GameSession& session)
-        : dogs_(session.GetDogs())
-        , map_id_(*session.GetMap()->GetId())
-        , loots_(session.GetLoots())
-        , dog_id_to_index_(session.GetDogIdToIndexMap())
-        , loot_to_id_(session.GetLootToIdMap()) {
-    }
+    explicit GameSessionRepr(const model::GameSession& session);
 
-    [[nodiscard]] model::GameSession Restore(const model::Game& game) const {
-        const auto map_ptr = game.FindMap(model::Map::Id(map_id_));
-        if (!map_ptr) {
-            throw std::invalid_argument("Invalid map id");
-        }
-        model::GameSession session(map_ptr);
-        for (const auto& dog : dogs_) {
-            session.AddDogPtr(dog);
-        }
-        for (const auto& loot : loots_) {
-            session.AddLoot(loot);
-        }
-        session.SetDogIdToIndexMap(dog_id_to_index_);
-        session.SetLootToIdMap(loot_to_id_);
-        return session;
-    }
+    [[nodiscard]] model::GameSession Restore(const model::Game& game) const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -240,20 +194,10 @@ public:
 
     GameSessionsRepr() = default;
 
-    explicit GameSessionsRepr(const model::Game& game) {
-        for (const auto& session : game.GetSessions()) {
-            sessions_.emplace_back(*session);
-        }
-    }
+    explicit GameSessionsRepr(const model::Game& game);
 
     // Восстанавливает вектор GameSession из представлений
-    [[nodiscard]] std::vector<std::shared_ptr<model::GameSession>> Restore(const model::Game& game) const {
-        std::vector<std::shared_ptr<model::GameSession>> sessions;
-        for (const auto& session_repr : sessions_) {
-            sessions.push_back(std::make_shared<model::GameSession>(session_repr.Restore(game)));
-        }
-        return sessions;
-    }
+    [[nodiscard]] std::vector<std::shared_ptr<model::GameSession>> Restore(const model::Game& game) const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned int version) {
@@ -268,14 +212,9 @@ class PlayerRepr {
 public:
     PlayerRepr() = default;
 
-    explicit PlayerRepr(const app::Player& player)
-        : dog_ptr_(player.GetDogPtr())
-        , session_repr_(GameSessionRepr(*player.GetSession())) {}
+    explicit PlayerRepr(const app::Player& player);
 
-    [[nodiscard]] app::Player Restore(const model::Game& game) const {
-        app::Player player(dog_ptr_, std::make_shared<model::GameSession>(session_repr_.Restore(game)));
-        return player;
-    }
+    [[nodiscard]] app::Player Restore(const model::Game& game) const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -292,23 +231,9 @@ class PlayersRepr {
 public:
     PlayersRepr() = default;
 
-    explicit PlayersRepr(const app::Players& players) {
-        for (const auto& player_ptr : players.GetPlayers()) {
-            players_repr_.emplace_back(*player_ptr);
-        }
-    }
+    explicit PlayersRepr(const app::Players& players);
 
-    [[nodiscard]] app::Players Restore(const model::Game& game) const {
-        app::Players players;
-
-        // Восстанавливаем вектор игроков
-        for (const auto& player_repr : players_repr_) {
-            const auto player = std::make_shared<app::Player>(player_repr.Restore(game));
-            players.AddPlayer(player->GetDogPtr(), player->GetSession());
-        }
-
-        return players;
-    }
+    [[nodiscard]] app::Players Restore(const model::Game& game) const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -323,20 +248,9 @@ class TokenToPlayer {
 public:
     TokenToPlayer() = default;
 
-    explicit TokenToPlayer(const app::PlayerTokens& player_tokens) {
-        for (const auto& [token, player_ptr] : player_tokens.GetTokens()) {
-            token_to_player_.emplace_back(*token, PlayerRepr(*player_ptr));
-        }
-    }
+    explicit TokenToPlayer(const app::PlayerTokens& player_tokens);
 
-    [[nodiscard]] app::PlayerTokens::TokenToPlayer Restore(const model::Game& game) const {
-        app::PlayerTokens::TokenToPlayer token_to_player;
-        for (const auto& [token_str, player_ptr] : token_to_player_) {
-            auto x = app::Token(token_str);
-            token_to_player[app::Token(token_str)] = std::make_shared<app::Player>(player_ptr.Restore(game));
-        }
-        return token_to_player;
-    }
+    [[nodiscard]] app::PlayerTokens::TokenToPlayer Restore(const model::Game& game) const;
 
     template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version) {
@@ -346,7 +260,5 @@ public:
 private:
     std::vector<std::pair<std::string, PlayerRepr>> token_to_player_;
 };
-
-/* Другие классы модели сериализуются и десериализуются похожим образом */
 
 }  // namespace serialization

@@ -11,7 +11,7 @@ find_package(Threads REQUIRED)
 
 add_library(game_model STATIC
 	src/geom.h
-	src/model_serialization.h
+	src/model_serialization.cpp
 	src/model.cpp
 	src/app.cpp
 	src/json_loader.cpp

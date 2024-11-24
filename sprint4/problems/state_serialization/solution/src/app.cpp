@@ -78,10 +78,7 @@ PlayerTokens::TokenToPlayer PlayerTokens::GetTokens() const {
     return token_to_player_;
 }
 
-void PlayerTokens::SetTokens(TokenToPlayer token_to_player) {
-    if (token_to_player.empty()) {
-        throw std::invalid_argument("token_to_player is empty");
-    }
+void PlayerTokens::SetTokenToPlayer(TokenToPlayer token_to_player) {
     token_to_player_ = std::move(token_to_player);
 }
 
@@ -187,7 +184,7 @@ void Application::SetPlayers(Players players) {
 }
 
 void Application::TokenToPlayer(PlayerTokens::TokenToPlayer token_to_player) {
-    player_tokens_.SetTokens(std::move(token_to_player));
+    player_tokens_.SetTokenToPlayer(std::move(token_to_player));
 }
 
 const PlayerTokens & Application::GetPlayerTokens() const {
