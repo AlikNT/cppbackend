@@ -46,6 +46,8 @@ private:
 class BookRepository {
 public:
     virtual void Save(const Book& book) = 0;
+    virtual std::vector<ui::detail::BookInfo> LoadAuthorBooks(const std::string &author_id) = 0;
+    virtual std::vector<ui::detail::BookInfo> LoadBooks() = 0;
 
 protected:
     ~BookRepository() = default;

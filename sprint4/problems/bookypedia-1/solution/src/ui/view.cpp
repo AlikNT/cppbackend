@@ -40,7 +40,7 @@ View::View(menu::Menu& menu, app::UseCases& use_cases, std::istream& input, std:
     , output_{output} {
     menu_.AddAction(  //
         "AddAuthor"s, "name"s, "Adds author"s, std::bind(&View::AddAuthor, this, ph::_1)
-        // либо
+        // пїЅпїЅпїЅпїЅ
         // [this](auto& cmd_input) { return AddAuthor(cmd_input); }
     );
     menu_.AddAction("AddBook"s, "<pub year> <title>"s, "Adds book"s,
@@ -66,7 +66,8 @@ bool View::AddAuthor(std::istream& cmd_input) const {
 bool View::AddBook(std::istream& cmd_input) const {
     try {
         if (auto params = GetBookParams(cmd_input)) {
-            assert(!"TODO: implement book adding");
+            // assert(!"TODO: implement book adding");
+            use_cases_.AddBook(domain::AuthorId::FromString(params->author_id), params->title, params->publication_year);
         }
     } catch (const std::exception&) {
         output_ << "Failed to add book"sv << std::endl;
@@ -139,21 +140,18 @@ std::optional<std::string> View::SelectAuthor() const {
 }
 
 std::vector<detail::AuthorInfo> View::GetAuthors() const {
-    std::vector<detail::AuthorInfo> dst_autors;
-    assert(!"TODO: implement GetAuthors()");
-    return dst_autors;
+    // assert(!"TODO: implement GetAuthors()");
+    return use_cases_.GetAuthors();
 }
 
 std::vector<detail::BookInfo> View::GetBooks() const {
-    std::vector<detail::BookInfo> books;
-    assert(!"TODO: implement GetBooks()");
-    return books;
+    // assert(!"TODO: implement GetBooks()");
+    return use_cases_.GetBooks();
 }
 
 std::vector<detail::BookInfo> View::GetAuthorBooks(const std::string& author_id) const {
-    std::vector<detail::BookInfo> books;
-    assert(!"TODO: implement GetAuthorBooks()");
-    return books;
+    // assert(!"TODO: implement GetAuthorBooks()");
+    return use_cases_.GetAuthorBooks(author_id);
 }
 
 }  // namespace ui

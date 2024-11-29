@@ -1,6 +1,7 @@
 #pragma once
 #include <pqxx/connection>
-#include <pqxx/transaction>
+// #include <pqxx/transaction>
+#include <pqxx/pqxx>
 
 #include "../domain/author.h"
 #include "../domain/book.h"
@@ -15,6 +16,8 @@ public:
 
     void Save(const domain::Author& author) override;
 
+    std::vector<ui::detail::AuthorInfo> LoadAuthors() override;
+
 private:
     pqxx::connection& connection_;
 };
@@ -26,6 +29,10 @@ public:
     }
 
     void Save(const domain::Book& book) override;
+
+    std::vector<ui::detail::BookInfo> LoadAuthorBooks(const std::string &author_id) override;
+
+    std::vector<ui::detail::BookInfo> LoadBooks() override;
 
 private:
     pqxx::connection& connection_;

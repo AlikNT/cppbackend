@@ -24,14 +24,45 @@ void AuthorRepositoryImpl::Save(const domain::Author& author) {
             work.commit();
 }
 
+std::vector<ui::detail::AuthorInfo> AuthorRepositoryImpl::LoadAuthors() {
+    std::vector<ui::detail::AuthorInfo> authors;
+    pqxx::read_transaction r(connection_);
+    auto query_text = "SELECT id, name FROM authors ORDER BY name;"_zv;
+    for (const auto& [id, name] : r.query<std::string, std::string>(query_text)) {
+        authors.emplace_back(id, name);
+    }
+    return authors;
+}
+
 void BookRepositoryImpl::Save(const domain::Book &book) {
     pqxx::work work{connection_};
     work.exec_params(
         R"(
-            INSERT INTO books (id, author_id, title, publicateion_year) VALUES ($1, $2, $3, $4)
+            INSERT INTO books (id, author_id, title, publication_year) VALUES ($1, $2, $3, $4)
             ON CONFLICT (id) DO UPDATE SET author_id=$2, title=$3, publication_year=$4;
         )"_zv,
             book.GetId().ToString(), book.GetAuthorId().ToString(), book.GetTitle(), book.GetPublicationYear());
+    work.commit();
+}
+
+std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std::string &author_id) {
+    std::vector<ui::detail::BookInfo> books;
+    pqxx::read_transaction r(connection_);
+    pqxx::result result = r.exec_params("SELECT title, publication_year FROM books WHERE id = $1 ORDER by publication_year, title;"_zv, author_id);
+    for (const auto& row : result) {
+        books.emplace_back(row[0].as<std::string>(), row[1].as<int>());
+    }
+    return books;
+}
+
+std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadBooks() {
+    std::vector<ui::detail::BookInfo> books;
+    pqxx::read_transaction r(connection_);
+    auto query_text = "SELECT title, publication_year FROM books ORDER by title;"_zv;
+    for (auto [title, publication_year] : r.query<std::string, int>(query_text)) {
+        books.emplace_back(title, publication_year);
+    }
+    return books;
 }
 
 Database::Database(pqxx::connection connection)
