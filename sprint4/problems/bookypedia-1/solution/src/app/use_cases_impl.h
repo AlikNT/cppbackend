@@ -12,7 +12,7 @@ public:
         , books_{books} {
     }
 
-    void AddAuthor(const std::string& name) override;
+    void AddAuthor(std::string name) override;
     void AddBook(domain::AuthorId author_id, std::string title, int publication_year) override;
 
     std::vector<ui::detail::AuthorInfo> GetAuthors() override;

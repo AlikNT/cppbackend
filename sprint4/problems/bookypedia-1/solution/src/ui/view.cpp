@@ -56,6 +56,10 @@ bool View::AddAuthor(std::istream& cmd_input) const {
         std::string name;
         std::getline(cmd_input, name);
         boost::algorithm::trim(name);
+        if (name.empty()) {
+            output_ << "Failed to add author"sv << std::endl;
+            return true;
+        }
         use_cases_.AddAuthor(std::move(name));
     } catch (const std::exception&) {
         output_ << "Failed to add author"sv << std::endl;
@@ -67,7 +71,7 @@ bool View::AddBook(std::istream& cmd_input) const {
     try {
         if (auto params = GetBookParams(cmd_input)) {
             // assert(!"TODO: implement book adding");
-            use_cases_.AddBook(domain::AuthorId::FromString(params->author_id), params->title, params->publication_year);
+            use_cases_.AddBook(domain::AuthorId::FromString(params->author_id), std::move(params->title), params->publication_year);
         }
     } catch (const std::exception&) {
         output_ << "Failed to add book"sv << std::endl;
@@ -89,7 +93,9 @@ bool View::ShowAuthorBooks() const {
     // TODO: handle error
     try {
         if (auto author_id = SelectAuthor()) {
-            PrintVector(output_, GetAuthorBooks(*author_id));
+            if (author_id) {
+                PrintVector(output_, GetAuthorBooks(*author_id));
+            }
         }
     } catch (const std::exception&) {
         throw std::runtime_error("Failed to Show Books");

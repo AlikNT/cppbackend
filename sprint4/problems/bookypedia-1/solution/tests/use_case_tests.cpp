@@ -12,6 +12,9 @@ struct MockAuthorRepository : domain::AuthorRepository {
     void Save(const domain::Author& author) override {
         saved_authors.emplace_back(author);
     }
+    std::vector<ui::detail::AuthorInfo> LoadAuthors() override {
+        return {};
+    }
 };
 
 struct MockBookRepository : domain::BookRepository {
@@ -19,6 +22,12 @@ struct MockBookRepository : domain::BookRepository {
 
     void Save(const domain::Book& book) override {
         saved_books.emplace_back(book);
+    }
+    std::vector<ui::detail::BookInfo> LoadAuthorBooks(const std::string &author_id) override {
+        return {};
+    }
+    std::vector<ui::detail::BookInfo> LoadBooks() override {
+        return {};
     }
 };
 

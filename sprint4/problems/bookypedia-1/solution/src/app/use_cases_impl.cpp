@@ -6,12 +6,12 @@
 namespace app {
 using namespace domain;
 
-void UseCasesImpl::AddAuthor(const std::string& name) {
-    authors_.Save({AuthorId::New(), name});
+void UseCasesImpl::AddAuthor(std::string name) {
+    authors_.Save({AuthorId::New(), std::move(name)});
 }
 
 void UseCasesImpl::AddBook(AuthorId author_id, std::string title, int publication_year) {
-    books_.Save({BookId::New(), author_id, title, publication_year});
+    books_.Save({BookId::New(), author_id, std::move(title), publication_year});
 }
 
 std::vector<ui::detail::AuthorInfo> UseCasesImpl::GetAuthors() {

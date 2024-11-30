@@ -15,6 +15,10 @@ void AuthorRepositoryImpl::Save(const domain::Author& author) {
     // запросов выполнить в рамках одной транзакции.
     // Вы также может самостоятельно почитать информацию про этот паттерн и применить его здесь.
     pqxx::work work{connection_};
+    pqxx::result result = work.exec_params("SELECT id FROM authors WHERE name=$1"_zv, author.GetName());
+    if (!result.empty()) {
+        throw std::runtime_error("Failed to add author");
+    }
     work.exec_params(
         R"(
             INSERT INTO authors (id, name) VALUES ($1, $2)
@@ -48,7 +52,7 @@ void BookRepositoryImpl::Save(const domain::Book &book) {
 std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std::string &author_id) {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
-    pqxx::result result = r.exec_params("SELECT title, publication_year FROM books WHERE id = $1 ORDER by publication_year, title;"_zv, author_id);
+    pqxx::result result = r.exec_params("SELECT title, publication_year FROM books WHERE author_id = $1 ORDER by publication_year, title;"_zv, author_id);
     for (const auto& row : result) {
         books.emplace_back(row[0].as<std::string>(), row[1].as<int>());
     }
@@ -59,7 +63,7 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadBooks() {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
     auto query_text = "SELECT title, publication_year FROM books ORDER by title;"_zv;
-    for (auto [title, publication_year] : r.query<std::string, int>(query_text)) {
+    for (const auto& [title, publication_year] : r.query<std::string, int>(query_text)) {
         books.emplace_back(title, publication_year);
     }
     return books;
@@ -80,7 +84,7 @@ Database::Database(pqxx::connection connection)
             id UUID CONSTRAINT book_id_constraint PRIMARY KEY,
             author_id UUID NOT NULL,
             title varchar(100) NOT NULL,
-            publication_year interger
+            publication_year integer
         );
     )"_zv);
     // коммитим изменения
