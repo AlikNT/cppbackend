@@ -13,6 +13,7 @@ public:
     }
 
     std::optional<std::string> AddAuthor(std::string name) override;
+    void DeleteAuthor(const std::string &name) override;
     void AddBook(const ui::detail::AddBookParams &book_params) override;
     std::vector<ui::detail::AuthorInfo> GetAuthors() override;
     std::optional<std::string> FindAuthorByName(const std::string& name) override;

@@ -9,14 +9,6 @@
 #include
 #include
 #include
-#include
-#include
-#include
-#include
-#include
-#include
-#include
-#include
 
 namespace postgres {
 
@@ -26,10 +18,11 @@ public:
         : connection_{connection} {
     }
 
-    void Save(const domain::Author& author, const std::shared_ptr<pqxx::work> transaction_ptr) override;
+    void Save(::std::string author_id, ::std::string name, std::shared_ptr<pqxx::work> transaction_ptr) override;
 
     std::vector<ui::detail::AuthorInfo> LoadAuthors() override;
     [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const;
+    void DeleteAuthor(const std::string& author_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -43,10 +36,10 @@ public:
 
     void Save(std::string book_id, std::string author_id, std::string title, int publication_year, std::shared_ptr<pqxx::work>
               transaction_ptr) override;
-
+    void DeleteBooksByAuthorId(const std::string &author_id, std::shared_ptr<pqxx::work> transaction_ptr) override;
     std::vector<ui::detail::BookInfo> LoadAuthorBooks(const std::string &author_id) override;
-
     std::vector<ui::detail::BookInfo> LoadBooks() override;
+    [[nodiscard]] std::vector<std::string> FindBooksIdByAuthorId(const std::string &author_id) const override;
 
 private:
     pqxx::connection& connection_;
@@ -58,6 +51,7 @@ public:
         : connection_{connection} {
     }
     void Save(std::string book_id, const std::set<std::string>& book_tags, std::shared_ptr<pqxx::work> transaction) override;
+    void DeleteTagsByBookId(const std::string& book_id, std::shared_ptr<pqxx::work> transaction_ptr) override;
 
 private:
     pqxx::connection& connection_;
@@ -97,9 +91,18 @@ public:
     BookRepositoryImpl& GetBooks() & {
         return book_repository_;
     }
-    void SaveAuthor(std::string name) {
+    void AddAuthor(std::string author_id, std::string name) {
         Start();
-        author_repository_.Save({domain::AuthorId::New(), std::move(name)}, transaction_ptr_);
+        author_repository_.Save(std::move(author_id), std::move(name), transaction_ptr_);
+        Commit();
+    }
+    void DeleteAuthor(const std::string& author_id) {
+        Start();
+        author_repository_.DeleteAuthor(author_id, transaction_ptr_);
+        for (const auto& book_id: book_repository_.FindBooksIdByAuthorId(author_id) {
+            tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+        }
+        book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
         Commit();
     }
     [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const {
@@ -110,6 +113,7 @@ public:
         auto book_id = domain::BookId::New();
         book_repository_.Save(book_id.ToString(), book_params.author_id, book_params.title, book_params.publication_year, transaction_ptr_);
         tag_repository_.Save(book_id.ToString(), book_params.tags, transaction_ptr_);
+        Commit();
     }
 
 private:

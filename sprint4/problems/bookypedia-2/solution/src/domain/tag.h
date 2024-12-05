@@ -4,6 +4,8 @@
 
 #include "author.h"
 #include "author.h"
+#include "author.h"
+#include "author.h"
 #include "../util/tagged_uuid.h"
 #include "book.h"
 
@@ -27,7 +29,8 @@ private:
 
 class TagRepository {
 public:
-    virtual void Save(std::string book_id, const std::set<std::string>& book_tags, std::shared_ptr<pqxx::work> transaction) = 0;
+    virtual void Save(std::string book_id, const std::set<std::string>& book_tags, std::shared_ptr<pqxx::work> transaction_ptr) = 0;
+    virtual void DeleteTagsByBookId(const std::string& book_id, std::shared_ptr<pqxx::work> transaction_ptr) = 0;
 protected:
     ~TagRepository() = default;
 };

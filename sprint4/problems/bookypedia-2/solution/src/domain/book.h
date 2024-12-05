@@ -6,6 +6,7 @@
 #include "author.h"
 #include "author.h"
 #include "author.h"
+#include "author.h"
 #include "../util/tagged_uuid.h"
 
 #include "author.h"
@@ -52,8 +53,10 @@ class BookRepository {
 public:
     virtual void Save(std::string book_id, std::string author_id, std::string title, int publication_year, std::shared_ptr<pqxx::work>
                       transaction_ptr) = 0;
+    virtual void DeleteBooksByAuthorId(const std::string &author_id, std::shared_ptr<pqxx::work> transaction_ptr) = 0;
     virtual std::vector<ui::detail::BookInfo> LoadAuthorBooks(const std::string &author_id) = 0;
     virtual std::vector<ui::detail::BookInfo> LoadBooks() = 0;
+    [[nodiscard]] virtual std::vector<std::string> FindBooksIdByAuthorId(const std::string &author_id) const = 0;
 
 protected:
     ~BookRepository() = default;

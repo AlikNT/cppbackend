@@ -8,12 +8,17 @@ using namespace domain;
 
 std::optional<std::string> UseCasesImpl::AddAuthor(std::string name) {
     auto author_id  = AuthorId::New();
-    author_repository_.Save({AuthorId::New(), std::move(name)});
-    return author_id;
+    unit_of_work_.AddAuthor(author_id.ToString(), std::move(name));
+    return author_id.ToString();
+}
+
+void UseCasesImpl::DeleteAuthor(const std::string &name) {
+    unit_of_work_.DeleteAuthor(name);
 }
 
 void UseCasesImpl::AddBook(const ui::detail::AddBookParams &book_params) {
     unit_of_work_.AddBook(book_params);
+}
 
 std::vector<ui::detail::AuthorInfo> UseCasesImpl::GetAuthors() {
     return author_repository_.LoadAuthors();

@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "../app/use_cases.h"
+#include "../domain/author_fwd.h"
 #include "../menu/menu.h"
 
 using namespace std::literals;
@@ -39,9 +40,8 @@ Actions::Actions(menu::Menu& menu, app::UseCases& use_cases, std::istream& input
     , use_cases_{use_cases}
     , input_{input}
     , output_{output} {
-    menu_.AddAction(  //
-        "AddAuthor"s, "name"s, "Adds author"s, std::bind(&Actions::AddAuthor, this, ph::_1)
-    );
+    menu_.AddAction("AddAuthor"s, "name"s, "Adds author"s, std::bind(&Actions::AddAuthor, this, ph::_1));
+    menu_.AddAction("DeleteAuthor"s, "name"s, "Deletes author"s, std::bind(&Actions::DeleteAuthor, this, ph::_1));
     menu_.AddAction("AddBook"s, "<pub year> <title>"s, "Adds book"s,
                     std::bind(&Actions::AddBook, this, ph::_1));
     menu_.AddAction("ShowAuthors"s, {}, "Show authors"s, std::bind(&Actions::ShowAuthors, this));
@@ -62,6 +62,33 @@ bool Actions::AddAuthor(std::istream& cmd_input) const {
         use_cases_.AddAuthor(std::move(name));
     } catch (const std::exception&) {
         output_ << "Failed to add author"sv << std::endl;
+    }
+    return true;
+}
+
+bool Actions::DeleteAuthor(std::istream &cmd_input) const {
+    try {
+        std::string name;
+        std::getline(cmd_input, name);
+        boost::algorithm::trim(name);
+        std::optional<std::string> author_id;
+        if (name.empty()) {
+            author_id = SelectAuthor();
+            if (!author_id.has_value()) {
+                output_ << "Failed to delete author"sv << std::endl;
+                return true;
+            }
+            use_cases_.DeleteAuthor(author_id.value());
+            return true;
+        }
+        author_id = FindAuthorByName(name);
+        if (!author_id.has_value()) {
+            output_ << "Failed to delete author"sv << std::endl;
+            return true;
+        }
+        use_cases_.DeleteAuthor(author_id.value());
+    } catch (const std::exception&) {
+        output_ << "Failed to delete author"sv << std::endl;
     }
     return true;
 }
@@ -153,7 +180,6 @@ std::optional<std::string> Actions::SelectAuthorByName(const std::string &name) 
     std::string str;
     input_ >> str;
     if (str != "y" && str != "Y") {
-        // output_ << "Failed to add book" << std::endl;
         return std::nullopt;
     }
     return use_cases_.AddAuthor(name);

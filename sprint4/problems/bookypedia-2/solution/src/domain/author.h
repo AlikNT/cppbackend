@@ -6,6 +6,8 @@
 #include "author.h"
 #include "author.h"
 #include "author.h"
+#include "author.h"
+#include "author.h"
 #include "../util/tagged_uuid.h"
 #include "../ui/actions.h"
 
@@ -18,7 +20,7 @@ struct AuthorTag {};
 
 using AuthorId = util::TaggedUUID<detail::AuthorTag>;
 
-class Author {
+/*class Author {
 public:
     Author(AuthorId id, std::string name)
         : id_(std::move(id))
@@ -36,11 +38,11 @@ public:
 private:
     AuthorId id_;
     std::string name_;
-};
+};*/
 
 class AuthorRepository {
 public:
-    virtual void Save(const Author& author, std::shared_ptr<pqxx::work> transaction_ptr) = 0;
+    virtual void Save(::std::string author_id, ::std::string name, std::shared_ptr<pqxx::work> transaction_ptr) = 0;
     virtual std::vector<ui::detail::AuthorInfo> LoadAuthors() = 0;
 
 protected:

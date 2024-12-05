@@ -9,6 +9,8 @@
 #include
 #include
 #include
+#include
+#include
 #include 
 #include 
 #include 
@@ -18,7 +20,7 @@ namespace {
 struct MockAuthorRepository : domain::AuthorRepository {
     std::vector<domain::Author> saved_authors;
 
-    void Save(const domain::Author& author, const std::shared_ptr<pqxx::work> transaction_ptr) override {
+    void Save(::std::string author_id, ::std::string name, const std::shared_ptr<pqxx::work> transaction_ptr) override {
         saved_authors.emplace_back(author);
     }
     std::vector<ui::detail::AuthorInfo> LoadAuthors() override {
