@@ -39,4 +39,12 @@ std::vector<ui::detail::BookInfo> UseCasesImpl::GetAuthorBooks(const std::string
 std::vector<ui::detail::BookInfo> UseCasesImpl::GetBooks() {
     return book_repository_.LoadBooks();
 }
+
+std::vector<ui::detail::BookInfo> UseCasesImpl::FindBooksByTitle(const std::string &title) {
+    return unit_of_work_.FindBooksByTitle(title);
+}
+
+std::vector<std::string> UseCasesImpl::GetTagsByBookId(const std::string &book_id) {
+    return unit_of_work_.GetTagsByBookId(book_id);
+}
 }  // namespace app

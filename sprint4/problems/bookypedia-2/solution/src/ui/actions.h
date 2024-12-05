@@ -30,6 +30,7 @@ struct AuthorInfo {
 };
 
 struct BookInfo {
+    std::string id;
     std::string title;
     int publication_year;
     std::string author_name;
@@ -48,26 +49,29 @@ private:
     bool AddBook(std::istream& cmd_input) const;
     bool ShowAuthors() const;
     bool ShowBooks() const;
+    bool ShowBook(std::istream &cmd_input) const;
     bool ShowAuthorBooks() const;
 
     std::optional<detail::AddBookParams> GetBookParams(std::istream& cmd_input) const;
-
-    std::optional<detail::AuthorInfo> SelectAuthorFromList() const;
-
-    std::optional<detail::AuthorInfo> SelectAuthorByName(const std::string &name) const;
-
-    std::optional<detail::AuthorInfo> SelectAuthor() const;
+    [[nodiscard]] std::optional<detail::AuthorInfo> SelectAuthorFromList() const;
+    [[nodiscard]] std::optional<detail::AuthorInfo> SelectAuthorByName(const std::string &name) const;
+    [[nodiscard]] std::optional<detail::AuthorInfo> SelectAuthor() const;
     static std::string NormalizeTag(const std::string &tag);
     [[nodiscard]] std::set<std::string> SelectTags() const;
-    std::vector<detail::AuthorInfo> GetAuthors() const;
-    std::optional<std::string> FindAuthorByName(const std::string &name) const;
-    std::vector<detail::BookInfo> GetBooks() const;
-    std::vector<detail::BookInfo> GetAuthorBooks(const std::string& author_id) const;
+    [[nodiscard]] std::vector<detail::AuthorInfo> GetAuthors() const;
+    [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string &name) const;
+    [[nodiscard]] std::vector<detail::BookInfo> GetBooks() const;
+    [[nodiscard]] std::vector<detail::BookInfo> GetAuthorBooks(const std::string& author_id) const;
+    [[nodiscard]] std::vector<detail::BookInfo> FindBooksByTitle(const std::string& title) const;
+    [[nodiscard]] std::optional<detail::BookInfo> SelectBookFromList() const;
+    void PrintBook(const detail::BookInfo& book_info) const;
+    void PrintBookTags(const std::string& book_id) const;
 
     menu::Menu& menu_;
     app::UseCases& use_cases_;
     std::istream& input_;
     std::ostream& output_;
 };
+
 
 }  // namespace ui

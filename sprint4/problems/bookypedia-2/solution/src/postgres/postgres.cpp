@@ -4,9 +4,6 @@
 
 #include "../domain/book.h"
 
-#include
-#include
-
 namespace postgres {
 
 using namespace std::literals;
@@ -117,9 +114,25 @@ std::vector<std::string> BookRepositoryImpl::FindBooksIdByAuthorId(const std::st
     return book_ids;
 }
 
+std::vector<ui::detail::BookInfo> BookRepositoryImpl::FindBooksByTitle(const std::string &title) const {
+    std::vector<ui::detail::BookInfo> books;
+    pqxx::read_transaction r(connection_);
+    const pqxx::result result = r.exec_params(
+        R"(
+            SELECT books.id, books.title, books.publication_year, authors.name
+            FROM books JOIN authors ON books.author_id = authors.id
+            WHERE book.title = $1;
+        )"_zv, title
+    );
+    for (const auto& row : result) {
+        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>,  row[1].as<int>(), row[2].as<std::string>());
+    }
+    return books;
+}
+
 void TagRepositoryImpl::Save(std::string book_id, const std::set<std::string>& book_tags, const std::shared_ptr<pqxx::work> transaction_ptr) {
     for (const auto& book_tag : book_tags) {
-        transaction_ptr->exec_params(R"(INSERT INTO tags (book_id, tag) VALUES ($1, $2);)"_zv, std::move(book_id), book_tag);
+        transaction->exec_params(R"(INSERT INTO tags (book_id, tag) VALUES ($1, $2);)"_zv, std::move(book_id), book_tag);
     }
 }
 
@@ -129,6 +142,102 @@ void TagRepositoryImpl::DeleteTagsByBookId(const std::string &book_id, const std
             DELETE FROM tags WHERE book_id = $1;
         )"_zv, book_id
     );
+}
+
+std::vector<std::string> TagRepositoryImpl::LoadTagsByBookId(const std::string &book_id) {
+    std::vector<std::string> tags;
+    pqxx::read_transaction r(connection_);
+    const pqxx::result result = r.exec_params(
+        R"(
+            SELECT tag FROM book_tags WHERE book_id = $1;
+        )"_zv, book_id
+    );
+    for (const auto& row : result) {
+        tags.emplace_back(row["tag"].as<std::string>());
+    }
+    return tags;
+}
+
+UnitOfWork::UnitOfWork(pqxx::connection &connection)
+    : connection_{connection} {
+}
+
+void UnitOfWork::Start() {
+    if (transaction_ptr_) {
+        throw std::runtime_error("A transaction is already active.");
+    }
+    transaction_ptr_ = std::make_unique<pqxx::work>(connection_);
+}
+
+void UnitOfWork::Commit() {
+    if (!transaction_ptr_) {
+        throw std::runtime_error("No active transaction to commit.");
+    }
+    transaction_ptr_->commit();
+    transaction_ptr_.reset();
+}
+
+void UnitOfWork::Rollback() {
+    if (!transaction_ptr_) {
+        throw std::runtime_error("No active transaction to rollback.");
+    }
+    transaction_ptr_->abort();
+    transaction_ptr_.reset();
+}
+
+bool UnitOfWork::isActive() const {
+    return transaction_ptr_ != nullptr;
+}
+
+AuthorRepositoryImpl & UnitOfWork::GetAuthors() & {
+    return author_repository_;
+}
+
+BookRepositoryImpl & UnitOfWork::GetBooks() & {
+    return book_repository_;
+}
+
+void UnitOfWork::AddAuthor(std::string author_id, std::string name) {
+    Start();
+    author_repository_.Save(std::move(author_id), std::move(name), transaction_ptr_);
+    Commit();
+}
+
+void UnitOfWork::DeleteAuthor(const std::string &author_id) {
+    Start();
+    author_repository_.DeleteAuthor(author_id, transaction_ptr_);
+    for (const auto& book_id: book_repository_.FindBooksIdByAuthorId(author_id) {
+        tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+    }
+    book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
+    Commit();
+}
+
+void UnitOfWork::EditAuthor(const std::string &author_id, const std::string &name) {
+    Start();
+    author_repository_.EditAuthor(author_id, name, transaction_ptr_);
+    Commit();
+}
+
+std::optional<std::string> UnitOfWork::FindAuthorByName(const std::string &name) const {
+    return author_repository_.FindAuthorByName(name);
+}
+
+void UnitOfWork::AddBook(const ui::detail::AddBookParams &book_params) {
+    Start();
+    const auto book_id = domain::BookId::New();
+    book_repository_.Save(book_id.ToString(), book_params.author_id, book_params.title, book_params.publication_year, transaction_ptr_);
+    tag_repository_.Save(book_id.ToString(), book_params.tags, transaction_ptr_);
+    Commit();
+}
+
+
+std::vector<std::string> UnitOfWork::GetTagsByBookId(const std::string &book_id) {
+    return tag_repository_.LoadTagsByBookId(book_id);
+}
+
+std::vector<ui::detail::BookInfo> UnitOfWork::FindBooksByTitle(const std::string &title) {
+    return book_repository_.FindBooksByTitle(title);
 }
 
 Database::Database(pqxx::connection connection)
@@ -159,4 +268,11 @@ Database::Database(pqxx::connection connection)
     work.commit();
 }
 
+AuthorRepositoryImpl & Database::GetAuthors() & {
+    return unit_of_work_.GetAuthors();
+}
+
+BookRepositoryImpl & Database::GetBooks() & {
+    return unit_of_work_.GetBooks();
+}
 }  // namespace postgres

@@ -17,6 +17,8 @@ public:
     virtual std::optional<std::string> FindAuthorByName(const std::string& name) = 0;
     virtual std::vector<ui::detail::BookInfo> GetAuthorBooks(const std::string &author_id) = 0;
     virtual std::vector<ui::detail::BookInfo> GetBooks() = 0;
+    virtual std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string &title) = 0;
+    virtual std::vector<std::string> GetTagsByBookId(const std::string& book_id) = 0;
 
 protected:
     ~UseCases() = default;
