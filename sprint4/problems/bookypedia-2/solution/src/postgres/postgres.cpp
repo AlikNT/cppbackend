@@ -83,9 +83,16 @@ void BookRepositoryImpl::DeleteBooksByAuthorId(const std::string &author_id, con
 std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std::string &author_id) {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
-    pqxx::result result = r.exec_params("SELECT title, publication_year FROM books WHERE author_id = $1 ORDER by publication_year, title;"_zv, author_id);
+    pqxx::result result = r.exec_params(
+        R"(
+            SELECT books.title, books.publication_year, authors.name
+            FROM books JOIN authors ON authors.id = books.author_id
+            WHERE books.author_id = $1
+            ORDER by books.title, authors.name, publication_year;
+        )"_zv, author_id
+    );
     for (const auto& row : result) {
-        books.emplace_back(row[0].as<std::string>(), row[1].as<int>());
+        books.emplace_back(row[0].as<std::string>(), row[1].as<int>(), row[2].as<std::string>());
     }
     return books;
 }
@@ -93,9 +100,9 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std:
 std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadBooks() {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
-    auto query_text = "SELECT title, publication_year FROM books ORDER by title;"_zv;
-    for (const auto& [title, publication_year] : r.query<std::string, int>(query_text)) {
-        books.emplace_back(title, publication_year);
+    auto query_text = "SELECT books.title, books.publication_year, authors.name FROM books JOIN authors ON books.author_id = authors.id ORDER by title;"_zv;
+    for (const auto& [title, publication_year, name] : r.query<std::string, int, std::string>(query_text)) {
+        books.emplace_back(title, publication_year, name);
     }
     return books;
 }

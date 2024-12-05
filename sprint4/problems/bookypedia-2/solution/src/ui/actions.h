@@ -32,6 +32,7 @@ struct AuthorInfo {
 struct BookInfo {
     std::string title;
     int publication_year;
+    std::string author_name;
 };
 
 }  // namespace detail
