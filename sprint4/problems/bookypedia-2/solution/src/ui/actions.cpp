@@ -48,8 +48,8 @@ Actions::Actions(menu::Menu& menu, app::UseCases& use_cases, std::istream& input
     menu_.AddAction("ShowAuthors"s, {}, "Show authors"s, std::bind(&Actions::ShowAuthors, this));
     menu_.AddAction("ShowBooks"s, {}, "Show books"s, std::bind(&Actions::ShowBooks, this));
     menu_.AddAction("ShowBook"s, "title"s, "Show detail info of the book"s, std::bind(&Actions::ShowBook, this, ph::_1));
-    menu_.AddAction("ShowAuthorBooks"s, {}, "Show author books"s,
-                    std::bind(&Actions::ShowAuthorBooks, this));
+    menu_.AddAction("DeleteBook"s, "title"s, "Deletes book"s, std::bind(&Actions::DeleteBook, this, ph::_1));
+    menu_.AddAction("ShowAuthorBooks"s, {}, "Show author books"s, std::bind(&Actions::ShowAuthorBooks, this));
 }
 
 bool Actions::AddAuthor(std::istream& cmd_input) const {
@@ -143,31 +143,71 @@ bool Actions::ShowBooks() const {
 
 bool Actions::ShowBook(std::istream &cmd_input) const {
     try {
-        std::string name;
-        std::getline(cmd_input, name);
-        boost::algorithm::trim(name);
-        std::optional<detail::BookInfo> book_info;
-        if (name.empty()) {
-            book_info = SelectBookFromList();
+        std::string title;
+        std::getline(cmd_input, title);
+        boost::algorithm::trim(title);
+        if (title.empty()) {
+            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
             if (!book_info.has_value()) {
                 return true;
             }
-        } else {
-            std::vector<ui::detail::BookInfo> books = FindBooksByTitle(name);
+            PrintBookFull(book_info.value());
+            return true;
         }
-        PrintBook(book_info.value());
-        PrintBookTags(book_info.value().id);
-        return true;
+        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+        if (books.empty()) {
+            return true;
+        }
+        std::optional<detail::BookInfo> book_info;
+        if (books.size() == 1) {
+            book_info = books.front();
+        } else {
+            book_info = SelectBookFromList(books);
+        }
+        PrintBookFull(book_info.value());
     } catch (std::exception&) {
         throw std::runtime_error("Failed to show books");
     }
+    return true;
+}
+
+bool Actions::DeleteBook(std::istream &cmd_input) const {
+    try {
+        std::string title;
+        std::getline(cmd_input, title);
+        boost::algorithm::trim(title);
+        if (title.empty()) {
+            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
+            if (!book_info.has_value()) {
+                output_ << "Failed to delete book"sv << std::endl;
+                return true;
+            }
+            use_cases_.DeleteBook(book_info.value().id);
+            return true;
+        }
+        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+        if (books.empty()) {
+            output_ << "Failed to delete book"sv << std::endl;
+            return true;
+        }
+        std::optional<detail::BookInfo> book_info;
+        if (books.size() == 1) {
+            book_info = books.front();
+        } else {
+            book_info = SelectBookFromList(books);
+        }
+        use_cases_.DeleteBook(book_info.value().id);
+    } catch (std::exception&) {
+        output_ << "Failed to delete book"sv << std::endl;
+    }
+    return true;
 }
 
 bool Actions::ShowAuthorBooks() const {
     try {
-        if (auto author_id = SelectAuthor()) {
-            if (author_id) {
-                PrintVector(output_, GetAuthorBooks(*author_id));
+        if (auto author_info = SelectAuthor()) {
+            if (author_info) {
+                PrintVector(output_, GetAuthorBooks(author_info.value().id));
             }
         }
     } catch (const std::exception&) {
@@ -183,11 +223,11 @@ std::optional<detail::AddBookParams> Actions::GetBookParams(std::istream& cmd_in
     std::getline(cmd_input, params.title);
     boost::algorithm::trim(params.title);
 
-    auto author_id = SelectAuthor();
-    if (not author_id.has_value())
+    auto author_info = SelectAuthor();
+    if (not author_info.has_value())
         return std::nullopt;
     else {
-        params.author_id = author_id.value();
+        params.author_id = author_info.value().id;
     }
     params.tags = SelectTags();
     return params;
@@ -293,8 +333,12 @@ std::vector<detail::BookInfo> Actions::FindBooksByTitle(const std::string &title
     return use_cases_.FindBooksByTitle(title);
 }
 
+
 std::optional<detail::BookInfo> Actions::SelectBookFromList() const {
-    auto books = GetBooks();
+    return SelectBookFromList(GetBooks());
+}
+
+std::optional<detail::BookInfo> Actions::SelectBookFromList(const std::vector<detail::BookInfo> &books) const {
     PrintVector(output_, books);
     output_ << "Enter book # or empty line to cancel" << std::endl;
 
@@ -335,6 +379,11 @@ void Actions::PrintBookTags(const std::string &book_id) const {
         }
     }
     output_ << std::endl;
+}
+
+void Actions::PrintBookFull(const detail::BookInfo &book_info) const {
+    PrintBook(book_info);
+    PrintBookTags(book_info.id);
 }
 
 }  // namespace ui

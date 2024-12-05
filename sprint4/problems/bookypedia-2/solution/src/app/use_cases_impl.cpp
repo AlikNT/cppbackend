@@ -25,7 +25,7 @@ void UseCasesImpl::AddBook(const ui::detail::AddBookParams &book_params) {
 }
 
 std::vector<ui::detail::AuthorInfo> UseCasesImpl::GetAuthors() {
-    return author_repository_.LoadAuthors();
+    return unit_of_work_.GetAuthors();
 }
 
 std::optional<std::string> UseCasesImpl::FindAuthorByName(const std::string &name) {
@@ -33,11 +33,11 @@ std::optional<std::string> UseCasesImpl::FindAuthorByName(const std::string &nam
 }
 
 std::vector<ui::detail::BookInfo> UseCasesImpl::GetAuthorBooks(const std::string &author_id) {
-    return book_repository_.LoadAuthorBooks(author_id);
+    return unit_of_work_.GetAuthorBooks(author_id);
 }
 
 std::vector<ui::detail::BookInfo> UseCasesImpl::GetBooks() {
-    return book_repository_.LoadBooks();
+    return unit_of_work_.GetBooks();
 }
 
 std::vector<ui::detail::BookInfo> UseCasesImpl::FindBooksByTitle(const std::string &title) {
@@ -46,5 +46,9 @@ std::vector<ui::detail::BookInfo> UseCasesImpl::FindBooksByTitle(const std::stri
 
 std::vector<std::string> UseCasesImpl::GetTagsByBookId(const std::string &book_id) {
     return unit_of_work_.GetTagsByBookId(book_id);
+}
+
+void UseCasesImpl::DeleteBook(const std::string &book_id) {
+    unit_of_work_.DeleteBook(book_id);
 }
 }  // namespace app

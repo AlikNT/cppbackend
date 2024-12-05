@@ -19,6 +19,7 @@ public:
     virtual std::vector<ui::detail::BookInfo> GetBooks() = 0;
     virtual std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string &title) = 0;
     virtual std::vector<std::string> GetTagsByBookId(const std::string& book_id) = 0;
+    virtual void DeleteBook(const std::string &book_id) = 0;
 
 protected:
     ~UseCases() = default;

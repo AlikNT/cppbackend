@@ -36,6 +36,7 @@ public:
     std::vector<ui::detail::BookInfo> LoadBooks() override;
     [[nodiscard]] std::vector<std::string> FindBooksIdByAuthorId(const std::string &author_id) const override;
     [[nodiscard]] std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string& title) const;
+    void DeleteBook(const std::string& book_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -64,8 +65,10 @@ public:
     void Rollback();
     [[nodiscard]] bool isActive() const;
 
-    AuthorRepositoryImpl& GetAuthors() &;
-    BookRepositoryImpl& GetBooks() &;
+    AuthorRepositoryImpl& GetAuthorsRepository() &;
+    BookRepositoryImpl& GetBooksRepository() &;
+    std::vector<ui::detail::AuthorInfo> GetAuthors();
+    std::vector<ui::detail::BookInfo> GetBooks();
     void AddAuthor(std::string author_id, std::string name);
     void DeleteAuthor(const std::string& author_id);
     void EditAuthor(const std::string& author_id, const std::string &name);
@@ -73,6 +76,8 @@ public:
     void AddBook(const ui::detail::AddBookParams& book_params);
     std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string& title);
     std::vector<std::string> GetTagsByBookId(const std::string& book_id);
+    void DeleteBook(const std::string& book_id);
+    std::vector<ui::detail::BookInfo> GetAuthorBooks(const std::string& author_id);
 
 private:
     pqxx::connection& connection_;
@@ -81,6 +86,7 @@ private:
     TagRepositoryImpl tag_repository_{connection_};
     std::shared_ptr<pqxx::work> transaction_ptr_ = nullptr;
 };
+
 
 
 

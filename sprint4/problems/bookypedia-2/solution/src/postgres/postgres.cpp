@@ -82,14 +82,14 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std:
     pqxx::read_transaction r(connection_);
     pqxx::result result = r.exec_params(
         R"(
-            SELECT books.title, books.publication_year, authors.name
+            SELECT books.id, books.title, books.publication_year, authors.name
             FROM books JOIN authors ON authors.id = books.author_id
             WHERE books.author_id = $1
             ORDER by books.title, authors.name, publication_year;
         )"_zv, author_id
     );
     for (const auto& row : result) {
-        books.emplace_back(row[0].as<std::string>(), row[1].as<int>(), row[2].as<std::string>());
+        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>, row[2].as<int>(), row[3].as<std::string>());
     }
     return books;
 }
@@ -97,9 +97,9 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std:
 std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadBooks() {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
-    auto query_text = "SELECT books.title, books.publication_year, authors.name FROM books JOIN authors ON books.author_id = authors.id ORDER by title;"_zv;
-    for (const auto& [title, publication_year, name] : r.query<std::string, int, std::string>(query_text)) {
-        books.emplace_back(title, publication_year, name);
+    auto query_text = "SELECT books.id, books.title, books.publication_year, authors.name FROM books JOIN authors ON books.author_id = authors.id ORDER by title;"_zv;
+    for (const auto& [id, title, publication_year, name] : r.query<std::string, std::string, int, std::string>(query_text)) {
+        books.emplace_back(id, title, publication_year, name);
     }
     return books;
 }
@@ -130,9 +130,17 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::FindBooksByTitle(const std
     return books;
 }
 
+void BookRepositoryImpl::DeleteBook(const std::string &book_id, const std::shared_ptr<pqxx::work> &transaction_ptr) {
+    transaction_ptr->exec_params(
+        R"(
+            DELETE FROM books WHERE id = $1;
+        )"_zv, book_id
+    );
+}
+
 void TagRepositoryImpl::Save(std::string book_id, const std::set<std::string>& book_tags, const std::shared_ptr<pqxx::work> transaction_ptr) {
     for (const auto& book_tag : book_tags) {
-        transaction->exec_params(R"(INSERT INTO tags (book_id, tag) VALUES ($1, $2);)"_zv, std::move(book_id), book_tag);
+        transaction_ptr->exec_params(R"(INSERT INTO tags (book_id, tag) VALUES ($1, $2);)"_zv, std::move(book_id), book_tag);
     }
 }
 
@@ -189,12 +197,24 @@ bool UnitOfWork::isActive() const {
     return transaction_ptr_ != nullptr;
 }
 
-AuthorRepositoryImpl & UnitOfWork::GetAuthors() & {
+AuthorRepositoryImpl & UnitOfWork::GetAuthorsRepository() & {
     return author_repository_;
 }
 
-BookRepositoryImpl & UnitOfWork::GetBooks() & {
+BookRepositoryImpl & UnitOfWork::GetBooksRepository() & {
     return book_repository_;
+}
+
+std::vector<ui::detail::AuthorInfo> UnitOfWork::GetAuthors() {
+    return author_repository_.LoadAuthors();
+}
+
+std::vector<ui::detail::BookInfo> UnitOfWork::GetBooks() {
+    return book_repository_.LoadBooks();
+}
+
+std::vector<ui::detail::BookInfo> UnitOfWork::GetAuthorBooks(const std::string &author_id) {
+    return book_repository_.LoadAuthorBooks(author_id);
 }
 
 void UnitOfWork::AddAuthor(std::string author_id, std::string name) {
@@ -206,7 +226,7 @@ void UnitOfWork::AddAuthor(std::string author_id, std::string name) {
 void UnitOfWork::DeleteAuthor(const std::string &author_id) {
     Start();
     author_repository_.DeleteAuthor(author_id, transaction_ptr_);
-    for (const auto& book_id: book_repository_.FindBooksIdByAuthorId(author_id) {
+    for (const auto& book_id: book_repository_.FindBooksIdByAuthorId(author_id)) {
         tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
     }
     book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
@@ -234,6 +254,13 @@ void UnitOfWork::AddBook(const ui::detail::AddBookParams &book_params) {
 
 std::vector<std::string> UnitOfWork::GetTagsByBookId(const std::string &book_id) {
     return tag_repository_.LoadTagsByBookId(book_id);
+}
+
+void UnitOfWork::DeleteBook(const std::string &book_id) {
+    Start();
+    book_repository_.DeleteBook(book_id, transaction_ptr_);
+    tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+    Commit();
 }
 
 std::vector<ui::detail::BookInfo> UnitOfWork::FindBooksByTitle(const std::string &title) {
@@ -269,10 +296,10 @@ Database::Database(pqxx::connection connection)
 }
 
 AuthorRepositoryImpl & Database::GetAuthors() & {
-    return unit_of_work_.GetAuthors();
+    return unit_of_work_.GetAuthorsRepository();
 }
 
 BookRepositoryImpl & Database::GetBooks() & {
-    return unit_of_work_.GetBooks();
+    return unit_of_work_.GetBooksRepository();
 }
 }  // namespace postgres

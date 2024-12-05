@@ -20,7 +20,7 @@ struct AuthorTag {};
 
 using AuthorId = util::TaggedUUID<detail::AuthorTag>;
 
-/*class Author {
+class Author {
 public:
     Author(AuthorId id, std::string name)
         : id_(std::move(id))
@@ -38,7 +38,7 @@ public:
 private:
     AuthorId id_;
     std::string name_;
-};*/
+};
 
 class AuthorRepository {
 public:

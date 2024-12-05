@@ -50,6 +50,7 @@ private:
     bool ShowAuthors() const;
     bool ShowBooks() const;
     bool ShowBook(std::istream &cmd_input) const;
+    bool DeleteBook(std::istream &cmd_input) const;
     bool ShowAuthorBooks() const;
 
     std::optional<detail::AddBookParams> GetBookParams(std::istream& cmd_input) const;
@@ -63,9 +64,11 @@ private:
     [[nodiscard]] std::vector<detail::BookInfo> GetBooks() const;
     [[nodiscard]] std::vector<detail::BookInfo> GetAuthorBooks(const std::string& author_id) const;
     [[nodiscard]] std::vector<detail::BookInfo> FindBooksByTitle(const std::string& title) const;
+    [[nodiscard]] std::optional<detail::BookInfo> SelectBookFromList(const std::vector<detail::BookInfo>& books) const;
     [[nodiscard]] std::optional<detail::BookInfo> SelectBookFromList() const;
     void PrintBook(const detail::BookInfo& book_info) const;
     void PrintBookTags(const std::string& book_id) const;
+    void PrintBookFull(const detail::BookInfo& book_info) const;
 
     menu::Menu& menu_;
     app::UseCases& use_cases_;

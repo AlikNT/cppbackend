@@ -22,6 +22,7 @@ public:
     std::vector<ui::detail::BookInfo> GetBooks() override;
     std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string &title) override;
     std::vector<std::string> GetTagsByBookId(const std::string& book_id) override;
+    void DeleteBook(const std::string &book_id) override;
 
 private:
     postgres::UnitOfWork& unit_of_work_;

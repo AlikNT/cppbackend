@@ -4,17 +4,6 @@
 #include "../src/domain/author.h"
 #include "../src/domain/book.h"
 
-#include
-#include
-#include
-#include
-#include
-#include
-#include
-#include 
-#include 
-#include 
-
 namespace {
 
 struct MockAuthorRepository : domain::AuthorRepository {
