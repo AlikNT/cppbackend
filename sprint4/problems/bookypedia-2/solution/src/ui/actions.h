@@ -43,15 +43,19 @@ public:
 private:
     bool AddAuthor(std::istream& cmd_input) const;
     bool DeleteAuthor(std::istream& cmd_input) const;
+    bool EditAuthor(std::istream& cmd_input) const;
     bool AddBook(std::istream& cmd_input) const;
     bool ShowAuthors() const;
     bool ShowBooks() const;
     bool ShowAuthorBooks() const;
 
     std::optional<detail::AddBookParams> GetBookParams(std::istream& cmd_input) const;
-    std::optional<std::string> SelectAuthorFromList() const;
-    std::optional<std::string> SelectAuthorByName(const std::string &name) const;
-    std::optional<std::string> SelectAuthor() const;
+
+    std::optional<detail::AuthorInfo> SelectAuthorFromList() const;
+
+    std::optional<detail::AuthorInfo> SelectAuthorByName(const std::string &name) const;
+
+    std::optional<detail::AuthorInfo> SelectAuthor() const;
     static std::string NormalizeTag(const std::string &tag);
     [[nodiscard]] std::set<std::string> SelectTags() const;
     std::vector<detail::AuthorInfo> GetAuthors() const;

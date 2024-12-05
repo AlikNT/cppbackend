@@ -56,6 +56,12 @@ void AuthorRepositoryImpl::DeleteAuthor(const std::string& author_id, const std:
     );
 }
 
+void AuthorRepositoryImpl::EditAuthor(const std::string &author_id, const std::string &name, const std::shared_ptr<pqxx::work> &transaction_ptr) {
+    transaction_ptr->exec_params(
+        R"(UPDATE authors SET name = $1 WHERE id = $2;)"_zv, name, author_id
+    );
+}
+
 void BookRepositoryImpl::Save(std::string book_id, std::string author_id, std::string title, int publication_year, const std::shared_ptr<pqxx::work>
                               transaction_ptr) {
     transaction_ptr->exec_params(

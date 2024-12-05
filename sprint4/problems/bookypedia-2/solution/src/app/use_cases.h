@@ -11,6 +11,7 @@ class UseCases {
 public:
     virtual std::optional<std::string> AddAuthor(std::string name) = 0;
     virtual void DeleteAuthor(const std::string &author_id) = 0;
+    virtual void EditAuthor(std::string &author_id, std::string &name) = 0;
     virtual void AddBook(const ui::detail::AddBookParams &book_params) = 0;
     virtual std::vector<ui::detail::AuthorInfo> GetAuthors() = 0;
     virtual std::optional<std::string> FindAuthorByName(const std::string& name) = 0;

@@ -9,6 +9,10 @@
 #include
 #include
 #include
+#include
+#include
+#include
+#include
 
 namespace postgres {
 
@@ -19,10 +23,10 @@ public:
     }
 
     void Save(::std::string author_id, ::std::string name, std::shared_ptr<pqxx::work> transaction_ptr) override;
-
     std::vector<ui::detail::AuthorInfo> LoadAuthors() override;
     [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const;
     void DeleteAuthor(const std::string& author_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
+    void EditAuthor(const std::string& author_id, const std::string &name, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -103,6 +107,11 @@ public:
             tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
         }
         book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
+        Commit();
+    }
+    void EditAuthor(const std::string& author_id, const std::string &name) {
+        Start();
+        author_repository_.EditAuthor(author_id, name, transaction_ptr_);
         Commit();
     }
     [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const {

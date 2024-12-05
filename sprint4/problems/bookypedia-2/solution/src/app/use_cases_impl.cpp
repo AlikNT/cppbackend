@@ -16,6 +16,10 @@ void UseCasesImpl::DeleteAuthor(const std::string &name) {
     unit_of_work_.DeleteAuthor(name);
 }
 
+void UseCasesImpl::EditAuthor(std::string &author_id, std::string &name) {
+    unit_of_work_.EditAuthor(author_id, name);
+}
+
 void UseCasesImpl::AddBook(const ui::detail::AddBookParams &book_params) {
     unit_of_work_.AddBook(book_params);
 }

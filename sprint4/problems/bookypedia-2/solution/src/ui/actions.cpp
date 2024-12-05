@@ -42,6 +42,7 @@ Actions::Actions(menu::Menu& menu, app::UseCases& use_cases, std::istream& input
     , output_{output} {
     menu_.AddAction("AddAuthor"s, "name"s, "Adds author"s, std::bind(&Actions::AddAuthor, this, ph::_1));
     menu_.AddAction("DeleteAuthor"s, "name"s, "Deletes author"s, std::bind(&Actions::DeleteAuthor, this, ph::_1));
+    menu_.AddAction("EditAuthor"s, "name"s, "Edits author"s, std::bind(&Actions::EditAuthor, this, ph::_1));
     menu_.AddAction("AddBook"s, "<pub year> <title>"s, "Adds book"s,
                     std::bind(&Actions::AddBook, this, ph::_1));
     menu_.AddAction("ShowAuthors"s, {}, "Show authors"s, std::bind(&Actions::ShowAuthors, this));
@@ -71,17 +72,16 @@ bool Actions::DeleteAuthor(std::istream &cmd_input) const {
         std::string name;
         std::getline(cmd_input, name);
         boost::algorithm::trim(name);
-        std::optional<std::string> author_id;
         if (name.empty()) {
-            author_id = SelectAuthor();
-            if (!author_id.has_value()) {
+            const std::optional<detail::AuthorInfo> author_info = SelectAuthorFromList();
+            if (!author_info.has_value()) {
                 output_ << "Failed to delete author"sv << std::endl;
                 return true;
             }
-            use_cases_.DeleteAuthor(author_id.value());
+            use_cases_.DeleteAuthor(author_info.value().id);
             return true;
         }
-        author_id = FindAuthorByName(name);
+        const auto author_id = FindAuthorByName(name);
         if (!author_id.has_value()) {
             output_ << "Failed to delete author"sv << std::endl;
             return true;
@@ -93,9 +93,35 @@ bool Actions::DeleteAuthor(std::istream &cmd_input) const {
     return true;
 }
 
+bool Actions::EditAuthor(std::istream &cmd_input) const {
+    try {
+        std::string name;
+        std::getline(cmd_input, name);
+        boost::algorithm::trim(name);
+        if (name.empty()) {
+            std::optional<detail::AuthorInfo> author_info = SelectAuthorFromList();
+            if (!author_info.has_value()) {
+                output_ << "Failed to edit author"sv << std::endl;
+                return true;
+            }
+            use_cases_.EditAuthor(author_info.value().id, author_info.value().name);
+            return true;
+        }
+        auto author_id = FindAuthorByName(name);
+        if (!author_id.has_value()) {
+            output_ << "Failed to edit author"sv << std::endl;
+            return true;
+        }
+        use_cases_.EditAuthor(author_id.value(), name);
+    } catch (std::exception&) {
+        output_ << "Failed to edit author"sv << std::endl;
+    }
+    return true;
+}
+
 bool Actions::AddBook(std::istream& cmd_input) const {
     try {
-        if (auto params = GetBookParams(cmd_input)) {
+        if (const auto params = GetBookParams(cmd_input)) {
             use_cases_.AddBook(*params);
         }
     } catch (const std::exception&) {
@@ -145,8 +171,8 @@ std::optional<detail::AddBookParams> Actions::GetBookParams(std::istream& cmd_in
     return params;
 }
 
-std::optional<std::string> Actions::SelectAuthorFromList() const {
-    output_ << "Select author:" << std::endl;
+std::optional<detail::AuthorInfo> Actions::SelectAuthorFromList() const {
+    // output_ << "Select author:" << std::endl;
     auto authors = GetAuthors();
     PrintVector(output_, authors);
     output_ << "Enter author # or empty line to cancel" << std::endl;
@@ -168,13 +194,13 @@ std::optional<std::string> Actions::SelectAuthorFromList() const {
         throw std::runtime_error("Invalid author num");
     }
 
-    return authors[author_idx].id;
+    return authors[author_idx];
 }
 
-std::optional<std::string> Actions::SelectAuthorByName(const std::string &name) const {
+std::optional<detail::AuthorInfo> Actions::SelectAuthorByName(const std::string &name) const {
     auto author_id = FindAuthorByName(name);
     if (author_id) {
-        return author_id;
+        return detail::AuthorInfo{author_id.value(), name};
     }
     output_ << "No author found. Do you want to add Jack London (y/n)?" << std::endl;
     std::string str;
@@ -182,10 +208,10 @@ std::optional<std::string> Actions::SelectAuthorByName(const std::string &name) 
     if (str != "y" && str != "Y") {
         return std::nullopt;
     }
-    return use_cases_.AddAuthor(name);
+    return detail::AuthorInfo{use_cases_.AddAuthor(name).value(), name};
 }
 
-std::optional<std::string> Actions::SelectAuthor() const {
+std::optional<detail::AuthorInfo> Actions::SelectAuthor() const {
     output_ << "Enter author name or empty line to select from list:" << std::endl;
     std::string str;
     if (!std::getline(input_, str)) {
