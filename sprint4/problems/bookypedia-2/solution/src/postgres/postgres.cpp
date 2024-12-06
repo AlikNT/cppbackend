@@ -1,7 +1,6 @@
+#include <pqxx/zview>
+
 #include "postgres.h"
-
-#include <pqxx/zview.hxx>
-
 #include "../domain/book.h"
 
 namespace postgres {
@@ -9,12 +8,12 @@ namespace postgres {
 using namespace std::literals;
 using pqxx::operator"" _zv;
 
-void AuthorRepositoryImpl::Save(std::string author_id, std::string name, const std::shared_ptr<pqxx::work> transaction_ptr) {
+void AuthorRepositoryImpl::Save(const std::string& author_id, const std::string& name, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     // Пока каждое обращение к репозиторию выполняется внутри отдельной транзакции
     // В будущих уроках вы узнаете про паттерн Unit of Work, при помощи которого сможете несколько
     // запросов выполнить в рамках одной транзакции.
     // Вы также может самостоятельно почитать информацию про этот паттерн и применить его здесь.
-    pqxx::result result = transaction_ptr->exec_params("SELECT id FROM authors WHERE name=$1"_zv, std::move(name));
+    pqxx::result result = transaction_ptr->exec_params("SELECT id FROM authors WHERE name=$1"_zv, name);
     if (!result.empty()) {
         throw std::runtime_error("Failed to add author");
     }
@@ -23,7 +22,8 @@ void AuthorRepositoryImpl::Save(std::string author_id, std::string name, const s
             INSERT INTO authors (id, name) VALUES ($1, $2)
             ON CONFLICT (id) DO UPDATE SET name=$2;
         )"_zv,
-            std::move(author_id), std::move(name));
+            author_id, name
+    );
 }
 
 std::vector<ui::detail::AuthorInfo> AuthorRepositoryImpl::LoadAuthors() {
@@ -38,11 +38,11 @@ std::vector<ui::detail::AuthorInfo> AuthorRepositoryImpl::LoadAuthors() {
 
 std::optional<std::string> AuthorRepositoryImpl::FindAuthorByName(const std::string &name) const {
     pqxx::read_transaction r(connection_);
-    pqxx::result result = r.exec_params("SELECT id FROM authors WHERE name = ;"_zv, name);
+    pqxx::result result = r.exec_params("SELECT id FROM authors WHERE name = $1;"_zv, name);
     if (result.empty()) {
         return std::nullopt;
     }
-    return result[0]["name"].get<std::string>();
+    return result[0]["id"].get<std::string>();
 }
 
 void AuthorRepositoryImpl::DeleteAuthor(const std::string& author_id, const std::shared_ptr<pqxx::work>& transaction_ptr) {
@@ -59,17 +59,17 @@ void AuthorRepositoryImpl::EditAuthor(const std::string &author_id, const std::s
     );
 }
 
-void BookRepositoryImpl::Save(std::string book_id, std::string author_id, std::string title, int publication_year, const std::shared_ptr<pqxx::work>
+void BookRepositoryImpl::Save(const std::string& book_id, const std::string& author_id, const std::string& title, int publication_year, const std::shared_ptr<pqxx::work>&
                               transaction_ptr) {
     transaction_ptr->exec_params(
         R"(
             INSERT INTO books (id, author_id, title, publication_year) VALUES ($1, $2, $3, $4)
             ON CONFLICT (id) DO UPDATE SET author_id=$2, title=$3, publication_year=$4;
-        )"_zv, std::move(book_id), std::move(author_id), std::move(title), publication_year
+        )"_zv, book_id, author_id, title, publication_year
     );
 }
 
-void BookRepositoryImpl::DeleteBooksByAuthorId(const std::string &author_id, const std::shared_ptr<pqxx::work> transaction_ptr) {
+void BookRepositoryImpl::DeleteBooksByAuthorId(const std::string &author_id, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     transaction_ptr->exec_params(
         R"(
             DELETE FROM books WHERE author_id = $1;
@@ -83,13 +83,13 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std:
     pqxx::result result = r.exec_params(
         R"(
             SELECT books.id, books.title, books.publication_year, authors.name
-            FROM books JOIN authors ON authors.id = books.author_id
+            FROM books INNER JOIN authors ON authors.id = books.author_id
             WHERE books.author_id = $1
             ORDER by books.title, authors.name, publication_year;
         )"_zv, author_id
     );
     for (const auto& row : result) {
-        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>, row[2].as<int>(), row[3].as<std::string>());
+        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>(), row[2].as<int>(), row[3].as<std::string>());
     }
     return books;
 }
@@ -121,11 +121,11 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::FindBooksByTitle(const std
         R"(
             SELECT books.id, books.title, books.publication_year, authors.name
             FROM books JOIN authors ON books.author_id = authors.id
-            WHERE book.title = $1;
+            WHERE books.title = $1;
         )"_zv, title
     );
     for (const auto& row : result) {
-        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>,  row[1].as<int>(), row[2].as<std::string>());
+        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>(),  row[1].as<int>(), row[2].as<std::string>());
     }
     return books;
 }
@@ -138,16 +138,16 @@ void BookRepositoryImpl::DeleteBook(const std::string &book_id, const std::share
     );
 }
 
-void TagRepositoryImpl::Save(std::string book_id, const std::set<std::string>& book_tags, const std::shared_ptr<pqxx::work> transaction_ptr) {
+void TagRepositoryImpl::Save(const std::string& book_id, const std::set<std::string>& book_tags, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     for (const auto& book_tag : book_tags) {
-        transaction_ptr->exec_params(R"(INSERT INTO tags (book_id, tag) VALUES ($1, $2);)"_zv, std::move(book_id), book_tag);
+        transaction_ptr->exec_params(R"(INSERT INTO book_tags (book_id, tag) VALUES ($1, $2);)"_zv, book_id, book_tag);
     }
 }
 
-void TagRepositoryImpl::DeleteTagsByBookId(const std::string &book_id, const std::shared_ptr<pqxx::work> transaction_ptr) {
+void TagRepositoryImpl::DeleteTagsByBookId(const std::string &book_id, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     transaction_ptr->exec_params(
         R"(
-            DELETE FROM tags WHERE book_id = $1;
+            DELETE FROM book_tags WHERE book_id = $1;
         )"_zv, book_id
     );
 }
@@ -217,9 +217,9 @@ std::vector<ui::detail::BookInfo> UnitOfWork::GetAuthorBooks(const std::string &
     return book_repository_.LoadAuthorBooks(author_id);
 }
 
-void UnitOfWork::AddAuthor(std::string author_id, std::string name) {
+void UnitOfWork::AddAuthor(const std::string& author_id, const std::string& name) {
     Start();
-    author_repository_.Save(std::move(author_id), std::move(name), transaction_ptr_);
+    author_repository_.Save(author_id, name, transaction_ptr_);
     Commit();
 }
 
@@ -286,7 +286,7 @@ Database::Database(pqxx::connection connection)
         );
     )"_zv);
     work.exec(R"(
-        CREATE TABLE IF NOT EXIST book_tags (
+        CREATE TABLE IF NOT EXISTS book_tags (
             book_id UUID NOT NULL,
             tag varchar(30)
         );
@@ -301,5 +301,9 @@ AuthorRepositoryImpl & Database::GetAuthors() & {
 
 BookRepositoryImpl & Database::GetBooks() & {
     return unit_of_work_.GetBooksRepository();
+}
+
+UnitOfWork & Database::GetUnitOfWork() & {
+    return unit_of_work_;
 }
 }  // namespace postgres

@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "../domain/author.h"
 #include "../ui/actions.h"
 
 namespace app {

@@ -1,12 +1,14 @@
 #include "actions.h"
 
 #include <boost/algorithm/string/trim.hpp>
+
+#include <pqxx/pqxx>
 #include <cassert>
 #include <iostream>
 #include <sstream>
 
 #include "../app/use_cases.h"
-#include "../domain/author_fwd.h"
+// #include "../domain/author_fwd.h"
 #include "../menu/menu.h"
 
 using namespace std::literals;
@@ -203,6 +205,37 @@ bool Actions::DeleteBook(std::istream &cmd_input) const {
     return true;
 }
 
+bool Actions::EditBook(std::istream &cmd_input) const {
+    try {
+        std::string title;
+        std::getline(cmd_input, title);
+        boost::algorithm::trim(title);
+        if (title.empty()) {
+            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
+            if (!book_info.has_value()) {
+                output_ << "Failed to edit book"sv << std::endl;
+                return true;
+            }
+            // use_cases_.EditBook(book_info.value().id, book_info.value().title);
+        }
+        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+        if (books.empty()) {
+            output_ << "Book not found"sv << std::endl;
+            return true;
+        }
+        std::optional<detail::BookInfo> book_info;
+        if (books.size() == 1) {
+            book_info = books.front();
+        } else {
+            book_info = SelectBookFromList(books);
+        }
+        // use_cases_.EditBook(book_info.value().id, book_info.value().title);
+    } catch (std::exception&) {
+        output_ << "Failed to edit book"sv << std::endl;
+    }
+    return true;
+}
+
 bool Actions::ShowAuthorBooks() const {
     try {
         if (auto author_info = SelectAuthor()) {
@@ -222,6 +255,9 @@ std::optional<detail::AddBookParams> Actions::GetBookParams(std::istream& cmd_in
     cmd_input >> params.publication_year;
     std::getline(cmd_input, params.title);
     boost::algorithm::trim(params.title);
+    if (params.title.empty()) {
+        return std::nullopt;
+    }
 
     auto author_info = SelectAuthor();
     if (not author_info.has_value())
@@ -264,7 +300,7 @@ std::optional<detail::AuthorInfo> Actions::SelectAuthorByName(const std::string 
     if (author_id) {
         return detail::AuthorInfo{author_id.value(), name};
     }
-    output_ << "No author found. Do you want to add Jack London (y/n)?" << std::endl;
+    output_ << "No author found. Do you want to add " << name << " (y/n)?" << std::endl;
     std::string str;
     input_ >> str;
     if (str != "y" && str != "Y") {
@@ -300,6 +336,9 @@ std::set<std::string> Actions::SelectTags() const {
     output_ << "Enter tags (comma separated):" << std::endl;
     std::string str;
     std::getline(input_, str);
+    if (str.empty()) {
+        return {};
+    }
     std::set<std::string> unique_tags;
 
     std::istringstream stream(str);

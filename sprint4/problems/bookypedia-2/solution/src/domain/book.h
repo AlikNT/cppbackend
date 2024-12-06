@@ -1,15 +1,10 @@
 #pragma once
 
-#include <string>
+// #include <string>
+// #include <pqxx/pqxx>
 
-#include "author.h"
-#include "author.h"
-#include "author.h"
-#include "author.h"
-#include "author.h"
+// #include "author.h"
 #include "../util/tagged_uuid.h"
-
-#include "author.h"
 
 namespace domain {
 
@@ -19,7 +14,8 @@ struct BookTag {};
 
 using BookId = util::TaggedUUID<detail::BookTag>;
 
-/*class Book {
+/*
+class Book {
 public:
     Book(BookId id, AuthorId author_id, std::string title, int publication_year)
         : id_(std::move(id))
@@ -47,7 +43,7 @@ private:
     AuthorId author_id_;
     std::string title_;
     int publication_year_;
-};*/
+};
 
 class BookRepository {
 public:
@@ -61,5 +57,6 @@ public:
 protected:
     ~BookRepository() = default;
 };
+*/
 
 } // namespace domain

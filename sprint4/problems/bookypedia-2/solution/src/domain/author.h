@@ -1,15 +1,11 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <pqxx/transaction.hxx>
-
-#include "author.h"
-#include "author.h"
-#include "author.h"
-#include "author.h"
-#include "author.h"
+// #include <string>
+// #include <vector>
+// #include <pqxx/transaction.hxx>
+// #include <pqxx/pqxx>
+//
 #include "../util/tagged_uuid.h"
-#include "../ui/actions.h"
+// #include "../ui/actions.h"
 
 namespace domain {
 
@@ -17,9 +13,8 @@ namespace detail {
 struct AuthorTag {};
 }  // namespace detail
 
-
 using AuthorId = util::TaggedUUID<detail::AuthorTag>;
-
+/*
 class Author {
 public:
     Author(AuthorId id, std::string name)
@@ -48,6 +43,7 @@ public:
 protected:
     ~AuthorRepository() = default;
 };
+*/
 
 
 }  // namespace domain
