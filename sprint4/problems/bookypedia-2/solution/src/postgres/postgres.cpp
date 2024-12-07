@@ -47,9 +47,7 @@ std::optional<std::string> AuthorRepositoryImpl::FindAuthorByName(const std::str
 
 void AuthorRepositoryImpl::DeleteAuthor(const std::string& author_id, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     transaction_ptr->exec_params(
-        R"(
-            DELETE FROM authors WHERE author_id = $1;
-        )"_zv, author_id
+        R"(DELETE FROM authors WHERE id = $1;)"_zv, author_id
     );
 }
 
@@ -125,7 +123,7 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::FindBooksByTitle(const std
         )"_zv, title
     );
     for (const auto& row : result) {
-        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>(),  row[1].as<int>(), row[2].as<std::string>());
+        books.emplace_back(row[0].as<std::string>(), row[1].as<std::string>(),  row[2].as<int>(), row[3].as<std::string>());
     }
     return books;
 }
@@ -224,18 +222,29 @@ void UnitOfWork::AddAuthor(const std::string& author_id, const std::string& name
 }
 
 void UnitOfWork::DeleteAuthor(const std::string &author_id) {
+    auto author_books = book_repository_.FindBooksIdByAuthorId(author_id);
     Start();
-    author_repository_.DeleteAuthor(author_id, transaction_ptr_);
-    for (const auto& book_id: book_repository_.FindBooksIdByAuthorId(author_id)) {
-        tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+    try {
+        for (const auto& book_id: author_books) {
+            tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+        }
+        author_repository_.DeleteAuthor(author_id, transaction_ptr_);
+        book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
+    } catch (std::exception &e) {
+        Rollback();
+        throw e;
     }
-    book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
     Commit();
 }
 
 void UnitOfWork::EditAuthor(const std::string &author_id, const std::string &name) {
     Start();
-    author_repository_.EditAuthor(author_id, name, transaction_ptr_);
+    try {
+        author_repository_.EditAuthor(author_id, name, transaction_ptr_);
+    } catch (std::exception &e) {
+        Rollback();
+        throw e;
+    }
     Commit();
 }
 
@@ -258,8 +267,13 @@ std::vector<std::string> UnitOfWork::GetTagsByBookId(const std::string &book_id)
 
 void UnitOfWork::DeleteBook(const std::string &book_id) {
     Start();
-    book_repository_.DeleteBook(book_id, transaction_ptr_);
-    tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+    try {
+        book_repository_.DeleteBook(book_id, transaction_ptr_);
+        tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
+    } catch (std::exception &e) {
+        Rollback();
+        throw e;
+    }
     Commit();
 }
 

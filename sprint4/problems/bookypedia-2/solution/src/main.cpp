@@ -24,9 +24,9 @@ bookypedia::AppConfig GetConfigFromEnv() {
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[]) {
     try {
-        bookypedia::Application app{GetConfigFromEnv()};
-        // const auto url_test = bookypedia::AppConfig{"postgres://postgres:Mys3Cr3t@localhost:30432/bookypedia"};
-        // bookypedia::Application app{url_test};
+        // bookypedia::Application app{GetConfigFromEnv()};
+        const auto url_test = bookypedia::AppConfig{"postgres://postgres:Mys3Cr3t@localhost:30432/bookypedia"};
+        bookypedia::Application app{url_test};
         app.Run();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;

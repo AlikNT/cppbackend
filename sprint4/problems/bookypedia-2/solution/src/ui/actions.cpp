@@ -101,21 +101,26 @@ bool Actions::EditAuthor(std::istream &cmd_input) const {
         std::string name;
         std::getline(cmd_input, name);
         boost::algorithm::trim(name);
+        std::optional<std::string> author_id;
         if (name.empty()) {
-            std::optional<detail::AuthorInfo> author_info = SelectAuthorFromList();
+            const std::optional<detail::AuthorInfo> author_info = SelectAuthorFromList();
             if (!author_info.has_value()) {
                 output_ << "Failed to edit author"sv << std::endl;
                 return true;
             }
-            use_cases_.EditAuthor(author_info.value().id, author_info.value().name);
-            return true;
+            author_id = author_info.value().id;
+        } else {
+            author_id = FindAuthorByName(name);
+            if (!author_id.has_value()) {
+                output_ << "Failed to edit author"sv << std::endl;
+                return true;
+            }
         }
-        auto author_id = FindAuthorByName(name);
-        if (!author_id.has_value()) {
-            output_ << "Failed to edit author"sv << std::endl;
-            return true;
-        }
-        use_cases_.EditAuthor(author_id.value(), name);
+        output_ << "Enter new name:"sv << std::endl;
+        std::string new_name;
+        std::getline(input_, new_name);
+        boost::algorithm::trim(new_name);
+        use_cases_.EditAuthor(author_id.value(), new_name);
     } catch (std::exception&) {
         output_ << "Failed to edit author"sv << std::endl;
     }
@@ -302,7 +307,7 @@ std::optional<detail::AuthorInfo> Actions::SelectAuthorByName(const std::string 
     }
     output_ << "No author found. Do you want to add " << name << " (y/n)?" << std::endl;
     std::string str;
-    input_ >> str;
+    getline(input_, str);
     if (str != "y" && str != "Y") {
         return std::nullopt;
     }
@@ -413,7 +418,7 @@ void Actions::PrintBookTags(const std::string &book_id) const {
     output_ << "Tags: ";
     for (auto it  = tags.cbegin(); it != tags.cend(); ++it) {
         output_ << *it;
-        if (++it != tags.cend()) {
+        if (it + 1 < tags.cend()) {
             output_ << ", ";
         }
     }

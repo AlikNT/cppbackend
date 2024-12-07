@@ -12,8 +12,8 @@ std::optional<std::string> UseCasesImpl::AddAuthor(std::string name) {
     return author_id.ToString();
 }
 
-void UseCasesImpl::DeleteAuthor(const std::string &name) {
-    unit_of_work_.DeleteAuthor(name);
+void UseCasesImpl::DeleteAuthor(const std::string &author_id) {
+    unit_of_work_.DeleteAuthor(author_id);
 }
 
 void UseCasesImpl::EditAuthor(std::string &author_id, std::string &name) {
