@@ -35,6 +35,7 @@ public:
     [[nodiscard]] std::vector<std::string> FindBooksIdByAuthorId(const std::string &author_id) const;
     [[nodiscard]] std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string& title) const;
     void DeleteBook(const std::string& book_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
+    void EditBook(const ui::detail::BookInfo & book_info, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -75,6 +76,7 @@ public:
     std::vector<std::string> GetTagsByBookId(const std::string& book_id);
     void DeleteBook(const std::string& book_id);
     std::vector<ui::detail::BookInfo> GetAuthorBooks(const std::string& author_id);
+    void EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string>& new_tags);
 
 private:
     pqxx::connection& connection_;

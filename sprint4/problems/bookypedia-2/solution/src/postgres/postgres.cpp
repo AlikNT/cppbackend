@@ -136,6 +136,14 @@ void BookRepositoryImpl::DeleteBook(const std::string &book_id, const std::share
     );
 }
 
+void BookRepositoryImpl::EditBook(const ui::detail::BookInfo &book_info, const std::shared_ptr<pqxx::work> &transaction_ptr) {
+    transaction_ptr->exec_params(
+        R"(
+            UPDATE books SET title = $1, publication_year = $2 WHERE id = $3;
+        )"_zv, book_info.title, book_info.publication_year, book_info.id
+    );
+}
+
 void TagRepositoryImpl::Save(const std::string& book_id, const std::set<std::string>& book_tags, const std::shared_ptr<pqxx::work>& transaction_ptr) {
     for (const auto& book_tag : book_tags) {
         transaction_ptr->exec_params(R"(INSERT INTO book_tags (book_id, tag) VALUES ($1, $2);)"_zv, book_id, book_tag);
@@ -215,9 +223,27 @@ std::vector<ui::detail::BookInfo> UnitOfWork::GetAuthorBooks(const std::string &
     return book_repository_.LoadAuthorBooks(author_id);
 }
 
+void UnitOfWork::EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string> &new_tags) {
+    Start();
+    try {
+        book_repository_.EditBook(new_book_info, transaction_ptr_);
+        tag_repository_.DeleteTagsByBookId(new_book_info.id, transaction_ptr_);
+        tag_repository_.Save(new_book_info.id, new_tags, transaction_ptr_);
+    } catch (const std::exception &e) {
+        Rollback();
+        throw e;
+    }
+    Commit();
+}
+
 void UnitOfWork::AddAuthor(const std::string& author_id, const std::string& name) {
     Start();
-    author_repository_.Save(author_id, name, transaction_ptr_);
+    try {
+        author_repository_.Save(author_id, name, transaction_ptr_);
+    } catch (const std::exception &e) {
+        Rollback();
+        throw e;
+    }
     Commit();
 }
 
@@ -254,9 +280,14 @@ std::optional<std::string> UnitOfWork::FindAuthorByName(const std::string &name)
 
 void UnitOfWork::AddBook(const ui::detail::AddBookParams &book_params) {
     Start();
-    const auto book_id = domain::BookId::New();
-    book_repository_.Save(book_id.ToString(), book_params.author_id, book_params.title, book_params.publication_year, transaction_ptr_);
-    tag_repository_.Save(book_id.ToString(), book_params.tags, transaction_ptr_);
+    try {
+        const auto book_id = domain::BookId::New();
+        book_repository_.Save(book_id.ToString(), book_params.author_id, book_params.title, book_params.publication_year, transaction_ptr_);
+        tag_repository_.Save(book_id.ToString(), book_params.tags, transaction_ptr_);
+    } catch (const std::exception &e) {
+        Rollback();
+        throw e;
+    }
     Commit();
 }
 

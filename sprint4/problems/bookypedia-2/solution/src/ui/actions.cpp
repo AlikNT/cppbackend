@@ -52,6 +52,7 @@ Actions::Actions(menu::Menu& menu, app::UseCases& use_cases, std::istream& input
     menu_.AddAction("ShowBook"s, "title"s, "Show detail info of the book"s, std::bind(&Actions::ShowBook, this, ph::_1));
     menu_.AddAction("DeleteBook"s, "title"s, "Deletes book"s, std::bind(&Actions::DeleteBook, this, ph::_1));
     menu_.AddAction("ShowAuthorBooks"s, {}, "Show author books"s, std::bind(&Actions::ShowAuthorBooks, this));
+    menu_.AddAction("EditBook"s, "title"s, "Edits book"s, std::bind(&Actions::EditBook, this, ph::_1));
 }
 
 bool Actions::AddAuthor(std::istream& cmd_input) const {
@@ -215,26 +216,28 @@ bool Actions::EditBook(std::istream &cmd_input) const {
         std::string title;
         std::getline(cmd_input, title);
         boost::algorithm::trim(title);
+        std::optional<detail::BookInfo> book_info;
         if (title.empty()) {
-            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
+            book_info = SelectBookFromList();
             if (!book_info.has_value()) {
                 output_ << "Failed to edit book"sv << std::endl;
                 return true;
             }
-            // use_cases_.EditBook(book_info.value().id, book_info.value().title);
-        }
-        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
-        if (books.empty()) {
-            output_ << "Book not found"sv << std::endl;
-            return true;
-        }
-        std::optional<detail::BookInfo> book_info;
-        if (books.size() == 1) {
-            book_info = books.front();
         } else {
-            book_info = SelectBookFromList(books);
+            std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+            if (books.empty()) {
+                output_ << "Book not found"sv << std::endl;
+                return true;
+            }
+            if (books.size() == 1) {
+                book_info = books.front();
+            } else {
+                book_info = SelectBookFromList(books);
+            }
         }
-        // use_cases_.EditBook(book_info.value().id, book_info.value().title);
+        const auto new_book_info = EnterNewBookInfo(book_info.value());
+        const auto new_tags = EnterNewTags(new_book_info.value());
+        use_cases_.EditBook(new_book_info.value(), new_tags);
     } catch (std::exception&) {
         output_ << "Failed to edit book"sv << std::endl;
     }
@@ -270,6 +273,7 @@ std::optional<detail::AddBookParams> Actions::GetBookParams(std::istream& cmd_in
     else {
         params.author_id = author_info.value().id;
     }
+    output_ << "Enter tags (comma separated):" << std::endl;
     params.tags = SelectTags();
     return params;
 }
@@ -338,7 +342,6 @@ std::string Actions::NormalizeTag(const std::string &tag) {
 }
 
 std::set<std::string> Actions::SelectTags() const {
-    output_ << "Enter tags (comma separated):" << std::endl;
     std::string str;
     std::getline(input_, str);
     if (str.empty()) {
@@ -422,12 +425,43 @@ void Actions::PrintBookTags(const std::string &book_id) const {
             output_ << ", ";
         }
     }
-    output_ << std::endl;
 }
 
 void Actions::PrintBookFull(const detail::BookInfo &book_info) const {
     PrintBook(book_info);
     PrintBookTags(book_info.id);
+    output_ << std::endl;
+}
+
+std::optional<detail::BookInfo> Actions::EnterNewBookInfo(const detail::BookInfo &book_info) const {
+    std::string str;
+    output_ << "Enter new title of empty line to use the current one (" << book_info.title << "):" << std::endl;
+    std::getline(input_, str);
+    boost::algorithm::trim(str);
+    detail::BookInfo new_book_info;
+    if (str.empty()) {
+        new_book_info.title = book_info.title;
+    } else {
+        new_book_info.title = str;
+    }
+    output_ << "Enter publication year or empty line to use the current one (" << book_info.publication_year << "):" << std::endl;
+    std::getline(input_, str);
+    boost::algorithm::trim(str);
+    if (str.empty()) {
+        new_book_info.publication_year = book_info.publication_year;
+    } else {
+        new_book_info.publication_year = stoi(str);
+    }
+    new_book_info.id = book_info.id;
+    new_book_info.author_name = book_info.author_name;
+    return new_book_info;
+}
+
+std::set<std::string> Actions::EnterNewTags(const detail::BookInfo &book_info) const {
+    output_ << "Enter tags (current tags: ";
+    PrintBookTags(book_info.id);
+    output_ << "):" << std::endl;
+    return SelectTags();
 }
 
 }  // namespace ui

@@ -51,4 +51,8 @@ std::vector<std::string> UseCasesImpl::GetTagsByBookId(const std::string &book_i
 void UseCasesImpl::DeleteBook(const std::string &book_id) {
     unit_of_work_.DeleteBook(book_id);
 }
+
+void UseCasesImpl::EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string> &new_tags) {
+    unit_of_work_.EditBook(new_book_info, new_tags);
+}
 }  // namespace app

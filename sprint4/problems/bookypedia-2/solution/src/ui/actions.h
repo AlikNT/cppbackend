@@ -69,6 +69,8 @@ private:
     void PrintBook(const detail::BookInfo& book_info) const;
     void PrintBookTags(const std::string& book_id) const;
     void PrintBookFull(const detail::BookInfo& book_info) const;
+    std::optional<detail::BookInfo> EnterNewBookInfo(const detail::BookInfo &book_info) const;
+    std::set<std::string> EnterNewTags(const detail::BookInfo& book_info) const;
 
     menu::Menu& menu_;
     app::UseCases& use_cases_;
