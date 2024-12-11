@@ -67,7 +67,7 @@ private:
     std::optional<detail::BookInfo> SelectBookFromList(const std::vector<detail::BookInfo>& books) const;
     std::optional<detail::BookInfo> SelectBookFromList() const;
     void PrintBook(const detail::BookInfo& book_info) const;
-    void PrintBookTags(const std::string& book_id) const;
+    void PrintBookTags(const std::string& book_id, const std::string &start_with) const;
     void PrintBookFull(const detail::BookInfo& book_info) const;
     std::optional<detail::BookInfo> EnterNewBookInfo(const detail::BookInfo &book_info) const;
     std::set<std::string> EnterNewTags(const detail::BookInfo& book_info) const;

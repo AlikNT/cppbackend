@@ -1,6 +1,9 @@
 #include <pqxx/zview>
 
 #include "postgres.h"
+
+#include <iostream>
+
 #include "../domain/book.h"
 
 namespace postgres {
@@ -36,9 +39,9 @@ std::vector<ui::detail::AuthorInfo> AuthorRepositoryImpl::LoadAuthors() {
     return authors;
 }
 
-std::optional<std::string> AuthorRepositoryImpl::FindAuthorByName(const std::string &name) const {
-    pqxx::read_transaction r(connection_);
-    pqxx::result result = r.exec_params("SELECT id FROM authors WHERE name = $1;"_zv, name);
+std::optional<std::string> AuthorRepositoryImpl::FindAuthorByName(const std::string &name, const std::shared_ptr<pqxx::work>& transaction_ptr) const {
+    // pqxx::read_transaction r(connection_);
+    const auto result = transaction_ptr->exec_params("SELECT id FROM authors WHERE name = $1;"_zv, name);
     if (result.empty()) {
         return std::nullopt;
     }
@@ -51,9 +54,9 @@ void AuthorRepositoryImpl::DeleteAuthor(const std::string& author_id, const std:
     );
 }
 
-void AuthorRepositoryImpl::EditAuthor(const std::string &author_id, const std::string &name, const std::shared_ptr<pqxx::work> &transaction_ptr) {
+void AuthorRepositoryImpl::EditAuthor(const std::string &name, const std::string &new_name, const std::shared_ptr<pqxx::work> &transaction_ptr) {
     transaction_ptr->exec_params(
-        R"(UPDATE authors SET name = $1 WHERE id = $2;)"_zv, name, author_id
+        R"(UPDATE authors SET name = $1 WHERE name = $2;)"_zv, new_name, name
     );
 }
 
@@ -95,7 +98,7 @@ std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadAuthorBooks(const std:
 std::vector<ui::detail::BookInfo> BookRepositoryImpl::LoadBooks() {
     std::vector<ui::detail::BookInfo> books;
     pqxx::read_transaction r(connection_);
-    auto query_text = "SELECT books.id, books.title, books.publication_year, authors.name FROM books JOIN authors ON books.author_id = authors.id ORDER by title;"_zv;
+    auto query_text = "SELECT books.id, books.title, books.publication_year, authors.name FROM books JOIN authors ON books.author_id = authors.id ORDER by books.title, authors.name, books.publication_year;"_zv;
     for (const auto& [id, title, publication_year, name] : r.query<std::string, std::string, int, std::string>(query_text)) {
         books.emplace_back(id, title, publication_year, name);
     }
@@ -141,6 +144,15 @@ void BookRepositoryImpl::EditBook(const ui::detail::BookInfo &book_info, const s
         R"(
             UPDATE books SET title = $1, publication_year = $2 WHERE id = $3;
         )"_zv, book_info.title, book_info.publication_year, book_info.id
+    );
+}
+
+void BookRepositoryImpl::ChangeAuthor(const std::string &author_id, const std::string &new_author_id,
+    const std::shared_ptr<pqxx::work>& transaction_ptr) {
+    transaction_ptr->exec_params(
+        R"(
+            UPDATE books SET author_id = $1 WHERE author_id = $2;
+        )"_zv, new_author_id, author_id
     );
 }
 
@@ -229,6 +241,17 @@ void UnitOfWork::EditBook(const ui::detail::BookInfo &new_book_info, const std::
         book_repository_.EditBook(new_book_info, transaction_ptr_);
         tag_repository_.DeleteTagsByBookId(new_book_info.id, transaction_ptr_);
         tag_repository_.Save(new_book_info.id, new_tags, transaction_ptr_);
+    } catch (const std::exception &) {
+        Rollback();
+        return;
+    }
+    Commit();
+}
+
+void UnitOfWork::ChangeAuthorInBooks(const std::string &author_id, const std::string &new_author_id) {
+    Start();
+    try {
+        book_repository_.ChangeAuthor(author_id, new_author_id, transaction_ptr_);
     } catch (const std::exception &e) {
         Rollback();
         throw e;
@@ -251,31 +274,39 @@ void UnitOfWork::DeleteAuthor(const std::string &author_id) {
     auto author_books = book_repository_.FindBooksIdByAuthorId(author_id);
     Start();
     try {
+        author_repository_.DeleteAuthor(author_id, transaction_ptr_);
+        book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
         for (const auto& book_id: author_books) {
             tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
         }
-        author_repository_.DeleteAuthor(author_id, transaction_ptr_);
-        book_repository_.DeleteBooksByAuthorId(author_id, transaction_ptr_);
     } catch (std::exception &e) {
         Rollback();
-        throw e;
+        return;
     }
     Commit();
 }
 
-void UnitOfWork::EditAuthor(const std::string &author_id, const std::string &name) {
+void UnitOfWork::EditAuthor(const std::string &name, const std::string &new_name) {
     Start();
     try {
-        author_repository_.EditAuthor(author_id, name, transaction_ptr_);
-    } catch (std::exception &e) {
+        author_repository_.EditAuthor(name, new_name, transaction_ptr_);
+    } catch (std::exception& e) {
         Rollback();
         throw e;
     }
     Commit();
 }
 
-std::optional<std::string> UnitOfWork::FindAuthorByName(const std::string &name) const {
-    return author_repository_.FindAuthorByName(name);
+std::optional<std::string> UnitOfWork::FindAuthorByName(const std::string &name) {
+    Start();
+    std::optional<std::string> result;
+    try {
+        result = author_repository_.FindAuthorByName(name, transaction_ptr_);
+    } catch (std::exception &e) {
+        Rollback();
+    }
+    Commit();
+    return result;
 }
 
 void UnitOfWork::AddBook(const ui::detail::AddBookParams &book_params) {
@@ -301,9 +332,9 @@ void UnitOfWork::DeleteBook(const std::string &book_id) {
     try {
         book_repository_.DeleteBook(book_id, transaction_ptr_);
         tag_repository_.DeleteTagsByBookId(book_id, transaction_ptr_);
-    } catch (std::exception &e) {
+    } catch (std::exception &) {
         Rollback();
-        throw e;
+        return;
     }
     Commit();
 }

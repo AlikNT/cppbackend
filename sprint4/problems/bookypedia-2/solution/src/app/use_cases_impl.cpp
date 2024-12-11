@@ -16,8 +16,8 @@ void UseCasesImpl::DeleteAuthor(const std::string &author_id) {
     unit_of_work_.DeleteAuthor(author_id);
 }
 
-void UseCasesImpl::EditAuthor(std::string &author_id, std::string &name) {
-    unit_of_work_.EditAuthor(author_id, name);
+void UseCasesImpl::EditAuthor(std::string &name, std::string &new_name) {
+    unit_of_work_.EditAuthor(name, new_name);
 }
 
 void UseCasesImpl::AddBook(const ui::detail::AddBookParams &book_params) {
@@ -54,5 +54,9 @@ void UseCasesImpl::DeleteBook(const std::string &book_id) {
 
 void UseCasesImpl::EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string> &new_tags) {
     unit_of_work_.EditBook(new_book_info, new_tags);
+}
+
+void UseCasesImpl::ChangeAuthorInBooks(const std::string &author_id, const std::string &new_author_id) {
+    unit_of_work_.ChangeAuthorInBooks(author_id, new_author_id);
 }
 }  // namespace app

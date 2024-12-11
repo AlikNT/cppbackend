@@ -13,9 +13,9 @@ public:
 
     void Save(const ::std::string& author_id, const ::std::string& name, const std::shared_ptr<pqxx::work>& transaction_ptr);
     std::vector<ui::detail::AuthorInfo> LoadAuthors();
-    [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const;
+    [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name, const std::shared_ptr<pqxx::work>& transaction_ptr) const;
     void DeleteAuthor(const std::string& author_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
-    void EditAuthor(const std::string& author_id, const std::string &name, const std::shared_ptr<pqxx::work>& transaction_ptr);
+    void EditAuthor(const std::string& name, const std::string &new_name, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -36,6 +36,7 @@ public:
     [[nodiscard]] std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string& title) const;
     void DeleteBook(const std::string& book_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
     void EditBook(const ui::detail::BookInfo & book_info, const std::shared_ptr<pqxx::work>& transaction_ptr);
+    void ChangeAuthor(const std::string & author_id, const std::string & new_author_id, const std::shared_ptr<pqxx::work>& transaction_ptr);
 
 private:
     pqxx::connection& connection_;
@@ -69,14 +70,15 @@ public:
     std::vector<ui::detail::BookInfo> GetBooks();
     void AddAuthor(const std::string& author_id, const std::string& name);
     void DeleteAuthor(const std::string& author_id);
-    void EditAuthor(const std::string& author_id, const std::string &name);
-    [[nodiscard]] std::optional<std::string> FindAuthorByName(const std::string& name) const;
+    void EditAuthor(const std::string& name, const std::string &new_name);
+    std::optional<std::string> FindAuthorByName(const std::string& name);
     void AddBook(const ui::detail::AddBookParams& book_params);
     std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string& title);
     std::vector<std::string> GetTagsByBookId(const std::string& book_id);
     void DeleteBook(const std::string& book_id);
     std::vector<ui::detail::BookInfo> GetAuthorBooks(const std::string& author_id);
     void EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string>& new_tags);
+    void ChangeAuthorInBooks(const std::string & author_id, const std::string & new_author_id);
 
 private:
     pqxx::connection& connection_;

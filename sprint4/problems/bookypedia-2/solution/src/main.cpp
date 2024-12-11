@@ -26,6 +26,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[]) {
     try {
         bookypedia::Application app{GetConfigFromEnv()};
         // const auto url_test = bookypedia::AppConfig{"postgres://postgres:Mys3Cr3t@localhost:30432/bookypedia"};
+        // const auto url_test = bookypedia::AppConfig{"postgres://postgres:Mys3Cr3t@localhost:5432/full_db"};
+        // const auto url_test = bookypedia::AppConfig{"postgres://postgres:Mys3Cr3t@localhost:5432/table_db"};
         // bookypedia::Application app{url_test};
         app.Run();
     } catch (const std::exception& e) {
