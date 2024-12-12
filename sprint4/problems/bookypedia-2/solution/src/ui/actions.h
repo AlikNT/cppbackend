@@ -28,11 +28,17 @@ struct AuthorInfo {
     std::string name;
 };
 
-struct BookInfo {
+struct BookInfoWithAuthor {
     std::string id;
     std::string title;
     int publication_year;
     std::string author_name;
+};
+
+struct BookInfo {
+    std::string id;
+    std::string title;
+    int publication_year;
 };
 
 }  // namespace detail
@@ -61,16 +67,17 @@ private:
     std::set<std::string> SelectTags() const;
     std::vector<detail::AuthorInfo> GetAuthors() const;
     std::optional<std::string> FindAuthorByName(const std::string &name) const;
-    std::vector<detail::BookInfo> GetBooks() const;
-    std::vector<detail::BookInfo> GetAuthorBooks(const std::string& author_id) const;
-    std::vector<detail::BookInfo> FindBooksByTitle(const std::string& title) const;
-    std::optional<detail::BookInfo> SelectBookFromList(const std::vector<detail::BookInfo>& books) const;
-    std::optional<detail::BookInfo> SelectBookFromList() const;
-    void PrintBook(const detail::BookInfo& book_info) const;
+    std::vector<detail::BookInfoWithAuthor> GetBooks() const;
+
+    std::vector<detail::BookInfo> GetAuthorBooks(const std::string &author_id) const;
+    std::vector<detail::BookInfoWithAuthor> FindBooksByTitle(const std::string& title) const;
+    std::optional<detail::BookInfoWithAuthor> SelectBookFromList(const std::vector<detail::BookInfoWithAuthor>& books) const;
+    std::optional<detail::BookInfoWithAuthor> SelectBookFromList() const;
+    void PrintBook(const detail::BookInfoWithAuthor& book_info) const;
     void PrintBookTags(const std::string& book_id, const std::string &start_with) const;
-    void PrintBookFull(const detail::BookInfo& book_info) const;
-    std::optional<detail::BookInfo> EnterNewBookInfo(const detail::BookInfo &book_info) const;
-    std::set<std::string> EnterNewTags(const detail::BookInfo& book_info) const;
+    void PrintBookFull(const detail::BookInfoWithAuthor& book_info) const;
+    std::optional<detail::BookInfoWithAuthor> EnterNewBookInfo(const detail::BookInfoWithAuthor &book_info) const;
+    std::set<std::string> EnterNewTags(const detail::BookInfoWithAuthor& book_info) const;
 
     menu::Menu& menu_;
     app::UseCases& use_cases_;

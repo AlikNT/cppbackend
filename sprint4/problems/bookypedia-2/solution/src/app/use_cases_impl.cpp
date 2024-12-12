@@ -36,11 +36,11 @@ std::vector<ui::detail::BookInfo> UseCasesImpl::GetAuthorBooks(const std::string
     return unit_of_work_.GetAuthorBooks(author_id);
 }
 
-std::vector<ui::detail::BookInfo> UseCasesImpl::GetBooks() {
+std::vector<ui::detail::BookInfoWithAuthor> UseCasesImpl::GetBooks() {
     return unit_of_work_.GetBooks();
 }
 
-std::vector<ui::detail::BookInfo> UseCasesImpl::FindBooksByTitle(const std::string &title) {
+std::vector<ui::detail::BookInfoWithAuthor> UseCasesImpl::FindBooksByTitle(const std::string &title) {
     return unit_of_work_.FindBooksByTitle(title);
 }
 
@@ -52,7 +52,7 @@ void UseCasesImpl::DeleteBook(const std::string &book_id) {
     unit_of_work_.DeleteBook(book_id);
 }
 
-void UseCasesImpl::EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string> &new_tags) {
+void UseCasesImpl::EditBook(const ui::detail::BookInfoWithAuthor &new_book_info, const std::set<std::string> &new_tags) {
     unit_of_work_.EditBook(new_book_info, new_tags);
 }
 

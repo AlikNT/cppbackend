@@ -22,8 +22,13 @@ std::ostream& operator<<(std::ostream& out, const AuthorInfo& author) {
     return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const BookInfo& book) {
+std::ostream& operator<<(std::ostream& out, const BookInfoWithAuthor& book) {
     out << book.title << " by " << book.author_name << ", " << book.publication_year;
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const BookInfo& book) {
+    out << book.title << ", " << book.publication_year;
     return out;
 }
 
@@ -104,10 +109,10 @@ bool Actions::EditAuthor(std::istream &cmd_input) const {
         boost::algorithm::trim(name);
         // std::optional<std::string> author_id;
         if (name.empty()) {
-            // output_ << "Select author:" << std::endl;
+            output_ << "Select author:" << std::endl;
             const std::optional<detail::AuthorInfo> author_info = SelectAuthorFromList();
             if (!author_info.has_value()) {
-                output_ << "Failed to edit author"sv << std::endl;
+                // output_ << "Failed to edit author"sv << std::endl;
                 return true;
             }
             name = author_info.value().name;
@@ -158,18 +163,18 @@ bool Actions::ShowBook(std::istream &cmd_input) const {
         std::getline(cmd_input, title);
         boost::algorithm::trim(title);
         if (title.empty()) {
-            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
+            const std::optional<detail::BookInfoWithAuthor> book_info = SelectBookFromList();
             if (!book_info.has_value()) {
                 return true;
             }
             PrintBookFull(book_info.value());
             return true;
         }
-        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+        std::vector<detail::BookInfoWithAuthor> books = FindBooksByTitle(title);
         if (books.empty()) {
             return true;
         }
-        std::optional<detail::BookInfo> book_info;
+        std::optional<detail::BookInfoWithAuthor> book_info;
         if (books.size() == 1) {
             book_info = books.front();
         } else {
@@ -190,19 +195,19 @@ bool Actions::DeleteBook(std::istream &cmd_input) const {
         std::getline(cmd_input, title);
         boost::algorithm::trim(title);
         if (title.empty()) {
-            const std::optional<detail::BookInfo> book_info = SelectBookFromList();
+            const std::optional<detail::BookInfoWithAuthor> book_info = SelectBookFromList();
             if (!book_info.has_value()) {
                 return true;
             }
             use_cases_.DeleteBook(book_info.value().id);
             return true;
         }
-        std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+        std::vector<detail::BookInfoWithAuthor> books = FindBooksByTitle(title);
         if (books.empty()) {
             output_ << "Book not found"sv << std::endl;
             return true;
         }
-        std::optional<detail::BookInfo> book_info;
+        std::optional<detail::BookInfoWithAuthor> book_info;
         if (books.size() == 1) {
             book_info = books.front();
         } else {
@@ -222,7 +227,7 @@ bool Actions::EditBook(std::istream &cmd_input) const {
         std::string title;
         std::getline(cmd_input, title);
         boost::algorithm::trim(title);
-        std::optional<detail::BookInfo> book_info;
+        std::optional<detail::BookInfoWithAuthor> book_info;
         if (title.empty()) {
             book_info = SelectBookFromList();
             if (!book_info.has_value()) {
@@ -230,7 +235,7 @@ bool Actions::EditBook(std::istream &cmd_input) const {
                 return true;
             }
         } else {
-            std::vector<detail::BookInfo> books = FindBooksByTitle(title);
+            std::vector<detail::BookInfoWithAuthor> books = FindBooksByTitle(title);
             if (books.empty()) {
                 output_ << "Book not found"sv << std::endl;
                 return true;
@@ -261,7 +266,7 @@ bool Actions::EditBook(std::istream &cmd_input) const {
 bool Actions::ShowAuthorBooks() const {
     try {
         output_ << "Select author:" << std::endl;
-        if (auto author_info = SelectAuthorFromList()) {
+        if (const auto author_info = SelectAuthorFromList()) {
             if (author_info) {
                 PrintVector(output_, GetAuthorBooks(author_info.value().id));
             }
@@ -385,24 +390,24 @@ std::optional<std::string> Actions::FindAuthorByName(const std::string &name) co
     return use_cases_.FindAuthorByName(name);
 }
 
-std::vector<detail::BookInfo> Actions::GetBooks() const {
+std::vector<detail::BookInfoWithAuthor> Actions::GetBooks() const {
     return use_cases_.GetBooks();
 }
 
-std::vector<detail::BookInfo> Actions::GetAuthorBooks(const std::string& author_id) const {
+std::vector<detail::BookInfo> Actions::GetAuthorBooks(const std::string &author_id) const {
     return use_cases_.GetAuthorBooks(author_id);
 }
 
-std::vector<detail::BookInfo> Actions::FindBooksByTitle(const std::string &title) const {
+std::vector<detail::BookInfoWithAuthor> Actions::FindBooksByTitle(const std::string &title) const {
     return use_cases_.FindBooksByTitle(title);
 }
 
 
-std::optional<detail::BookInfo> Actions::SelectBookFromList() const {
+std::optional<detail::BookInfoWithAuthor> Actions::SelectBookFromList() const {
     return SelectBookFromList(GetBooks());
 }
 
-std::optional<detail::BookInfo> Actions::SelectBookFromList(const std::vector<detail::BookInfo> &books) const {
+std::optional<detail::BookInfoWithAuthor> Actions::SelectBookFromList(const std::vector<detail::BookInfoWithAuthor> &books) const {
     if (books.empty()) {
         return std::nullopt;
     }
@@ -427,7 +432,7 @@ std::optional<detail::BookInfo> Actions::SelectBookFromList(const std::vector<de
     return books[book_idx];
 }
 
-void Actions::PrintBook(const detail::BookInfo &book_info) const {
+void Actions::PrintBook(const detail::BookInfoWithAuthor &book_info) const {
     output_ << "Title: " << book_info.title << std::endl;
     output_ << "Author: " << book_info.author_name << std::endl;
     output_ << "Publication year: " << book_info.publication_year << std::endl;
@@ -449,7 +454,7 @@ void Actions::PrintBookTags(const std::string &book_id, const std::string &start
     }
 }
 
-void Actions::PrintBookFull(const detail::BookInfo &book_info) const {
+void Actions::PrintBookFull(const detail::BookInfoWithAuthor &book_info) const {
     PrintBook(book_info);
     PrintBookTags(book_info.id, "Tags: "s);
     output_ << std::endl;
@@ -459,12 +464,12 @@ bool HasNoLetters(const std::string& str) {
     return !std::regex_search(str, std::regex("[a-zA-Z]"));
 }
 
-std::optional<detail::BookInfo> Actions::EnterNewBookInfo(const detail::BookInfo &book_info) const {
+std::optional<detail::BookInfoWithAuthor> Actions::EnterNewBookInfo(const detail::BookInfoWithAuthor &book_info) const {
     std::string str;
     output_ << "Enter new title of empty line to use the current one (" << book_info.title << "):" << std::endl;
     std::getline(input_, str);
     boost::algorithm::trim(str);
-    detail::BookInfo new_book_info;
+    detail::BookInfoWithAuthor new_book_info;
     if (str.empty()) {
         new_book_info.title = book_info.title;
     } else {
@@ -486,7 +491,7 @@ std::optional<detail::BookInfo> Actions::EnterNewBookInfo(const detail::BookInfo
     return new_book_info;
 }
 
-std::set<std::string> Actions::EnterNewTags(const detail::BookInfo &book_info) const {
+std::set<std::string> Actions::EnterNewTags(const detail::BookInfoWithAuthor &book_info) const {
     output_ << "Enter tags (current tags: ";
     PrintBookTags(book_info.id, ""s);
     output_ << "):" << std::endl;

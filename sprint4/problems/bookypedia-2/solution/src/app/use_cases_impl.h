@@ -18,12 +18,13 @@ public:
     void AddBook(const ui::detail::AddBookParams &book_params) override;
     std::vector<ui::detail::AuthorInfo> GetAuthors() override;
     std::optional<std::string> FindAuthorByName(const std::string& name) override;
+
     std::vector<ui::detail::BookInfo> GetAuthorBooks(const std::string &author_id) override;
-    std::vector<ui::detail::BookInfo> GetBooks() override;
-    std::vector<ui::detail::BookInfo> FindBooksByTitle(const std::string &title) override;
+    std::vector<ui::detail::BookInfoWithAuthor> GetBooks() override;
+    std::vector<ui::detail::BookInfoWithAuthor> FindBooksByTitle(const std::string &title) override;
     std::vector<std::string> GetTagsByBookId(const std::string& book_id) override;
     void DeleteBook(const std::string &book_id) override;
-    void EditBook(const ui::detail::BookInfo &new_book_info, const std::set<std::string> & new_tags) override;
+    void EditBook(const ui::detail::BookInfoWithAuthor &new_book_info, const std::set<std::string> & new_tags) override;
     void ChangeAuthorInBooks(const std::string & author_id, const std::string & new_author_id) override;
 
 private:
