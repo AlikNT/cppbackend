@@ -1,0 +1,8397 @@
+79 0 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Cookie: None
+Host: localhost
+
+
+84 198 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Cookie: None
+Host: localhost
+
+
+84 393 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Cookie: None
+Host: localhost
+
+
+116 585 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 774 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 961 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 1145 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 1326 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 1505 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 1682 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 1856 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 2028 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 2198 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 2366 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 2532 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 2696 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 2859 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 3019 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 3178 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 3336 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 3491 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 3646 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 3798 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 3949 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 4099 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 4248 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 4395 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 4540 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 4685 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 4828 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 4970 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 5111 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 5251 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 5389 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 5527 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 5663 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 5798 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 5933 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 6066 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 6198 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 6330 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 6460 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 6590 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 6718 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 6846 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 6973 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 7099 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 7224 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 7349 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 7473 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 7595 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 7718 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 7839 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 7959 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 8079 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 8199 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 8317 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 8435 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 8552 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 8668 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 8784 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 8899 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 9014 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 9128 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 9241 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 9354 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 9466 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 9577 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 9688 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 9799 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 9908 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10018 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10126 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10235 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 10342 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 10449 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10556 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 10662 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10768 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10873 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 10978 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 11082 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 11186 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 11289 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 11392 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 11494 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 11596 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 11698 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 11799 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 11899 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12000 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 12099 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12298 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12396 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 12494 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 12592 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12690 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 12787 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12883 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 12979 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 13075 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 13171 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 13266 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 13361 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 13455 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 13549 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 13643 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 13737 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 13830 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 13922 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14015 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 14107 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14290 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14381 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 14472 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 14563 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14653 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 14743 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14832 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 14922 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15011 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 15099 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 15188 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15276 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 15364 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15451 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15539 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15626 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 15712 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 15799 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 15885 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 15971 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16057 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16142 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16227 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 16312 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 16397 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16481 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 16565 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16649 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16733 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 16816 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 16899 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 16982 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17065 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 17147 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17230 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17312 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17393 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 17475 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 17556 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17637 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 17718 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17799 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17879 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 17959 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 18039 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 18119 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18199 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 18278 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18357 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18436 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18515 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 18594 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 18672 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18750 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 18828 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18906 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 18983 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19061 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 19138 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 19215 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19292 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 19368 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19445 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19521 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19597 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 19673 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 19749 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19824 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 19899 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 19974 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20049 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20124 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 20199 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 20273 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20348 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 20422 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20496 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20569 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20643 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 20716 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 20790 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 20863 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 20936 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21009 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21081 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21154 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 21226 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 21298 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21370 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 21442 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21514 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21585 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21657 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 21728 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 21799 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 21870 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 21941 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22011 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22082 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22152 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 22222 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 22292 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22362 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 22432 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22502 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22571 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22641 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 22710 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 22779 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22848 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 22917 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 22985 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23054 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23122 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 23190 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 23259 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23327 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 23394 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23462 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23530 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23597 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 23665 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 23732 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23799 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 23866 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 23933 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24000 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24066 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 24133 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 24199 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24265 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 24331 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24397 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24463 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24529 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 24595 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 24660 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24726 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 24791 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24856 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24921 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 24986 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 25051 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 25116 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25180 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 25245 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25309 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25373 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25437 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 25501 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 25565 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25629 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 25693 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25757 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25820 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 25884 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 25947 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 26010 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26073 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 26136 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26262 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26324 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 26387 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 26449 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26512 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 26574 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26636 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26698 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26760 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 26822 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 26884 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 26946 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 27007 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27069 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27130 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27191 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 27253 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 27314 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27375 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 27436 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27496 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27557 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27618 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 27678 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 27739 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27799 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 27859 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27919 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 27979 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28039 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 28099 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 28159 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28219 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 28279 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28338 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28398 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28457 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 28516 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 28575 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28634 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 28693 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28752 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28811 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 28870 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 28929 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 28987 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29046 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 29104 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29163 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29221 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29279 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 29337 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 29395 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29453 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 29511 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29569 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29626 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29684 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 29742 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 29799 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29856 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 29914 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 29971 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30028 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30085 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 30142 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 30199 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30256 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 30313 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30369 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30426 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30482 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 30539 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 30595 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30652 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 30708 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30764 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30820 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 30876 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 30932 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 30988 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31044 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 31099 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31155 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31211 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31266 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 31322 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 31377 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31432 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 31487 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31543 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31598 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31653 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 31708 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 31762 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31817 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 31872 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31927 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 31981 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32036 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 32090 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 32145 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32199 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 32253 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32308 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32362 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32416 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 32470 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 32524 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32578 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 32631 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32685 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32739 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32792 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 32846 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 32899 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 32953 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33006 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33059 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33113 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33166 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33219 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 33272 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33325 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33378 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33431 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33484 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33536 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33589 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 33642 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33694 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33747 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33799 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33851 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 33904 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 33956 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 34008 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34060 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 34112 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34164 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34216 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34268 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 34320 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 34372 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34424 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 34475 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34527 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34578 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34630 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 34681 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 34733 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34784 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 34835 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34887 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34938 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 34989 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35040 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 35091 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35142 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35193 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35244 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35294 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35345 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35396 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 35446 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35497 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35547 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35598 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35648 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35699 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35749 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 35799 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35849 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 35899 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 35949 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36000 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36049 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36099 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 36149 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36199 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36249 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36299 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36348 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36398 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36447 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 36497 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36546 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36596 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36645 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36694 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36744 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36793 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 36842 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36891 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 36940 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 36989 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37038 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37087 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37136 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 37185 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37234 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37282 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37331 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37380 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37428 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37477 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 37525 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37574 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37622 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37670 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37719 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37767 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37815 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 37863 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 37911 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 37959 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38007 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38055 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38103 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38151 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 38199 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38247 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38295 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38342 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38390 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38438 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38485 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 38533 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38580 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38628 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38675 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38722 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38770 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38817 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 38864 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 38911 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 38958 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39005 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39052 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39099 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39146 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 39193 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39240 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39287 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39334 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39380 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39427 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39474 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 39520 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39567 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39613 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39660 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39706 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39753 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39799 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 39845 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39892 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 39938 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 39984 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40030 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40076 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40122 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 40168 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40214 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40260 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40306 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40352 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40398 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40444 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 40489 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40535 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40581 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40626 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40672 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40718 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40763 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 40809 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40854 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 40899 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40945 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 40990 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41035 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41081 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 41126 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41171 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41216 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41261 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41306 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41351 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41396 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 41441 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41486 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41531 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41576 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41620 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41665 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41710 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 41754 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41799 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 41844 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41888 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41933 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 41977 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42022 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 42066 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42110 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42155 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42243 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42288 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42332 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 42376 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42420 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42464 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42508 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42552 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42596 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42640 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 42684 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42728 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42772 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42816 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42859 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 42903 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 42947 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 42990 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43034 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43078 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43121 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43165 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43208 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43252 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 43295 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43338 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43382 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43425 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43468 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43512 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43555 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 43598 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43641 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43684 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43727 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43770 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43813 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43856 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 43899 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 43942 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 43985 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44028 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44071 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44114 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44156 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 44199 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44242 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44284 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44327 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44370 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44412 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44455 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 44497 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44540 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44582 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44625 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44667 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44709 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44752 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 44794 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44836 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 44878 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44920 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 44963 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45005 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45047 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 45089 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45131 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45173 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45215 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45257 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45299 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45341 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 45382 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45424 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45466 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45508 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45549 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45591 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45633 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 45674 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45716 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45758 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45799 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45841 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 45882 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 45924 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 45965 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46006 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46048 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46089 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46130 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46172 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46213 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 46254 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46295 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46336 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46378 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46419 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46460 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46501 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 46542 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46583 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46624 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46665 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46706 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46746 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46787 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 46828 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46869 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 46910 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46950 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 46991 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47032 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47072 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 47113 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47154 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47194 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47235 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47275 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47316 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47356 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 47396 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47437 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47477 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47518 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47558 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47598 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47638 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 47679 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47719 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47759 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47799 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47839 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 47879 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 47919 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 47959 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48000 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48039 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48079 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48119 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48159 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48199 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 48239 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48279 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48319 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48358 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48398 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48438 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48478 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 48517 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48557 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48597 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48636 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48676 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48715 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48755 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 48794 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48834 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 48873 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48913 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48952 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 48991 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49031 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 49070 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49109 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49148 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49188 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49227 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49266 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49305 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 49344 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49384 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49423 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49462 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49501 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49540 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49579 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 49618 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49657 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49696 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49734 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49773 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49812 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49851 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 49890 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 49928 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 49967 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50006 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50045 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50083 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50122 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 50161 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50199 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50238 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50276 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50315 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50353 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50392 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 50430 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50469 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50507 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50545 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50584 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50622 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50660 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 50699 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50737 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50775 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50814 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50852 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 50890 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 50928 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 50966 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51004 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51042 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51080 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51118 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51156 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51194 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 51232 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51270 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51308 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51346 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51384 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51422 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51460 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 51498 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51535 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51573 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51611 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51649 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51686 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51724 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 51762 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51799 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51837 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51874 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51912 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 51949 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 51987 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 52024 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52062 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52099 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52137 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52174 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52212 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52249 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 52286 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52324 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52361 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52398 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52436 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52473 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52510 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 52547 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52584 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52621 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52659 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52696 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52733 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52770 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 52807 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52844 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 52881 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52918 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52955 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 52992 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53029 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 53066 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53102 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53139 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53176 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53213 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53250 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53287 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 53323 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53360 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53397 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53433 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53470 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53507 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53543 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 53580 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53617 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53653 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53690 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53726 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53763 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53799 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 53836 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53872 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 53909 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53945 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 53981 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54018 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54054 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 54090 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54127 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54163 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54235 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54272 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54308 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 54344 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54380 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54416 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54452 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54489 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54525 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54561 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 54597 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54633 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54669 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54705 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54741 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54777 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54813 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 54849 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54884 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 54920 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54956 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 54992 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55028 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55064 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 55099 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55135 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55171 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55207 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55242 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55278 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55314 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 55349 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55385 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55421 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55456 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55492 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55527 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55563 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 55598 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55634 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55669 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55705 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55740 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55776 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55811 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 55846 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55882 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 55917 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55952 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 55988 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56023 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56058 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 56094 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56129 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56164 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56199 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56234 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56270 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56305 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 56340 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56375 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56410 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56445 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56480 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56515 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56550 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 56585 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56620 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56655 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56690 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56725 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56760 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56795 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 56830 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56865 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 56899 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56934 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 56969 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57004 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57039 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 57073 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57108 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57143 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57178 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57212 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57247 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57282 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 57316 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57351 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57385 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57420 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57455 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57489 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57524 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 57558 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57593 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57627 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57662 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57696 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57730 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57765 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 57799 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57834 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 57868 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57902 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57937 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 57971 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58005 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 58039 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58074 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58108 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58142 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58176 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58211 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58245 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 58279 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58313 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58347 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58381 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58415 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58449 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58484 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 58518 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58552 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58586 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58620 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58654 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58688 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58721 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 58755 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58789 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58823 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58857 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58891 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 58925 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 58959 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 58992 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59026 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59060 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59094 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59128 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59161 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59195 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 59229 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59262 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59296 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59330 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59363 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59397 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59431 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 59464 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59498 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59531 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59565 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59598 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59632 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59665 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 59699 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59732 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59766 
+GET /api/v1/maps HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59799 
+GET /api/v1/maps/map1 HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59833 
+GET /api/v1/maps/town HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59866 
+GET /api/v1/game/join HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+111 59899 "Scooby
+GET {"userName": HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+119 59933 
+GET /api/v1/game/players HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
+116 59966 
+GET /api/v1/game/tick HTTP/1.0
+Connection: close
+Content-Type: application/json
+Cookie: None
+Host: localhost
+
+
