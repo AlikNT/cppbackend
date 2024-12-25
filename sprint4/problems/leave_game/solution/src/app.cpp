@@ -47,12 +47,14 @@ bool DogTokens::DeleteDogToken(const std::shared_ptr<Dog> &dog_ptr) noexcept {
     if (!dog_ptr) {
         return false;
     }
-    for (auto it = token_to_dog_.begin(); it != token_to_dog_.end(); ++it) {
-        if (it->second == dog_ptr) {
-            token_to_session_.erase(it->first);
-            token_to_dog_.erase(it);
-            return true;
-        }
+    const auto it = std::ranges::find_if(token_to_dog_,
+                                         [dog_ptr](const auto& pair) {
+                                             return pair.second == dog_ptr;
+                                         });
+    if (it != token_to_dog_.end()) {
+        token_to_session_.erase(it->first);
+        token_to_dog_.erase(it);
+        return true;
     }
     return false;
 }
@@ -235,7 +237,7 @@ json::object GetMapByIdUseCase::GetMapById(const model::Map::Id &map_id) const {
 json::array GetMapByIdUseCase::AddRoads(const model::Map *map) {
     json::array roads_json;
 
-    for (const auto &road: map->GetRoads()) {
+    for (const auto &road : map->GetRoads()) {
         json::object road_json;
         road_json[ROAD_BEGIN_X0] = road.GetStart().x;
         road_json[ROAD_BEGIN_Y0] = road.GetStart().y;
@@ -254,7 +256,7 @@ json::array GetMapByIdUseCase::AddRoads(const model::Map *map) {
 json::array GetMapByIdUseCase::AddBuildings(const model::Map *map) {
     json::array buildings_json;
 
-    for (const auto &building: map->GetBuildings()) {
+    for (const auto &building : map->GetBuildings()) {
         const auto &bounds = building.GetBounds();
         buildings_json.push_back({
             {X, bounds.position.x},
