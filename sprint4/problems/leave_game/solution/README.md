@@ -18,26 +18,26 @@ The client receives user input and sends it to the server. The client also recei
 #### Build
 
 The program was tested on Ubuntu 22.04.\
-To compile, your system must have gcc 11.3 or later, python 3 installed.
+You must have gcc 11.3 or later, python 3 installed.
 
 Installing the required packages:
 
 ```Bash
 sudo apt update && apt install -y python3-pip cmake && pip3 install conan==1.*
 ```
-Установка пакетного менеджера Conan:
+Installing Conan Package Manager:
 
 ```Bash
 mkdir /build && cd /build && conan install .. -s compiler.libcxx=libstdc++11
 ```
 
-Сборка программы:
+Building the program:
 
 ```Bash
 cd /build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
 ```
 
-Run
+#### Run
 
 ```Bash
 cd /build
@@ -53,13 +53,13 @@ Allowed options:
   --randomize-spawn-points          spawn dogs at random positions
 ```
 
-* Параметр --tick-period (-t) задаёт период автоматического обновления игрового состояния в миллисекундах. Если этот параметр указан, каждые N миллисекунд сервер должен обновлять координаты объектов. Если этот параметр не указан, время в игре должно управляться с помощью запроса /api/v1/game/tick к REST API.
-* Параметр --config-file (-c) задаёт путь к конфигурационному JSON-файлу игры.
-* Параметр --www-root (-w) задаёт путь к каталогу со статическими файлами игры.
-* Параметр --randomize-spawn-points включает режим, при котором пёс игрока появляется в случайной точке случайно выбранной дороги карты.
-* Параметр --help (-h) должен выводить информацию о параметрах командной строки.
+* The --tick-period (-t) parameter specifies the period of automatic game state update in milliseconds. If this parameter is specified, the server should update the coordinates of objects every N milliseconds. If this parameter is not specified, the time in the game should be controlled using the /api/v1/game/tick REST API request.
+* The --config-file (-c) parameter specifies the path to the game's JSON configuration file.
+* The --www-root (-w) parameter specifies the path to the directory with the game's static files.
+* The --randomize-spawn-points parameter enables a mode in which the player's dog spawns at a random point on a randomly selected road on the map.
+* The --help (-h) option should print information about the command line options.
 
-Для запуска игры на стороне клиента нужно в браузере ввести:
+To launch the game on the client side, you need to enter the following in the browser:
 ```
 <hostname>:8080
 ```
