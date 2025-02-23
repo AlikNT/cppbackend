@@ -53,11 +53,11 @@ Allowed options:
   --randomize-spawn-points          spawn dogs at random positions
 ```
 
-* The --tick-period (-t) parameter specifies the period of automatic game state update in milliseconds. If this parameter is specified, the server should update the coordinates of objects every N milliseconds. If this parameter is not specified, the time in the game should be controlled using the /api/v1/game/tick REST API request.
-* The --config-file (-c) parameter specifies the path to the game's JSON configuration file.
-* The --www-root (-w) parameter specifies the path to the directory with the game's static files.
-* The --randomize-spawn-points parameter enables a mode in which the player's dog spawns at a random point on a randomly selected road on the map.
-* The --help (-h) option should print information about the command line options.
+* The **--tick-period (-t)** parameter specifies the period of automatic game state update in milliseconds. If this parameter is specified, the server should update the coordinates of objects every N milliseconds. If this parameter is not specified, the time in the game should be controlled using the /api/v1/game/tick REST API request.
+* The **--config-file (-c)** parameter specifies the path to the game's JSON configuration file.
+* The **--www-root (-w)** parameter specifies the path to the directory with the game's static files.
+* The **--randomize-spawn-points** parameter enables a mode in which the player's dog spawns at a random point on a randomly selected road on the map.
+* The **--help (-h)** option should print information about the command line options.
 
 To launch the game on the client side, you need to enter the following in the browser:
 ```
