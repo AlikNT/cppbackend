@@ -9,18 +9,18 @@ The goal of the game is to score as many game points as possible, which are awar
 The start screen displays a list of maps. After selecting a map, the game screen opens. This screen displays a fragment of the city map. The map consists of roads along which the players' dogs move. Lost items appear on the roads from time to time, which must be picked up before the opponents and taken to the nearest lost property office. Player-controlled dogs can carry no more than three items at a time, so you need to visit the office regularly. In addition to roads and offices, there are buildings on the map that serve a purely decorative function and do not affect the course of the game.\
 The information area of ​​the game screen displays the items that the player's dog is carrying, as well as the points scored.
 
-Архитектура игры
+#### Game architecture
 
-Игра будет выполнена в виде клиент-серверного приложения:
-Сервер отвечает за хранение и обновление игрового состояния, отправку состояния клиентам, обработку команд управления собаками. Размещение игрового кода на стороне сервера поставит игроков в одинаковые условия и уменьшит возможность жульничества путём модификации кода, выполняемого на стороне клиента.
-Клиент принимает ввод пользователя и отправляет его на сервер. Также клиент получает актуальное игровое состояние с сервера и отображает его пользователю. Клиентская часть игры (фронтенд) выполняется в веб-браузере и использовать технологии HTML/CSS/JavaScript.
+The game is designed as a client-server application:\
+The server is responsible for storing and updating the game state, sending the state to clients, and processing dog control commands. Placing the game code on the server side puts players on an equal footing and reduces the possibility of cheating by modifying the code running on the client side.
+The client receives user input and sends it to the server. The client also receives the current game state from the server and displays it to the user. The client part of the game (frontend) is executed in a web browser and uses HTML/CSS/JavaScript technologies.
 
-Build
+#### Build
 
-Программа тестировалась на Ubuntu 22.04
-Для компиляции в системе должен быть установлен gcc 11.3 или более поздней версии, python 3.
+The program was tested on Ubuntu 22.04.\
+To compile, your system must have gcc 11.3 or later, python 3 installed.
 
-Установка необходимых пакетов:
+Installing the required packages:
 
 ```Bash
 sudo apt update && apt install -y python3-pip cmake && pip3 install conan==1.*
