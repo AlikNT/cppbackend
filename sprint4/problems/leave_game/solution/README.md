@@ -20,18 +20,18 @@ The client receives user input and sends it to the server. The client also recei
 The program was tested on Ubuntu 22.04.\
 You must have gcc 11.3 or later, python 3 installed.
 
-Installing the required packages:
+Install the required packages:
 
 ```Bash
 sudo apt update && apt install -y python3-pip cmake && pip3 install conan==1.*
 ```
-Installing Conan Package Manager:
+Install Conan Package Manager:
 
 ```Bash
 mkdir /build && cd /build && conan install .. -s compiler.libcxx=libstdc++11
 ```
 
-Building the program:
+Build the program:
 
 ```Bash
 cd /build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
