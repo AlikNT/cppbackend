@@ -8,6 +8,9 @@
 На этом экране отображается фрагмент карты города. Карта состоит из дорог, по которым перемещаются псы игроков. На дорогах время от времени появляются потерянные вещи, которые нужно подобрать раньше противников и отнести в ближайшее бюро находок. Псы, управляемые игроками, могут нести не более трёх предметов за раз, поэтому регулярно нужно наведываться в офис. Кроме дорог и офисов, на карте располагаются здания, которые несут исключительно декоративную функцию и не влияют на ход игры.
 В информационной области игрового экрана отображаются предметы, которые несёт пёс игрока, а также набранные очки.
 
+The player controls a dog whose job is to find lost items and take them to the nearest lost property office. There are several dogs on the map at the same time, controlled by other users connected to the server.
+The goal of the game is to score as many game points as possible, which are awarded for items delivered to the lost property office.
+
 Архитектура игры
 
 Игра будет выполнена в виде клиент-серверного приложения:
