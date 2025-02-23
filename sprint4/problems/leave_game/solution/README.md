@@ -3,13 +3,11 @@
 ### Description
 
 #### Game mechanics
-Игрок управляет псом, задача которого — находить потерянные вещи и относить их в ближайшее бюро находок. На карте одновременно присутствуют несколько псов, которыми управляют другие пользователи, подключившиеся к серверу. Цель игры — набрать как можно больше игровых очков, которые начисляются за доставленные в бюро находок вещи.
-На стартовом экране отображается список карт. После выбора карты открывается экран игры.
-На этом экране отображается фрагмент карты города. Карта состоит из дорог, по которым перемещаются псы игроков. На дорогах время от времени появляются потерянные вещи, которые нужно подобрать раньше противников и отнести в ближайшее бюро находок. Псы, управляемые игроками, могут нести не более трёх предметов за раз, поэтому регулярно нужно наведываться в офис. Кроме дорог и офисов, на карте располагаются здания, которые несут исключительно декоративную функцию и не влияют на ход игры.
-В информационной области игрового экрана отображаются предметы, которые несёт пёс игрока, а также набранные очки.
 
 The player controls a dog whose job is to find lost items and take them to the nearest lost property office. There are several dogs on the map at the same time, controlled by other users connected to the server.\
-The goal of the game is to score as many game points as possible, which are awarded for items delivered to the lost property office.
+The goal of the game is to score as many game points as possible, which are awarded for items delivered to the lost property office.\
+The start screen displays a list of maps. After selecting a map, the game screen opens. This screen displays a fragment of the city map. The map consists of roads along which the players' dogs move. Lost items appear on the roads from time to time, which must be picked up before the opponents and taken to the nearest lost property office. Player-controlled dogs can carry no more than three items at a time, so you need to visit the office regularly. In addition to roads and offices, there are buildings on the map that serve a purely decorative function and do not affect the course of the game.\
+The information area of ​​the game screen displays the items that the player's dog is carrying, as well as the points scored.
 
 Архитектура игры
 
