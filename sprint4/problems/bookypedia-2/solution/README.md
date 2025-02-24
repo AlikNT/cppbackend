@@ -68,7 +68,7 @@ ShowAuthors
 1. Jack London
 2. Joanne Rowling
 ```
-If the authors list is empty, the `ShowAuthors` command does not output anything.\
+If the authors list is empty, the `ShowAuthors` command does not output anything.
 
 #### Command AddBook
 The `AddBook <pub_year> <title>` command adds a book with the specified title and year of publication to the database. When executing the command, The program will prompt the user to enter the author's name directly or select the author from the list provided. The list sorted alphabetically. If the user entered the author's name manually and there is no such author among the authors, the program will prompt the user to add the author automatically.\
