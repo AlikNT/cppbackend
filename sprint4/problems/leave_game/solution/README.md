@@ -15,7 +15,7 @@ The game is designed as a client-server application:\
 The server is responsible for storing and updating the game state, sending the state to clients, and processing dog control commands. Placing the game code on the server side puts players on an equal footing and reduces the possibility of cheating by modifying the code running on the client side.
 The client receives user input and sends it to the server. The client also receives the current game state from the server and displays it to the user. The client part of the game (frontend) is executed in a web browser and uses HTML/CSS/JavaScript technologies.
 
-#### Build
+### Build
 
 The program was tested on Ubuntu 22.04.\
 You must have gcc 11.3 or later, python 3 installed.
@@ -37,11 +37,11 @@ Build the program:
 cd /build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
 ```
 
-#### Run
+### Run
 
 ```Bash
 cd /build
-game_server [options]
+game_server <options>
 ```
 
 ```Bash
