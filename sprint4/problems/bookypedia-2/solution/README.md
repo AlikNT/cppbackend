@@ -234,10 +234,11 @@ Build the program:
 
 ```Bash
 cd /build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
+```
 
 ### Run
 
 ```Bash
 cd /build
-bookipedia-2
+bookipedia
 ```
