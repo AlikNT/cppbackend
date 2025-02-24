@@ -1,4 +1,4 @@
-## Bookipedia
+## Bookypedia
 
 ### Description
 A console program that stores books in a Postgres database.\
@@ -240,5 +240,5 @@ cd /build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
 
 ```Bash
 cd /build
-bookipedia
+bookypedia
 ```
