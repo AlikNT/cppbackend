@@ -20,7 +20,7 @@ AddAuthor Antoine de Saint-Exupery
 ```
 
 #### Command DeleteAuthor
-The 'DeleteAuthor' command deletes the selected author, all of their books, and the tags associated with those books. Books by other authors and their tags are not affected.
+The `DeleteAuthor` command deletes the selected author, all of their books, and the tags associated with those books. Books by other authors and their tags are not affected.
 ```Bash
 DeleteAuthor
 1 Jack London
@@ -41,7 +41,7 @@ ShowAuthors
 ```
 
 #### Command EditAuthor
-The EditAuthor command is used to edit the selected author. You can specify the author's name in the command or select from the list:
+The `EditAuthor` command is used to edit the selected author. You can specify the author's name in the command or select from the list:
 ```Bash
 EditAuthor
 1 Jack London
