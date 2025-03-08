@@ -1,5 +1,13 @@
 ## Bookypedia
 
+![C++17](https://img.shields.io/badge/С++17-00599C)
+![CMake](https://img.shields.io/badge/CMake-D1242F)
+![Conan](https://img.shields.io/badge/Conan-1772A5)
+![Boost](https://img.shields.io/badge/Boost-005F9E)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-3E8E41)
+![Docker](https://img.shields.io/badge/Docker-2496ED)
+
+
 ### Description
 A console program that stores books in a Postgres database.\
 The program uses the "Repository" pattern.
